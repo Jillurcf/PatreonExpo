@@ -1,33 +1,26 @@
+import React, { useState } from 'react';
 import {
-    View,
+    ScrollView,
+    StatusBar,
     Text,
     TouchableOpacity,
-    ScrollView,
-    Image,
-    Alert,
-    StatusBar,
+    View
 } from 'react-native';
-import React, { useState } from 'react';
-import tw from '../../../lib/tailwind';
 import InputText from '../../../components/InputText';
+import tw from '../../../lib/tailwind';
 
-import { Checkbox } from 'react-native-ui-lib';
-import Button from '../../../components/Button';
+import { getStorageToken, lStorage, setStorageToken } from '@/src/utils';
+import { router } from 'expo-router';
 import { SvgXml } from 'react-native-svg';
 import {
     IconBack,
     IconCloseEye,
     IconEnvelope,
-    IconGoogle,
     iconLock,
-    IconOpenEye,
-    IconUser,
+    IconOpenEye
 } from '../../../assets/icons/icons';
-import TButton from '../../../components/TButton';
-import { router } from 'expo-router';
-import { getStorageToken, lStorage, setStorageToken } from '@/src/utils';
+import Button from '../../../components/Button';
 // import { useLoginUserMutation } from '@/src/redux/apiSlice/authSlice';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import { useLoginUserMutation } from '@/src/redux/apiSlice/authSlice';
 
 // import {useSignupMutation} from '../../redux/api/apiSlice/apiSlice';
@@ -38,6 +31,7 @@ const Login = () => {
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [checkValue, setCheckValue] = useState(false);
     const [loginError, setLoginError] = useState();
+    console.log(loginError, "loginError")
     const [loginUser, {isLoading, isError}] = useLoginUserMutation();
     console.log('27', email, password);
     // const data = {email, password, name:username, address:location}
@@ -65,7 +59,7 @@ const Login = () => {
         try {
           console.log("Try catch click")
           const res = await loginUser(formData).unwrap();
-          setLoginError(res)
+        //   setLoginError(res)
           console.log("login res++++++++", res?.data?.token)
           if (res?.data?.token) {
             lStorage.setString('token', res?.data?.token);
@@ -80,7 +74,7 @@ const Login = () => {
     
         } catch (error) {
           console.error('Login failed:', error);
-          setLoginError(error)
+           setLoginError(error?.data?.message);
         }
       };
     
@@ -277,18 +271,8 @@ const Login = () => {
                         />
                     </View>
                     <View style={tw``}>
-                        <Checkbox
-                            value={checkValue}
-                            onValueChange={setCheckValue}
-                            label="By logging in you accept our TOS & PP"
-                            labelStyle={tw`text-white`}
-                            color="gray" // Tick color
-                            containerStyle={tw`p-2`}
-                            style={[
-                                tw`border border-white`,
-                                checkValue ? tw`bg-white` : tw`bg-none`,
-                            ]}
-                        />
+                        <Text style={tw`text-white`}>By logging in you accept our TOS & PP</Text>
+                        
                     </View>
                     <TouchableOpacity
                         onPress={() =>
@@ -303,6 +287,11 @@ const Login = () => {
                 </View>
             </View>
             <View style={tw`flex-col justify-end `}>
+            {loginError && (
+                <Text style={tw`text-red-500 text-center mb-4`}>
+                    {loginError}*
+                </Text>
+            )}
                 <Button
                     disabled={!allFilled}
                     title={'Continue'}

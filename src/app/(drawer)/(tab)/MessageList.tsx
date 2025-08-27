@@ -1,68 +1,34 @@
+import { IconGeneralSearch } from '@/src/assets/icons/icons';
+import InputText from '@/src/components/InputText';
+import tw from '@/src/lib/tailwind';
+import { useGetMessageListQuery } from '@/src/redux/apiSlice/serviceSlice';
+import { imageUrl } from '@/src/redux/baseApi';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  FlatList,
   Image,
+  RefreshControl,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
-import { router } from 'expo-router';
-import { IconGeneralSearch } from '../../../assets/icons/icons';
-import InputText from '../../../components/InputText';
-import tw from '../../../lib/tailwind';
 
 type ItemData = {
   id: string;
   image: string;
 };
 
-
-
 const MessageList = () => {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      data: {
-        creator_image: require('../../../assets/images/alteravater.png'),
-        message: 'John Doe commented on your post.',
-        creator_name: 'John Doe',
-      },
-      created_at: new Date().toISOString(),
-      read_at: null,
-    },
-    {
-      id: 2,
-      data: {
-        creator_image: require('../../../assets/images/alteravater.png'),
-        message: 'Your profile picture was liked.',
-        creator_name: 'User',
-      },
-      created_at: new Date().toISOString(),
-      read_at: new Date().toISOString(),
-    },
-    // Add other notifications here...
-  ]);
+  const [searchTitle, setSearchTitle] = useState('');
+  const { data, isLoading, isError, isFetching, refetch } = useGetMessageListQuery(searchTitle)
+  console.log(data?.data, 'data from get message List query');
+  const fullImageUrl = data?.data?.image ? `${imageUrl}/${data.data.image}` : null;
 
-  const handleRead = item => {
-    navigation?.navigate('chatScreen', {
-      id: item?.id,
-      is_active: item?.is_active,
-      receiverId: item?.receiver_id,
-      receiverName: item?.name,
-      reeciverImage: item?.avatar,
-    });
-  };
 
-  const handleMessage = item => {
-    navigation?.navigate('chatScreen', {
-      receiverId: item?.id,
-      receiverName: item?.first_name + item?.last_name,
-      reeciverImage: item?.avatar,
-    });
-  };
 
   return (
     <View style={tw`flex-1 bg-black px-[4%]`}>
@@ -71,37 +37,40 @@ const MessageList = () => {
       </Text>
       <View style={tw`my-4`}>
         <InputText
-          containerStyle={tw`bg-[#262329] h-14 border border-[#565358]`}
+          style={tw`text-white h-14 font-AvenirLTProBlack`}
+          containerStyle={tw`bg-[#262329] border border-[#565358]`}
           labelStyle={tw`text-white font-AvenirLTProBlack mt-3`}
           placeholder={'Search & Learn'}
           placeholderColor={'#949494'}
           //   label={'Password'}
+          cursorColor='white'
           iconLeft={IconGeneralSearch}
-          // iconRight={isShowConfirmPassword ? iconLock : iconLock}
-          //   onChangeText={(text: any) => setConfirmPassword(text)}
-          //   isShowPassword={!isShowConfirmPassword}
-          //   rightIconPress={() =>
-          //     setIsShowConfirmPassword(!isShowConfirmPassword)
-          //   }
+          onChangeText={text => {
+            setSearchTitle(text);
+          }}
         />
       </View>
-      <FlatList
-        data={notifications}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => {
+      <SwipeListView
+
+        data={data?.data || []}
+        keyExtractor={item => item._id.toString()}
+        renderItem={({ item }) => {
+          console.log(item?.contributor?.username, 'item from message list');
           return (
             <TouchableOpacity
-            onPress={() => router.push("/screens/MessageScreen")}
+              onPress={() => router.push({ pathname: "/screens/MessageScreen", params: {serviceId:item?._id, serviceTitle: item?.title, userName: item?.contributor?.username } })}
               style={tw`flex-row items-center bg-[#262329] my-1 rounded-2xl gap-2 p-2`}>
               <View style={tw`relative items-center`}>
-                {item?.data?.creator_image && (
+                {item?.image && (
                   <Image
-                    source={item?.data?.creator_image}
-                    width={50}
-                    // containerStyle={tw`mr-4`}
+                    source={{ uri: `${imageUrl}/${item?.user?.image}` }}
+                    style={tw`w-12 h-12 rounded-full border border-gray-500`}
+
+                    resizeMode="cover"
                   />
                 )}
-                {item?.data?.creator_name ? (
+
+                {item?.contributor ? (
                   <View
                     style={tw`w-3 h-3 bg-gray-400 rounded-full absolute bottom-0 right-4`}
                   />
@@ -114,56 +83,35 @@ const MessageList = () => {
               <View style={tw`flex-1 pb-2`}>
                 <View style={tw`flex-row justify-between mr-2 items-center`}>
                   <Text style={tw`text-white font-AvenirLTProBlack`}>
-                    {item.data?.creator_name} 
+                    {item?.title || "Service Title"}
                   </Text>
-                  <View
+                  {/* <View
                     style={tw`bg-white w-4 h-4 items-center justify-center rounded-full`}>
                     <Text style={tw`text-black font-AvenirLTProBlack text-xs`}>
                       2
                     </Text>
-                  </View>
+                  </View> */}
                 </View>
                 <View style={tw`flex-row justify-between mt-2`}>
                   <Text style={tw`text-white font-AvenirLTProBlack`}>
-                    {item.data?.message}
+                    {item.description.slice(0, 100) || "Service Description"}
                   </Text>
-                  <Text style={tw`text-white font-AvenirLTProBlack`}>
+                  {/* <Text style={tw`text-white font-AvenirLTProBlack`}>
                     09:41
-                  </Text>
+                  </Text> */}
                 </View>
-                {/* {item.message === 0 ? (
-                  <TouchableOpacity
-                    onPress={() => handleRead(item)}
-                    style={tw`flex-row items-center mt-2`}>
-                    <Text style={tw`text-blue-500 px-2 font-AvenirLTProBlack`}>
-                      {item.created_at}
-                    </Text>
-                    <View
-                      style={tw`w-5 h-5 items-center justify-center bg-red-500 rounded-full`}>
-                      <Text style={tw`font-AvenirLTProBlack `}>
-                        {item.data?.message}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => handleRead(item)}
-                    style={tw`flex-row items-center mt-2`}>
-                    <Text style={tw`text-blue-500 px-2 font-AvenirLTProBlack`}>
-                      {item.created_at}
-                    </Text>
-                    <View
-                      style={tw`w-5 h-5 items-center justify-center bg-red-500 rounded-full`}>
-                      <Text style={tw`font-AvenirLTProBlack`}>
-                        {item.message}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                )} */}
+
               </View>
             </TouchableOpacity>
           );
         }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching} // from RTK query
+            onRefresh={refetch} // re-run the query
+            tintColor="#fff" // optional: spinner color
+          />
+        }
       />
 
       <StatusBar backgroundColor="black" translucent />

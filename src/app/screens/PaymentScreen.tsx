@@ -1,3 +1,5 @@
+import { router, useLocalSearchParams } from 'expo-router';
+import React, { useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -5,7 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import { SvgXml } from 'react-native-svg';
+import { RadioButton } from 'react-native-ui-lib';
 import {
   IconAple,
   IconBack,
@@ -13,17 +16,14 @@ import {
   IconPaypal,
   IconVisa,
 } from '../../assets/icons/icons';
-import {SvgXml} from 'react-native-svg';
-import tw from '../../lib/tailwind';
-import {RadioButton} from 'react-native-ui-lib';
 import TButton from '../../components/TButton';
-import { router, useLocalSearchParams } from 'expo-router';
+import tw from '../../lib/tailwind';
 // import RadioButtonRN from 'radio-buttons-react-native';
 
 type Props = {};
 
 const data = [{label: 'Option 1'}];
-const PaymentScreen = ({navigation}) => {
+const PaymentScreen = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
    const { userId, serviceId, title } = useLocalSearchParams();
 console.log(userId, serviceId, "id+++++++++++++++++++29")

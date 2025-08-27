@@ -1,35 +1,34 @@
+import React, { useState } from 'react';
 import {
-  View,
+  Alert,
+  ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
-  ScrollView,
-  Image,
-  Alert,
-  StatusBar,
+  View
 } from 'react-native';
-import React, { useState } from 'react';
-import tw from '../../../lib/tailwind';
 import InputText from '../../../components/InputText';
+import tw from '../../../lib/tailwind';
 
-import { Checkbox } from 'react-native-ui-lib';
-import Button from '../../../components/Button';
+import { useRegisterUserMutation } from '@/src/redux/apiSlice/authSlice';
+import { router, useLocalSearchParams } from 'expo-router';
 import { SvgXml } from 'react-native-svg';
 import {
   IconBack,
+  IconCloseEye,
   IconEnvelope,
-  IconGoogle,
   iconLock,
-  IconUser,
+  IconOpenEye,
+  IconUser
 } from '../../../assets/icons/icons';
-import TButton from '../../../components/TButton';
-import { router } from 'expo-router';
-import { useRegisterUserMutation } from '@/src/redux/apiSlice/authSlice';
+import Button from '../../../components/Button';
 
 
-const SignUp = ({ navigation }: any) => {
-  // console.log('navigation', navigation);
+const SignUp = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const { screenName, phoneNumber } = useLocalSearchParams();
+  console.log(phoneNumber)
   // const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -66,6 +65,8 @@ const SignUp = ({ navigation }: any) => {
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
+      formData.append("phone", phoneNumber);
+
       console.log(formData, "formdata before sending---------------")
       const response = await SignUp(formData).unwrap();
       console.log(response?.success, "response singup=========")
@@ -160,12 +161,18 @@ const SignUp = ({ navigation }: any) => {
               placeholderColor={'#949494'}
               label={'Password'}
               iconLeft={iconLock}
-              // iconRight={isShowConfirmPassword ? iconLock : iconLock}
-              onChangeText={(text: any) => setPassword(text)}
-              isShowPassword={!isShowConfirmPassword}
-              rightIconPress={() =>
-                setIsShowConfirmPassword(!isShowConfirmPassword)
-              }
+            iconRight={isShowPassword ? IconOpenEye : IconCloseEye}
+              // onChangeText={(text: any) => setPassword(text)}
+              // isShowPassword={!isShowConfirmPassword}
+              // rightIconPress={() =>
+              //   setIsShowConfirmPassword(!isShowConfirmPassword)
+              // }
+
+               onChangeText={(text: any) => setPassword(text)}
+                            isShowPassword={!isShowPassword}
+                            rightIconPress={() =>
+                                setIsShowPassword(!isShowPassword)
+                            }
             />
           </View>
         </View>
@@ -173,7 +180,7 @@ const SignUp = ({ navigation }: any) => {
       <View style={tw`flex-col justify-end `}>
         <Button
           disabled={!allFilled}
-          title={'Register'}
+          title={isLoading ? "Wait..." :'Register'}
           style={tw`${allFilled ? 'text-black' : 'text-gray-500'} font-AvenirLTProBlack items-center`}
           containerStyle={tw`${allFilled ? 'bg-white' : 'bg-PrimaryFocus'} mt-4 h-14 rounded-2xl justify-center`}
           onPress={ handleSignup}

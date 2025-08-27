@@ -1,11 +1,11 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import { DrawerActions } from '@react-navigation/native';
+import { router } from 'expo-router';
 import React, { useEffect } from 'react';
-import {SvgXml} from 'react-native-svg';
-import {IconBell, IconHamBurger} from '../assets/icons/Icons';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { IconBell, IconHamBurger } from '../assets/icons/Icons';
+import { NavigProps } from '../interface/NaviProps';
 import tw from '../lib/tailwind';
-import InputText from './InputText';
-import {NavigProps} from '../interface/NaviProps';
-import {DrawerActions} from '@react-navigation/native';
 import { useGetNotificationsQuery, useGetProfileQuery } from '../redux/api/apiSlice/apiSlice';
 
 
@@ -50,7 +50,7 @@ const unreadCount = unreadNotifications?.length || "";
         <View style={tw`flex-row items-center gap-2`}>
           <TouchableOpacity
             style={tw`bg-offWhite w-10 h-10 flex-row items-center justify-center rounded-full relative`}
-            onPress={() => navigation?.navigate('Notifications')}>
+            onPress={() => router.push('/screens/Notifications')}>
             <SvgXml xml={IconBell} />
             <Text style={tw`absolute -top-1 left-5 font-bold z-1 text-red-600`}> {unreadCount}</Text>
           </TouchableOpacity>

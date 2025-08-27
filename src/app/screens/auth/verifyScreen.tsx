@@ -1,24 +1,21 @@
+import React, { useRef, useState } from 'react';
 import {
-  View,
-  Text,
+  ActivityIndicator,
   ScrollView,
+  StatusBar,
+  Text,
   TextInput,
   TouchableOpacity,
-  Alert,
-  Image,
-  ActivityIndicator,
-  StatusBar,
+  View
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import tw from '../../../lib/tailwind';
 import Button from '../../../components/Button';
+import tw from '../../../lib/tailwind';
 
-import { CustomAlert } from '../../../components/CustomAlert';
-import { SvgXml } from 'react-native-svg';
-import { IconBack } from '../../../assets/icons/icons';
+import { useOtipVerifyMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import { OtpInput } from 'react-native-otp-entry';
-import { useOtipVerifyMutation } from '@/src/redux/apiSlice/authSlice';
+import { SvgXml } from 'react-native-svg';
+import { IconBack } from '../../../assets/icons/icons';
 
 interface ErrorResponse {
   data?: {
@@ -39,6 +36,7 @@ const VerifyScreen = () => {
   const [isActive, setIsActive] = useState(true);
   const { screenName, phoneNumber } = useLocalSearchParams()
   const [alertVisible, setAlertVisible] = useState(false);
+  const [error, setError] = useState<ErrorResponse | null>(null);
 
   console.log(screenName, phoneNumber , "screenName + Phone number++++++")
 
@@ -142,7 +140,7 @@ const VerifyScreen = () => {
               params: { phoneNumber: phoneNumber },
             });
         } else {
-          router.push("/screens/auth/Signup")
+          router.push({pathname: "/screens/auth/Signup", params: {phoneNumber: phoneNumber}})
         }
       } else {
         console.error("OTP verification failed:", response?.message);
@@ -150,6 +148,7 @@ const VerifyScreen = () => {
     } catch (err) {
       // Log error details for debugging
       console.error("Error verifying OTP:", err);
+      setError(err?.data?.message || "An unexpected error occurred.");
     }
 
   };
@@ -259,9 +258,12 @@ const VerifyScreen = () => {
         </View>
       </View>
       <View style={tw`flex-col justify-end `}>
+         {error && (
+          <Text style={tw`text-red-500`}>{error}*</Text>
+        )}
         <Button
           disabled={!allFilled}
-          title={'Verify'}
+          title={isLoading ? "Wait..." :'Verify'}
           style={tw`text-black font-AvenirLTProBlack items-center`}
           containerStyle={tw`${!allFilled ? 'bg-PrimaryFocus' : 'white'
             } mt-4 h-14 rounded-2xl justify-center`}
@@ -274,7 +276,6 @@ const VerifyScreen = () => {
     </ScrollView>
 
 
-  ); 1
-};
+  );};
 
 export default VerifyScreen;

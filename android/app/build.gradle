@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.patreonExpo'
+    namespace 'com.yxltechnology.between'
     defaultConfig {
-        applicationId 'com.anonymous.patreonExpo'
+        applicationId 'com.yxltechnology.between'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

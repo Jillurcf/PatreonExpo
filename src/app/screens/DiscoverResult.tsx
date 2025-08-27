@@ -199,7 +199,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -214,12 +214,13 @@ const DiscoverResult = () => {
   console.log("params in DiscoverResult:", title, taskId, route);
   const router = useRouter();
 
-  const lowerCaseTaskId = taskId?.toLocaleLowerCase() || '';
+  const lowerCaseTaskId = taskId?.toLowerCase() || '';
+  console.log('lowerCaseTaskId++++++', typeof lowerCaseTaskId);
   const [searchText, setSearchText] = useState('');
-  const [titles, setTitles] = useState(lowerCaseTaskId || '');
+  const [titles, setTitles] = useState("");
   const [page, setPage] = useState(1);
   const [services, setServices] = useState<any[]>([]);
-    console.log(services, 'services+++++++');
+  console.log(services, 'services+++++++');
   const [hasMore, setHasMore] = useState(true);
   const limit = 10;
 
@@ -235,13 +236,22 @@ const DiscoverResult = () => {
     return () => clearTimeout(delayDebounce);
   }, [searchText]);
 
-  const { data, isFetching, refetch } = useGetAllServiceQuery({
+  const { data, isLoading, error, isFetching, refetch } = useGetAllServiceQuery({
     category: lowerCaseTaskId,
     title: titles,
     page,
     limit,
   });
+
+
+// initial data logging code for testing purposes
+  useEffect(() => {
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+  }, [data, error]);
   console.log(data, 'data+++++++');
+
+
 
   useEffect(() => {
     if (Array.isArray(data?.data?.result)) {
@@ -292,7 +302,7 @@ const DiscoverResult = () => {
           style={tw`text-white`}
           containerStyle={tw`bg-[#262329] border h-14 relative border-[#565358]`}
           labelStyle={tw`text-white font-AvenirLTProBlack mt-3`}
-          placeholder={'Search by user name'}
+          placeholder={'Search by service title'}
           cursorColor={'white'}
           placeholderColor={'#949494'}
           iconLeft={IconGeneralSearch}

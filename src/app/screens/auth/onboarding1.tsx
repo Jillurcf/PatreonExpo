@@ -1,19 +1,17 @@
+import React from 'react';
 import {
-  Image,
-  ImageBackground,
   StatusBar,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
-import React from 'react';
 //   import LinearGradient from 'react-native-linear-gradient';
 
 
+import { router } from 'expo-router';
+import { ScrollView } from 'react-native-gesture-handler';
 import TButton from '../../../components/TButton';
 import tw from '../../../lib/tailwind';
-import { ScrollView } from 'react-native-gesture-handler';
-import { router } from 'expo-router';
 
 type Props = {};
 
@@ -52,7 +50,6 @@ const Onboarding1 = () => {
           <View style={tw`my-2 flex items-center justify-center`}>
             <TButton
               onPress={handleCreateUser}
-              // onPress={()=> navigation?.navigate('AccountCreationEmail')}
               titleStyle={tw`text-whiteBtnText font-bold font-AvenirLTProHeavy text-center mx-auto`}
               title="Sign up"
               containerStyle={tw`bg-white w-[90%] my-2 rounded-full`}

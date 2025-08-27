@@ -19,7 +19,8 @@ const InputText = ({
   keyboardType,
   rightItem,
   placeholderAlignment,
-  cursorColor
+  cursorColor,
+  value
 }: any) => {
   return (
     <View style={[tw`mb-2`, mainStyle]}>
@@ -36,7 +37,9 @@ const InputText = ({
         ]}>
         {iconLeft && <SvgXml xml={iconLeft} />}
         <TextInput
-        cursorColor={cursorColor || 'white'}
+          value={value}
+          cursorColor={cursorColor || 'white'}
+          selectionColor={cursorColor || 'white'} 
           placeholder={placeholder}
           placeholderTextColor={placeholderColor}
           style={[tw`font-RoboMedium flex-1 text-title`, style]}

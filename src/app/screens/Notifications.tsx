@@ -1,12 +1,10 @@
+import { IconBack, IconNotificationMessage } from '@/src/assets/icons/icons';
+import tw from '@/src/lib/tailwind';
 import { router } from 'expo-router';
 import React from 'react';
 import { FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import {
-  IconBack,
-  IconNotificationMessage
-} from '../../assets/icons/icons';
-import tw from '../../lib/tailwind';
+
 
 type Props = {};
 

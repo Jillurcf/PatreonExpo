@@ -29,7 +29,7 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <SafeAreaView style={tw`flex-1 bg-black`}>
+    <SafeAreaView style={tw`flex-1 bg-black p-[4%]`}>
       <GestureHandlerRootView style={tw`flex-1`}>
         <Provider store={store}>
           <Slot />

@@ -1,11 +1,11 @@
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import tw from '@/src/lib/tailwind'
-import { SvgXml } from 'react-native-svg'
 import { IconBack, IconEdit } from '@/src/assets/icons/icons'
+import tw from '@/src/lib/tailwind'
+import { useDeleteServicesMutation, useGettMyServicesQuery } from '@/src/redux/apiSlice/serviceSlice'
 import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useDeleteServicesMutation, useGettMyServicesQuery } from '@/src/redux/apiSlice/serviceSlice'
+import React from 'react'
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { SvgXml } from 'react-native-svg'
 
 
 type Props = {}
@@ -30,7 +30,13 @@ const MyServices = (props: Props) => {
         try {
             console.log(item._id, "id++++++++++++++++++ click");
             const res = await deleteServices(item._id).unwrap();
-            console.log('Deleted successfully', res)
+            console.log(res?.data, "delete response")
+            if (res?.success === true) {
+                await refetch()
+                router.push('/(drawer)/(tab)'); // Navigate back to MyServices screen
+                console.log('Deleted successfully', res)
+            }
+
         } catch (error) {
             console.error('Delete failed', error);
         }
@@ -69,7 +75,6 @@ const MyServices = (props: Props) => {
                     renderItem={({ item }) => {
                         return (
                             <View
-                                //   onPress={() => navigation.navigate('Profile')}
                                 style={tw`flex-row items-center bg-[#262329] my-1 rounded-2xl p-3`}>
                                 <View style={tw`flex-row items-center`}>
 
@@ -82,6 +87,11 @@ const MyServices = (props: Props) => {
                                         <View style={tw`flex-row justify-between mt-2`}>
                                             <Text style={tw`text-white font-AvenirLTProBlack`}>
                                                 {item?.subtitle}
+                                            </Text>
+                                        </View>
+                                        <View style={tw`flex-row justify-between mt-2`}>
+                                            <Text style={tw`text-white font-AvenirLTProBlack`}>
+                                                {item?.category}
                                             </Text>
                                         </View>
                                         <View style={tw`flex-row justify-between mt-2`}>

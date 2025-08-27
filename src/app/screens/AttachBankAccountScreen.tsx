@@ -31,12 +31,10 @@ const AttachBankAccountScreen = () => {
             if (response?.success === true) {
                 setAccountConfirmationModalVisible(true);
                 resetForm();
-                // navigation.navigate('AttachBankAccount');
                 setError(null);
             }
 
         } catch (error) {
-            // Alert.alert('Error', 'Failed to update recipient details');
             console.error('Update Recipient Error:', error);
             setError(error?.data?.message);
         }

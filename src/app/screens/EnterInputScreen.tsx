@@ -1,47 +1,58 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
-import { SvgXml } from 'react-native-svg';
+import { loadMediaPromptData, saveMediaPromptData } from '@/src/utils';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import Pdf from 'react-native-pdf';
-import tw from '../../lib/tailwind';
 import { router } from 'expo-router';
-import { loadMediaPromptData, saveMediaPromptData } from '@/src/utils';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import Pdf from 'react-native-pdf';
+import { SvgXml } from 'react-native-svg';
+import tw from '../../lib/tailwind';
 
 import {
   IconBack,
-  IconUpload,
-  CrossIcon,
+  IconUpload
 } from '../../assets/icons/icons';
 
+import Button from '@/src/components/Button';
+import NormalModal from '@/src/components/NormalModal';
 import TButton from '../../components/TButton';
-import WebView from 'react-native-webview';
 
 const EnterInput = () => {
   const [promptInput, setPromptInput] = useState('');
+  const [inputConfirmationModalVisible, setInputConfirmationModalVisible] =
+    useState(false);
+    const [loading, setLoading] = useState(false);
   // const [selectedPdf, setSelectedPdf] = useState(null);
-  const [selectedPdf, setSelectedPdf] = useState({
-    assets: [
-      {
-        uri: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        name: 'dummy.pdf',
-        size: 0,
-        mimeType: 'application/pdf',
-      },
-    ],
-    canceled: false,
-  });
+  // const [selectedPdf, setSelectedPdf] = useState({
+  //   // assets: [
+  //   //   {
+  //   //     uri: '',
+  //   //     name: '',
+  //   //     size: 0,
+  //   //     mimeType: '',
+  //   //   },
+  //   // ],
+  //   // canceled: false,
+  // });
+
+const [selectedPdf, setSelectedPdf] = useState<null | {
+  uri: string;
+  name: string;
+  size: number;
+  mimeType: string;
+}>(null);
+
 
   const openFilePicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({ type: 'application/pdf' });
+    console.log(result, "Document Picker Result +++++++++++++++");
     // Or if you use another picker that returns { assets, canceled } like your log
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
@@ -76,54 +87,22 @@ const EnterInput = () => {
     };
   }, []);
 
-  // const openFilePicker = async () => {
-  //   try {
-  //     const result = await DocumentPicker.getDocumentAsync({
-  //       type: 'application/pdf',
-  //       copyToCacheDirectory: true,
-  //     });
-
-  //     console.log(result, 'result ++++++++++++++++');
-  //     setSelectedPdf({
-  //             assets: [
-  //               {
-  //                 uri: result?.assets[0]?.uri,
-  //                 name: result?.assets[0]?.name,
-  //                 size: result?.assets[0]?.size,
-  //                 mimeType: result?.assets[0]?.mimeType || 'application/pdf',
-  //               },
-  //             ],
-  //             canceled: false,
-  //           });
-  //     if (result.type === 'success') {
-  //       const destPath = FileSystem.cacheDirectory + result.name;
-
-  //       await FileSystem.copyAsync({
-  //         from: result.uri,
-  //         to: destPath,
-  //       });
-
-  //       const pdfFile = {
-  //         uri: destPath,
-  //         name: result.name,
-  //         size: result.size,
-  //         mimeType: result.mimeType,
-  //       };
-
-  //       console.log('PDF selected:', pdfFile.uri);
-  //       setSelectedPdf(pdfFile);
-  //     }
-  //   } catch (error) {
-  //     Alert.alert('Error', error.message || 'Something went wrong picking the PDF.');
-  //   }
-  // };
+  const allData = { selectedPdf, promptInput }
+  console.log(allData, "allData ==================");
 
   const handleSave = () => {
-    console.log(selectedPdf, promptInput, 'data before sending ==========');
+    if (!selectedPdf || !promptInput) {
+    console.log('Error', 'Please upload a PDF and enter a title before saving.');
+    return;
+  }
+    setLoading(true);
+    // console.log(selectedPdf, promptInput, 'data before sending ==========');
     saveMediaPromptData(selectedPdf, null, promptInput);
     const { selectedImages: savedImages, promptInput: savedPrompt } = loadMediaPromptData();
+
     console.log(savedImages, savedPrompt, 'Retrieved data from storage ++++++++');
-    Alert.alert('Saved', 'Your data has been saved successfully!');
+    // Alert.alert('Saved', 'Your data has been saved successfully!');
+    setInputConfirmationModalVisible(true)
     router.push('/screens/ExplainMembership');
   };
 
@@ -133,7 +112,7 @@ const EnterInput = () => {
         contentContainerStyle={tw`flex-grow bg-black items-center justify-between px-4`}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={tw`my-10`}>
+        <View style={tw`mb-10`}>
           {/* Header */}
           <View style={tw`flex-row w-full justify-between mt-4`}>
             <TouchableOpacity
@@ -150,7 +129,7 @@ const EnterInput = () => {
 
           {/* Prompt Input */}
           <View style={tw`mt-8`}>
-            <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Prompt input</Text>
+            <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Add instruction</Text>
             <View style={tw`h-44 p-2 bg-[#262329] border border-[#565358] w-full rounded-lg`}>
               <TextInput
                 value={promptInput}
@@ -163,12 +142,17 @@ const EnterInput = () => {
                 textAlignVertical="top"
                 underlineColorAndroid="transparent"
               />
+               {!promptInput && (
+                <Text style={tw`text-red-600 text-xs mt-2`}>
+                  Please enter your instruction here.*
+                </Text>
+              )}
             </View>
           </View>
 
           {/* Upload File */}
           <View style={tw`my-6`}>
-            <Text style={tw`text-white font-AvenirLTProBlack`}>Upload file</Text>
+            <Text style={tw`text-white font-AvenirLTProBlack`}>Upload Knowledge</Text>
             <View
               style={tw`flex items-center bg-[#262329] mt-2 rounded-2xl py-8 border border-[#565358] justify-center`}
             >
@@ -179,6 +163,10 @@ const EnterInput = () => {
               </View>
 
               <Text style={tw`text-white my-4`}>Upload file (50 mb maximum)</Text>
+              {!selectedPdf && (
+                <Text style={tw`text-red-600 text-xs mt-2`}>
+                  Please upload a PDF file.*
+                </Text>)}
 
               {selectedPdf && (
                 <View style={tw`w-full h-[500px] mt-4`}>
@@ -212,11 +200,37 @@ const EnterInput = () => {
           <TButton
             onPress={handleSave}
             titleStyle={tw`text-black font-bold text-center`}
-            title="Save"
+            title={loading ? "Saving": "Save"}
             containerStyle={tw`bg-primary w-[90%] rounded-full`}
           />
         </View>
+        <NormalModal
+          layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
+          containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+          visible={inputConfirmationModalVisible}
+          setVisible={setInputConfirmationModalVisible}>
+          <View>
+            <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+              Your data has been saved successfully!
+            </Text>
 
+            <View style={tw`mt-2`}>
+              <View style={tw`border-t-2 border-gray-800 w-full`}>
+
+              </View>
+              <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+                <Button
+                  title="Continue"
+                  style={tw`text-white px-6`}
+                  containerStyle={tw`bg-gray-900`}
+                  onPress={() => {
+                    setInputConfirmationModalVisible(false);
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+        </NormalModal>
         <StatusBar backgroundColor={'gray'} translucent={false} />
       </ScrollView>
     </ScrollView>

@@ -1,17 +1,17 @@
-import {Image, StatusBar, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
-import tw from '../../../lib/tailwind';
 import { router } from 'expo-router';
+import React, { useEffect } from 'react';
+import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import tw from '../../../lib/tailwind';
 
 type Props = {};
 
-const PopupScreen = ({navigation}) => {
+const PopupScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/screens/auth/login');
     }, 1000);
     return () => clearTimeout(timer)
-  }, [navigation]);
+  }, []);
   return (
     <View style={tw`flex-1 bg-black items-center justify-center`}>
       <Image source={require('../../../assets/images/AccountCreatedImg.png')} />

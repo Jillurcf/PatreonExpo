@@ -33,7 +33,7 @@ import {
 import NormalModal from '../../components/NormalModal';
 
 const MessageScreen = () => {
-  const { id, serviceId, title } = useLocalSearchParams();
+  const { id, serviceId, title, serviceTitle, userName } = useLocalSearchParams();
   console.log(id, serviceId, title, "id+++++++++++++++++++++++41")
   const [openModal, setOpenModal] = useState(false);
   const [conversation_id, setConversation_id] = useState();
@@ -45,7 +45,8 @@ const MessageScreen = () => {
   const [text, setText] = useState(''); // Message input field
   const [messages, setMessages] = useState([]); // Message state
   const [answer, setAnswer] = useState("");
-  console.log(answer, "answer=====================")
+  console.log(serviceTitle, "Service Title=====================49")
+  console.log(userName, "username=====================49")
   const { data: user } = useGetUserQuery({})
   console.log(user?.data?.name, "user+++++++++++++++++++++++++++")
  
@@ -218,9 +219,10 @@ const MessageScreen = () => {
           <SvgXml xml={IconBack} />
         </TouchableOpacity>
         <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
-          User Name
+         {userName && (
+          userName
+         ) || "User Name"}
         </Text>
-        {/* Placeholder view for symmetry */}
         <View style={tw`w-8`} />
       </View>
       {/* Message List */}

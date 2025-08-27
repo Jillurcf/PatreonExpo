@@ -1,20 +1,23 @@
+import { IconBack } from '@/src/assets/icons/icons';
+import Button from '@/src/components/Button';
+import NormalModal from '@/src/components/NormalModal';
+import TButton from '@/src/components/TButton';
+import { usePostBecmeAContibutorMutation } from '@/src/redux/apiSlice/serviceSlice';
+import { getExplainMemberValue, loadMediaPromptData } from '@/src/utils';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    View,
+    Alert,
+    SafeAreaView,
+    ScrollView,
     Text,
     TextInput,
     TouchableOpacity,
-    ScrollView,
-    SafeAreaView,
-    Alert,
+    View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import tw from 'twrnc'; // if using tailwind-rn
-import { getExplainMemberValue, loadMediaPromptData } from '@/src/utils';
 import { SvgXml } from 'react-native-svg';
-import { IconBack } from '@/src/assets/icons/icons';
-import { router } from 'expo-router';
-import { usePostBecmeAContibutorMutation } from '@/src/redux/apiSlice/serviceSlice';
+import tw from 'twrnc'; // if using tailwind-rn
 // OR
 // import { useTailwind } from 'nativewind';
 
@@ -30,6 +33,8 @@ const ExplainMembershipScreen = () => {
     });
     const [promptInput, setPromptInput] = useState<string>("");
     const [selectedImages, setSelectedImages] = useState();
+    const [serviceCreationConfirmationModalVisible, setServiceCreationConfirmationModalVisible] =
+        useState(false);
     const [postBecmeAContibutor, { isLoading, isError }] = usePostBecmeAContibutorMutation();
     console.log(fields, "fields data +++++++++++++++++++++++++")
 
@@ -44,7 +49,6 @@ const ExplainMembershipScreen = () => {
         console.log(promptInput, selectedImages, "promptInput+++++++++++++")
     }, []);
 
-
     const handleAddField = () => {
         setFields([...fields, '']);
     };
@@ -55,7 +59,7 @@ const ExplainMembershipScreen = () => {
         setFields(updatedFields);
     };
 
-    const handleSave =async () => {
+    const handleSave = async () => {
         console.log(fields, "Fields ++++++++++++++++++++++")
         try {
             const formData = new FormData()
@@ -70,7 +74,7 @@ const ExplainMembershipScreen = () => {
             formData.append("explainMembership", JSON.stringify(fields)); // ← becomes: '["Member ", "Member 1", "Member 2"]'
 
             console.log(formData, "formData==================")
-            const res =await  postBecmeAContibutor(formData).unwrap();
+            const res = await postBecmeAContibutor(formData).unwrap();
             router.push('/(drawer)/SettingProfile');
             console.log(res, "res++++++++++++++++")
             Alert.alert("Service created succcessfully")
@@ -121,12 +125,48 @@ const ExplainMembershipScreen = () => {
                 </View>
 
                 {/* Save Button */}
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={handleSave}
-                    style={tw`bg-white rounded-xl py-4 items-center`}
+                    style={tw`bg-white rounded-xl py-2 items-center`}
                 >
                     <Text style={tw`text-black font-bold text-base`}>Save</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+
+                <View style={tw`mb-10 mt-4 items-center`}>
+                    <TButton
+                        onPress={handleSave}
+                        title={isLoading ? "Saving..." : "Save"}
+                        titleStyle={tw`text-black font-bold`}
+                        containerStyle={tw`bg-white w-[90%] rounded-full`}
+                    />
+                </View>
+                <NormalModal
+                    layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
+                    containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+                    visible={serviceCreationConfirmationModalVisible}
+                    setVisible={setServiceCreationConfirmationModalVisible}>
+                    <View>
+                        <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+                            Please fill in all fields before continue.
+                        </Text>
+
+                        <View style={tw`mt-2`}>
+                            <View style={tw`border-t-2 border-gray-800 w-full`}>
+
+                            </View>
+                            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+                                <Button
+                                    title="Continue"
+                                    style={tw`text-white px-6`}
+                                    containerStyle={tw`bg-gray-900`}
+                                    onPress={() => {
+                                        setServiceCreationConfirmationModalVisible(false);
+                                    }}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </NormalModal>
             </ScrollView>
         </SafeAreaView>
     );

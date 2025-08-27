@@ -29,7 +29,7 @@ const UpdateRecipientScreen = () => {
             console.log(response?.success === true, "Update Recipient Response");
             if (response?.success === true) {
                 resetForm();
-               router.push('/screens/AttachBankAccountScreen');
+                router.push('/screens/AttachBankAccountScreen');
                 setError(null);
             }
 
@@ -45,7 +45,7 @@ const UpdateRecipientScreen = () => {
             {/* Header */}
             <View style={tw`flex-row w-full justify-between mt-4 px-[4%] items-center`}>
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                    onPress={() => router.back()}
                     style={tw`bg-PrimaryFocus rounded-full p-1`}>
                     <SvgXml xml={IconBack} />
                 </TouchableOpacity>
@@ -137,7 +137,7 @@ const UpdateRecipientScreen = () => {
                             placeholder="NW1 6XE"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
-                            keyboardType="numeric"
+                            // keyboardType="autonumberic"
                             onChangeText={handleChange('postal_code')}
                             onBlur={handleBlur('postal_code')}
                             value={values.postal_code}

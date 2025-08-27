@@ -1,4 +1,4 @@
-package com.anonymous.patreonExpo
+package com.yxltechnology.between
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

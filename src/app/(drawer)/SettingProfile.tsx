@@ -87,7 +87,7 @@ const SettingProfile = () => {
     }
   };
 
- const handleGetConnect = async () => {
+  const handleGetConnect = async () => {
     console.log('🔘 Button clicked');
     setLoading(true);
     try {
@@ -224,7 +224,7 @@ const SettingProfile = () => {
             First connect your stripe account for payouts, then create your agent.
           </Text>
           <View style={tw`w-full items-center mt-8`}>
-            {data?.data?.attachedBankAccounts.length < 0 ? (
+            {/* {data?.data?.attachedBankAccounts.length < 0 ? (
               <TButton
                 onPress={handleGetConnect}
                 title={isLoading ? "Connecting..." : "Get connet"}
@@ -240,7 +240,26 @@ const SettingProfile = () => {
                   containerStyle={tw`w-full bg-white`}
                 />
               )
+            )} */}
+
+            {(data?.data?.attachedBankAccounts?.length ?? 0) === 0 ? (
+              <TButton
+                onPress={handleGetConnect}
+                title={isLoading ? "Connecting..." : "Get connect"}
+                titleStyle={tw`text-white`}
+                containerStyle={tw`w-full bg-red-600`}
+              />
+            ) : (
+              (data?.data?.services?.length ?? 0) < 1 && (
+                <TButton
+                   onPress={() => router.push('/screens/EnterInputScreen')}
+                  title="Become a contributor"
+                  titleStyle={tw`text-black`}
+                  containerStyle={tw`w-full bg-white`}
+                />
+              )
             )}
+
           </View>
 
         </View>

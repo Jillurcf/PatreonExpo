@@ -1,3 +1,10 @@
+import { IconBack, IconDollar, IconUpload } from '@/src/assets/icons/icons';
+import tw from '@/src/lib/tailwind';
+import { useGetServicesByIdQuery } from '@/src/redux/apiSlice/serviceSlice';
+import { Ionicons } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
+import { router, useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Alert,
     ScrollView,
@@ -8,17 +15,9 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
-import tw from '@/src/lib/tailwind';
-import { router } from 'expo-router';
-import { SvgXml } from 'react-native-svg';
-import { IconBack, IconDollar, IconUpload } from '@/src/assets/icons/icons';
-import * as DocumentPicker from 'expo-document-picker';
-import { TextArea } from 'react-native-ui-lib';
 import { Dropdown } from 'react-native-element-dropdown';
-import { Ionicons } from '@expo/vector-icons';
-import { useGetServicesByIdQuery } from '@/src/redux/apiSlice/serviceSlice';
+import { SvgXml } from 'react-native-svg';
+import { TextArea } from 'react-native-ui-lib';
 
 
 const data = [
@@ -56,19 +55,55 @@ const EditService = (props: Props) => {
     });
     console.log(value, "value=====================")
     const [initialized, setInitialized] = useState(false); // to prevent overwriting on every render
+    // useEffect(() => {
+    //     const service = serviceData?.data;
+    //     setServices(service);
+    //     if (services && !initialized) {
+    //         setValue(prev => ({
+    //           ...prev,
+    //           currency: services?.price?.toString() || '',
+    //           price: services?.price?.toString() || '',
+    //           description: services?.description || ''
+    //         }));
+    //         setInitialized(true);
+    //       }
+    // }, [serviceData?.data]);
+
     useEffect(() => {
         const service = serviceData?.data;
         setServices(service);
-        if (services && !initialized) {
+        if (service && !initialized) {
             setValue(prev => ({
-              ...prev,
-              currency: services?.price?.toString() || '',
-              price: services?.price?.toString() || '',
-              description: services?.description || ''
+                ...prev,
+                title: service.title || '',
+                subtitle: service.subtitle || '',
+                currency: service.price?.toString() || '',
+                price: service.price?.toString() || '',
+                description: service.description || '',
+                category: data.find(cat => cat.label.toLowerCase() === service.category?.toLowerCase())?.value || '',
             }));
+            setPromptInput(service.about || '');
+            // Handle preloading PDF
+            if (service.files && service.files.length > 0) {
+                const filePath = service.files[0].replace(/\\/g, '/'); // Replace Windows-style paths
+                const localPath = `file://${filePath}`;
+                setSelectedPdf({
+                    uri: localPath,
+                    name: localPath.split('/').pop(),
+                });
+            }
+
+            // ✅ Set existing fields
+            if (Array.isArray(service.explainMembership)) {
+                setFields(service.explainMembership);
+            } else {
+                setFields([]); // Or default to a single empty field
+            }
             setInitialized(true);
-          }
+        }
     }, [serviceData?.data]);
+
+
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -150,10 +185,10 @@ const EditService = (props: Props) => {
 
             {/* Prompt Input */}
             <View style={tw`mt-8`}>
-                <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Prompt input</Text>
+                <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Prompt Input</Text>
                 <View style={tw`h-44 p-2 bg-[#262329] border border-[#565358] w-full rounded-lg`}>
                     <TextInput
-                      defaultValue={services?.about}
+                        defaultValue={services?.about}
                         onChangeText={setPromptInput}
                         style={tw`text-left h-40 text-white`}
                         placeholder="Write it here"
@@ -167,7 +202,7 @@ const EditService = (props: Props) => {
 
             {/* File Upload */}
             <View style={tw`my-6`}>
-                <Text style={tw`text-white font-AvenirLTProBlack`}>Upload file</Text>
+                <Text style={tw`text-white font-AvenirLTProBlack`}>Uploaded Knowledge</Text>
                 <View style={tw`flex items-center bg-[#262329] mt-2 rounded-2xl py-8 border border-[#565358] justify-center`}>
                     <TouchableOpacity onPress={openFilePicker}>
                         <SvgXml xml={IconUpload} />
@@ -180,7 +215,9 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Title */}
+            <Text style={tw`text-white font-bold text-xs`}>Title</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
+
                 <TextInput
                     style={tw`w-full h-10 border text-white bg-[#262329] border-gray-400 rounded-2xl px-2`}
                     placeholder="Write title here"
@@ -192,6 +229,7 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Subtitle */}
+             <Text style={tw`text-white font-bold text-xs`}>Subtitle</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
                 <TextInput
                     style={tw`w-full h-10 border text-white bg-[#262329] border-gray-400 rounded-2xl px-2`}
@@ -203,6 +241,7 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Currency */}
+              <Text style={tw`text-white font-bold text-xs`}>Price</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
                 <TouchableOpacity style={tw`absolute right-6 z-30`}>
                     <SvgXml xml={IconDollar} width={20} height={20} />
@@ -217,10 +256,11 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Description */}
-            <View style={tw`mt-8`}>
+            <Text style={tw`text-white font-bold text-xs `}>Discription</Text>
+            <View style={tw`mt-3`}>
                 <View style={tw`h-auto p-2 bg-[#FFFFFF] border border-[#565358] w-full rounded-lg`}>
                     <TextArea
-                    
+
                         style={tw`text-left h-40 text-black`}
                         placeholder={'Write description here'}
                         placeholderTextColor={'#c7c7c7'}
@@ -236,7 +276,9 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Dropdown */}
+            
             <View style={tw`mt-8`}>
+                  <Text style={tw`text-white font-bold text-xs mb-2 `}>Category</Text>
                 <Dropdown
                     style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
                     placeholderStyle={styles.placeholderStyle}

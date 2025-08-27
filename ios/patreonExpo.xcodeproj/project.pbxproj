@@ -360,7 +360,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.anonymous.patreonExpo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yxltechnology.between";
 				PRODUCT_NAME = "patreonExpo";
 				SWIFT_OBJC_BRIDGING_HEADER = "patreonExpo/patreonExpo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -391,7 +391,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.anonymous.patreonExpo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yxltechnology.between";
 				PRODUCT_NAME = "patreonExpo";
 				SWIFT_OBJC_BRIDGING_HEADER = "patreonExpo/patreonExpo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
