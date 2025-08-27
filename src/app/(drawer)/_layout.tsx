@@ -1,4 +1,4 @@
-import { IconBack, IconLogout, IconNotification, IconProfile, IconSettings } from '@/src/assets/icons/icons';
+import { IconBack, IconLogout, IconNotification, IconProfile, IconSettings, IconSupport } from '@/src/assets/icons/icons';
 import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
 import tw from '@/src/lib/tailwind';
@@ -118,6 +118,13 @@ export default function DrawerLayout() {
         options={{
           title: 'Notification',
           drawerIcon: () => <SvgXml xml={IconNotification} />,
+        }}
+      />
+      <Drawer.Screen
+        name="HelpAndSupport"
+        options={{
+          title: 'Help & Support',
+          drawerIcon: () => <SvgXml xml={IconSupport} />,
         }}
       />
       <Drawer.Screen

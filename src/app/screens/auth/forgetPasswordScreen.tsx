@@ -65,7 +65,7 @@ const ForgetPass = ({ navigation }: any) => {
             //   });
             console.log(response, "response+++++")
             // Validate required fields before sending the request
-            if (response?.status === 200) {
+            if (response?.data?.success === true) {
                 router.push("/screens/auth/login");
             } else {
                 console.log('Please fill all fields');
