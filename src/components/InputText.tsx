@@ -20,7 +20,8 @@ const InputText = ({
   rightItem,
   placeholderAlignment,
   cursorColor,
-  value
+  value,
+  numberOfLines
 }: any) => {
   return (
     <View style={[tw`mb-2`, mainStyle]}>
@@ -38,15 +39,17 @@ const InputText = ({
         {iconLeft && <SvgXml xml={iconLeft} />}
         <TextInput
           value={value}
+          numberOfLines={numberOfLines}
           cursorColor={cursorColor || 'white'}
           selectionColor={cursorColor || 'white'} 
           placeholder={placeholder}
           placeholderTextColor={placeholderColor}
-          style={[tw`font-RoboMedium flex-1 text-title`, style]}
+          style={[tw`font-RoboMedium flex-1 text-white`, style]}
           onChangeText={onChangeText}
           secureTextEntry={isShowPassword}
           keyboardType={keyboardType || "default"}
           textAlignVertical={placeholderAlignment || "center"}
+          multiline={true}
         />
         {rightItem && rightItem}
         {iconRight && <TouchableOpacity onPress={rightIconPress}><SvgXml xml={iconRight} /></TouchableOpacity>}

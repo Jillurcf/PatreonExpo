@@ -1,5 +1,5 @@
-import { Text, TouchableOpacity} from 'react-native';
 import React from 'react';
+import { Text, TouchableOpacity } from 'react-native';
 import tw from '../lib/tailwind';
 
 const Button = ({containerStyle, style, title, onPress, disabled} : any) => {
