@@ -242,7 +242,7 @@ const PhoneVerification = () => {
 
   const allFilled = phoneInput.current?.isValidNumber(value) || false;
 
-  const [phoneNoVerification, isLoading, isError] = usePhoneNoVerificationMutation()
+  const [phoneNoVerification, { isLoading, isError }] = usePhoneNoVerificationMutation()
 
 
   const handlePhoneVerification = async () => {
@@ -343,7 +343,7 @@ const PhoneVerification = () => {
               containerStyle={tw`bg-black rounded-3xl border w-full border-[#565358]`}
               countryPickerButtonStyle={tw`rounded-l-3xl bg-[#262329]`}
               textInputStyle={tw`rounded-3xl text-white h-10`}
-              
+
               ref={phoneInput}
               defaultValue={value}
               defaultCode="DM"

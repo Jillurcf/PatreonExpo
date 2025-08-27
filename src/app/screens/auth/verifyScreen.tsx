@@ -11,7 +11,7 @@ import {
 import Button from '../../../components/Button';
 import tw from '../../../lib/tailwind';
 
-import { useOtipVerifyMutation } from '@/src/redux/apiSlice/authSlice';
+import { useOtipVerifyMutation, usePhoneNoVerificationMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import { OtpInput } from 'react-native-otp-entry';
 import { SvgXml } from 'react-native-svg';
@@ -29,16 +29,14 @@ const VerifyScreen = () => {
   const inputs = useRef<Array<TextInput | null>>([]);
   const [email, setEmail] = useState('');
   const [otipVerify, { isLoading, isError }] = useOtipVerifyMutation();
-  // const [forgetpass,] = useForgetpassMutation()
-  // console.log("211", email, otp);
-  // const { from } = route?.params || {};
   const [seconds, setSeconds] = useState(119);
   const [isActive, setIsActive] = useState(true);
   const { screenName, phoneNumber } = useLocalSearchParams()
   const [alertVisible, setAlertVisible] = useState(false);
   const [error, setError] = useState<ErrorResponse | null>(null);
+  const [phoneNoVerification,] = usePhoneNoVerificationMutation()
 
-  console.log(screenName, phoneNumber , "screenName + Phone number++++++")
+  console.log(screenName, phoneNumber, "screenName + Phone number++++++")
 
   const showCustomAlert = () => {
     setAlertVisible(true);
@@ -67,34 +65,6 @@ const VerifyScreen = () => {
     }
   };
 
-  const handleSendAgainOtp = async () => {
-    setSeconds(119);
-    setIsActive(true);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      console.log('Error', 'Please enter a valid email address.');
-      return;
-    }
-
-    //  try {
-    //    console.log("Sending payload:", { email }); // Log the payload for debugging
-    //    const response = await forgetpass({ email }).unwrap(); // Pass email as an object
-    //    console.log("Response received:", response);
-
-    //    if (response?.status) {
-    //      setAlertVisible(true);
-    //      navigation?.navigate('VerifyOtp');
-    //    } else {
-    //      console.log('Error', response?.message || 'Failed to send OTP.');
-    //    }
-    //  } catch (err) {
-    //    console.log("Error details:", JSON.stringify(err, null, 2));
-    //    console.log(
-    //      'Error',
-    //      err?.data?.message?.email?.join(', ') || err?.data?.message || 'An unexpected error occurred.'
-    //    );
-    //  }
-  };
 
   // Resend OTP timer
   // useEffect(() => {
@@ -116,7 +86,7 @@ const VerifyScreen = () => {
 
   const allFilled =
     otp.length === 6 && otp.split('').every(item => item !== '');
-  
+
 
   const handleSendOtp = async () => {
 
@@ -140,7 +110,7 @@ const VerifyScreen = () => {
               params: { phoneNumber: phoneNumber },
             });
         } else {
-          router.push({pathname: "/screens/auth/Signup", params: {phoneNumber: phoneNumber}})
+          router.push({ pathname: "/screens/auth/Signup", params: { phoneNumber: phoneNumber } })
         }
       } else {
         console.error("OTP verification failed:", response?.message);
@@ -152,6 +122,31 @@ const VerifyScreen = () => {
     }
 
   };
+
+  const handleOtopSendAgain = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("phone", phoneNumber);
+      console.log(formData, "formData");
+
+      const res = await phoneNoVerification(formData)
+      // console.log(`Phone verification response (attempt ${attempts + 1}):`, res?.data?.data);
+      console.log(res?.data?.data, "otp send again +++++++++++++++res")
+      // if (res?.success) {
+      //   success = true;
+      // if (res?.data?.success === true) {
+      //   router.push({
+      //     pathname: '/screens/auth/verifyScreen',
+      //     params: { screenName, phoneNumber: phoneNumber },
+      //   });
+      //   return; // Stop execution after successful navigation
+      //   // }
+      // }
+
+    } catch (err) {
+      console.error(`Verification error `, err);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -250,20 +245,27 @@ const VerifyScreen = () => {
                 }}
               />
             </View>
-            <Text style={tw`text-white font-AvenirLTProBlack`}>
-              Haven't received any code? Send again
-            </Text>
+            <View style={tw`flex-row gap-1`}>
+              <Text style={tw`text-white font-AvenirLTProBlack`}>
+                Haven't received any code?
+              </Text>
+              <TouchableOpacity
+                onPress={handleOtopSendAgain}
+              >
+                <Text style={tw`text-white font-AvenirLTProBlack underline`}>Send again</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
         </View>
       </View>
       <View style={tw`flex-col justify-end `}>
-         {error && (
+        {error && (
           <Text style={tw`text-red-500`}>{error}*</Text>
         )}
         <Button
           disabled={!allFilled}
-          title={isLoading ? "Wait..." :'Verify'}
+          title={isLoading ? "Wait..." : 'Verify'}
           style={tw`text-black font-AvenirLTProBlack items-center`}
           containerStyle={tw`${!allFilled ? 'bg-PrimaryFocus' : 'white'
             } mt-4 h-14 rounded-2xl justify-center`}
@@ -276,6 +278,7 @@ const VerifyScreen = () => {
     </ScrollView>
 
 
-  );};
+  );
+};
 
 export default VerifyScreen;
