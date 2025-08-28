@@ -35,15 +35,15 @@ const SignUp = () => {
   const [location, setLocation] = useState<string>('');
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
-  const [SignUp, {isLoading, isError}] = useRegisterUserMutation();
-  console.log('27',name, email, password, username);
+  const [SignUp, { isLoading, isError }] = useRegisterUserMutation();
+  console.log('27', name, email, password, username);
   // const data = {email, password, name:username, address:location}
 
   const allFilled =
     email.trim() !== '' &&
     password.trim() !== '' &&
     username.trim() !== '';
-    name.trim() !== '';
+  name.trim() !== '';
 
   console.log(allFilled, "allFilled")
 
@@ -70,14 +70,14 @@ const SignUp = () => {
       console.log(formData, "formdata before sending---------------")
       const response = await SignUp(formData).unwrap();
       console.log(response?.success, "response singup=========")
-      if(response?.success === true){
+      if (response?.success === true) {
         router.push("/screens/auth/PopupScreen");
       }
-     
+
     } catch (err) {
       console.error('Error during SignUp:', err);
 
-     
+
     }
   };
 
@@ -147,10 +147,7 @@ const SignUp = () => {
               placeholderColor={'#949494'}
               label={'Email'}
               iconLeft={IconEnvelope}
-              // iconRight={isShowPassword ? iconLock : iconLock}
               onChangeText={(text: any) => setEmail(text)}
-              // isShowPassword={!isShowPassword}
-              // rightIconPress={() => setIsShowPassword(!isShowPassword)}
             />
             <InputText
               cursorColor="white"
@@ -161,18 +158,12 @@ const SignUp = () => {
               placeholderColor={'#949494'}
               label={'Password'}
               iconLeft={iconLock}
-            iconRight={isShowPassword ? IconOpenEye : IconCloseEye}
-              // onChangeText={(text: any) => setPassword(text)}
-              // isShowPassword={!isShowConfirmPassword}
-              // rightIconPress={() =>
-              //   setIsShowConfirmPassword(!isShowConfirmPassword)
-              // }
-
-               onChangeText={(text: any) => setPassword(text)}
-                            isShowPassword={!isShowPassword}
-                            rightIconPress={() =>
-                                setIsShowPassword(!isShowPassword)
-                            }
+              iconRight={isShowPassword ? IconOpenEye : IconCloseEye}
+              onChangeText={(text: any) => setPassword(text)}
+              isShowPassword={!isShowPassword}
+              rightIconPress={() =>
+                setIsShowPassword(!isShowPassword)
+              }
             />
           </View>
         </View>
@@ -180,10 +171,10 @@ const SignUp = () => {
       <View style={tw`flex-col justify-end `}>
         <Button
           disabled={!allFilled}
-          title={isLoading ? "Wait..." :'Register'}
+          title={isLoading ? "Wait..." : 'Register'}
           style={tw`${allFilled ? 'text-black' : 'text-gray-500'} font-AvenirLTProBlack items-center`}
           containerStyle={tw`${allFilled ? 'bg-white' : 'bg-PrimaryFocus'} mt-4 h-14 rounded-2xl justify-center`}
-          onPress={ handleSignup}
+          onPress={handleSignup}
         />
       </View>
       <StatusBar backgroundColor="black" translucent={false} />

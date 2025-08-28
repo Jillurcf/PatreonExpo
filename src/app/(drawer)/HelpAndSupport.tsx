@@ -7,15 +7,17 @@ import Button from '../../components/Button';
 import InputText from '../../components/InputText';
 
 import { IconBack } from '@/src/assets/icons/icons';
+import NormalModal from '@/src/components/NormalModal';
 import { useHelpAndSupportMutation } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
-import { CustomAlert } from '../../components/CustomAlert';
 
 const HelpSupport = ({ navigation }: any) => {
   const [subject, setSubject] = useState('');
   const [desc, setDesc] = useState('');
   const [helpAndSupport, { isLoading, isError }] = useHelpAndSupportMutation();
   const [errorMessage, setEroorMessage] = useState('');
+   const [messageConfirmationModalVisible, setMessageConfirmationModallVisible] =
+      useState(false);
   console.log(errorMessage, 'error message');
 
   const [alertVisible, setAlertVisible] = useState(false);
@@ -35,15 +37,18 @@ const HelpSupport = ({ navigation }: any) => {
       formData.append('title', subject);
       formData.append('description', desc);
       console.log('formdata sending', formData);
-      const res = await helpAndSupport(formData).unwrap();
-      console.log(res, 'help center response +++++++++++++');
-      if (res?.success === true) {
+      const res = await helpAndSupport(formData);
+      console.log(res?.data?.success, 'help center response +++++++++++++');
+      if (res?.data?.success === true) {
         setAlertVisible(true);
         setSubject('')
         setDesc('')
+        setMessageConfirmationModallVisible(true)
+      } else {
+        setEroorMessage(res?.data?.error)
       }
     } catch (error) {
-      setEroorMessage(error?.message);
+      // setEroorMessage(error?.data?.error);
       console.log('Please send again', error);
     }
   };
@@ -56,6 +61,7 @@ const HelpSupport = ({ navigation }: any) => {
       </View>
     );
   }
+  const allData = subject.trim() !== "" && desc.trim() !== "";
 
   return (
     <View style={tw`h-full bg-black px-[4%] pb-4`}>
@@ -87,10 +93,6 @@ const HelpSupport = ({ navigation }: any) => {
 
           />
 
-          {errorMessage && errorMessage?.subject && (
-            <Text style={tw`text-red-500 text-xs`}>{errorMessage?.subject[0]}*</Text>
-          )}
-
           <InputText
             placeholder={"Enter the description"}
             value={desc}
@@ -107,23 +109,46 @@ const HelpSupport = ({ navigation }: any) => {
             maxLength={3000}
             cursorColor="white"
           />
-          {errorMessage && errorMessage?.description && (
-            <Text style={tw`text-red-500 text-xs`}>{errorMessage?.description[0]}*</Text>
-          )}
+
         </View>
       </ScrollView>
-
+      {errorMessage === "title cannot be empty" ? (
+        <Text style={tw`text-xs text-red-600 mb-2`}>Subject cannot be empty</Text>
+      ) : errorMessage === "description cannot be empty" ? (<Text style={tw`text-xs text-red-600 mb-2`}>Description cannot be empty*</Text>) : ""}
       <Button
-        containerStyle={tw`h-10 rounded-2xl items-center `}
-        title={isLoading ? "Wait..." : 'Submit'}
-        style={tw`text-black font-AvenirLTProBlack items-center mt-1`}
+        disabled={!allData}
+
+        title={'Continue'}
+        style={tw`${allData ? 'text-black' : 'text-gray-500'} font-AvenirLTProBlack items-center`}
+        containerStyle={tw`${allData ? 'bg-white' : 'bg-PrimaryFocus'} mt-4 h-14 rounded-2xl justify-center`}
         onPress={handleSend}
       />
-      <CustomAlert
-        visible={alertVisible}
-        message="Message sent"
-        onClose={closeCustomAlert}
-      />
+        <NormalModal
+              layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
+                containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+            visible={messageConfirmationModalVisible}
+            setVisible={setMessageConfirmationModallVisible}
+          >
+                  <View>
+          <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+          Message sent successfully!
+          </Text>
+
+          <View style={tw`mt-2`}>
+            
+            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+              <Button
+                title="Done"
+                style={tw`text-white px-6`}
+                containerStyle={tw`bg-gray-900`}
+                onPress={() => {
+                  setMessageConfirmationModallVisible(false);
+                }}
+              />
+            </View>
+          </View>
+        </View>
+          </NormalModal>
     </View>
   );
 };

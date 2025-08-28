@@ -1,100 +1,5 @@
-// import { BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react';
-// import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-// import Cookies from '@react-native-cookies/cookies';
-// import { getStorageToken } from '../utils';
-
-// interface BaseQueryArgs extends AxiosRequestConfig {
-//   url: string;
-//   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-//   body?: any;
-//   headers?: Record<string, string>;
-// }
-
-// const BASE_URL = 'http://10.0.80.85:3004/api';
-
-// const baseQueryWithRath: BaseQueryFn<BaseQueryArgs, unknown, unknown> = async (
-//   args,
-//   api,
-//   extraOptions,
-// ) => {
-//   try {
-//     const token = getStorageToken();
-//     console.log('Token at base API:', token);
-
-//     // Get cookies from domain (without /api path)
-//     const cookieMap = await Cookies.get(BASE_URL.replace('/api', ''));
-//     const cookieHeader = Object.entries(cookieMap || {})
-//       .map(([key, value]) => `${key}=${value.value}`)
-//       .join('; ');
-
-//     const result: AxiosResponse = await axios({
-//       baseURL: BASE_URL,
-//       ...args,
-//       url: args.url,
-//       method: args.method,
-//       data: args.body,
-//       headers: {
-//         ...args.headers,
-//         ...(token && { Authorization: `Bearer ${token}` }),
-//         ...(cookieHeader && { Cookie: cookieHeader }),
-//       },
-//     });
-
-//     // Safely parse string response if needed
-//     if (typeof result?.data === 'string') {
-//       try {
-//         return { data: JSON.parse(result.data) };
-//       } catch {
-//         return { error: { status: 500, data: 'Invalid JSON format from server' } };
-//       }
-//     }
-
-//     return { data: result.data };
-//   } catch (error: any) {
-//     const response = error.response;
-//     if (response?.data) {
-//       const isString = typeof response.data === 'string';
-//       try {
-//         const parsedData = isString ? JSON.parse(response.data) : response.data;
-//         return { error: parsedData };
-//       } catch {
-//         return {
-//           error: {
-//             status: response.status || 500,
-//             data: isString ? response.data : 'Unexpected error response format',
-//           },
-//         };
-//       }
-//     }
-
-//     return {
-//       error: {
-//         status: response?.status || 500,
-//         data: error.message || 'Something went wrong',
-//       },
-//     };
-//   }
-// };
-
-// export const api = createApi({
-//   reducerPath: 'api',
-//   baseQuery: baseQueryWithRath,
-//   credentials: 'include',
-//   keepUnusedDataFor: 0,
-//   prepareHeaders: (headers) => {
-//     // You can customize headers here globally
-//     // headers.set('Content-Type', 'application/json');
-//     return headers;
-//   },
-//   endpoints: () => ({}),
-//   tagTypes: ['user', 'notification', 'Profile'],
-// });
-
-// export const imageUrl = 'http://10.0.80.85:3004';
-
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { AxiosRequestConfig } from 'axios'; // If you need to use Axios config types
 
 // Define the types for login credentials and other responses
 interface LoginCredentials {
@@ -158,7 +63,7 @@ export const api = createApi({
     credentials: 'include', // Ensures cookies (like auth tokens) are sent with every request
     prepareHeaders: (headers) => {
       // Optionally, set custom headers if needed (e.g., JSON request type)
-      //   headers.set('Content-Type', 'application/json');
+        // headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
