@@ -337,17 +337,17 @@
 
 // const styles = StyleSheet.create({});
 import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Dimensions,
   Image,
   Linking,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
@@ -375,7 +375,8 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
   const [postCreateTransaction] = usePostCreateTransactionMutation();
   const { data } = useGetSingleUserQuery(userId);
   const [serviceData, setServiceData] = React.useState<any>(null);
-
+  const [subscriptionError, setSubcriptionError] = useState()
+  console.log(subscriptionError, "subscription error")
   const fullImageUrl = data?.data?.image
     ? `${imageUrl}/${data.data.image}`
     : null;
@@ -404,7 +405,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
             const res = await postCreateTransaction(formData).unwrap();
             console.log('✅ Transaction Created:', res);
 
-            Alert.alert('Success', 'Transaction completed successfully!');
+            // Alert.alert('Success', 'Transaction completed successfully!');
             router.push('/screens/PaymentResult');
           } catch (err) {
             console.error('❌ Transaction creation failed:', err);
@@ -438,12 +439,13 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
         console.warn('⚠️ Checkout URL missing in response:', res);
       }
     } catch (error) {
-      console.error('❌ Error creating Checkout session:', error);
+      console.error('❌ Error creating Checkout session:', error?.data?.message);
+      setSubcriptionError(error?.data?.message)
     }
   };
 
   return (
-    <View style={tw`bg-black flex-1`}>
+    <ScrollView style={tw`bg-black flex-1`}>
       {/* Header */}
       <View style={tw`flex-row w-full justify-between mt-4 px-[4%]`}>
         <TouchableOpacity
@@ -456,17 +458,17 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
 
       {/* Profile Info */}
       <View style={tw`flex items-center justify-center mt-8`}>
-     {fullImageUrl ? (<Image
+        {fullImageUrl ? (<Image
           style={tw`rounded-full`}
           width={80}
           height={80}
           source={{ uri: fullImageUrl }}
-        />):(<Image
+        />) : (<Image
           style={tw`rounded-full`}
           width={80}
           height={80}
           source={require('../../assets/images/alteravater.png')}
-        />)}   
+        />)}
         <Text style={tw`text-white font-AvenirLTProBlack text-lg mt-2`}>
           {data?.data?.username || 'Username'}
         </Text>
@@ -535,6 +537,9 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
 
       {/* Subscribe Button */}
       <View style={tw`w-full items-center my-6`}>
+        {subscriptionError === "Contributor has not completed Stripe onboarding and does not have a wallet too" && (
+          <Text style={tw`text-red-600 text-xs`}>Service not updated yet*</Text>
+        )}
         <TButton
           onPress={handleSubscribe}
           title="Subscribe"
@@ -544,7 +549,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <StatusBar backgroundColor="black" translucent />
-    </View>
+    </ScrollView>
   );
 };
 

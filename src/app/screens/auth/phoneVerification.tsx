@@ -333,7 +333,8 @@ const PhoneVerification = () => {
               placeholder="Write it here"
               textInputProps={{
                 placeholderTextColor: '#A9A8AA', // Fixed placeholder text color
-                selectionColor: "white"
+                selectionColor: "white",
+                cursorColor: 'white'
               }}
               filterProps={tw`text-white`}
               flagButtonStyle={tw`text-white bg-slate-50`}
@@ -343,7 +344,6 @@ const PhoneVerification = () => {
               containerStyle={tw`bg-black rounded-3xl border w-full border-[#565358]`}
               countryPickerButtonStyle={tw`rounded-l-3xl bg-[#262329]`}
               textInputStyle={tw`rounded-3xl text-white h-10`}
-
               ref={phoneInput}
               defaultValue={value}
               defaultCode="DM"

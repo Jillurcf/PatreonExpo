@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
 import { RadioButton } from 'react-native-ui-lib';
 import {
@@ -28,7 +29,7 @@ const Language = () => {
     setSelectedLanguage(option1);
   };
   return (
-    <View style={tw`flex-1 bg-black px-[4%]`}>
+    <ScrollView style={tw`flex-1 bg-black px-[4%]`}>
       <View style={tw`flex-row w-full justify-between mt-4`}>
         <TouchableOpacity
           onPress={() => {
@@ -155,10 +156,11 @@ const Language = () => {
                           onPress={() => handleRadioButtonLanguage('indonesia')}
                         />
         </View>
+       
       </View>
 
       <StatusBar backgroundColor="black" translucent={false} />
-    </View>
+    </ScrollView>
   );
 };
 

@@ -11,7 +11,7 @@ import NormalModal from '@/src/components/NormalModal';
 import { useHelpAndSupportMutation } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
 
-const HelpSupport = ({ navigation }: any) => {
+const HelpSupport = () => {
   const [subject, setSubject] = useState('');
   const [desc, setDesc] = useState('');
   const [helpAndSupport, { isLoading, isError }] = useHelpAndSupportMutation();
@@ -68,7 +68,7 @@ const HelpSupport = ({ navigation }: any) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always">
-        <View style={tw`flex-row w-full justify-between px-[4%] mt-4`}>
+        <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
             onPress={() => router.back()}
             style={tw`bg-PrimaryFocus rounded-full p-1`}>
@@ -88,8 +88,10 @@ const HelpSupport = ({ navigation }: any) => {
             placeholderColor={'#949494'}
             label={'Subject'}
             onChangeText={(text: any) => setSubject(text)}
+              style={tw` text-white`}
             labelStyle={tw`text-white font-AvenirLTProBlack`}
-            containerStyle={tw`border border-[#565358] h-10`}
+            containerStyle={tw`border bg-black border-[#565358] h-10`}
+            cursorColor="white"
 
           />
 
@@ -98,16 +100,17 @@ const HelpSupport = ({ navigation }: any) => {
             value={desc}
             placeholderColor={'#949494'}
             label={"Description"}
-            // {'Descrivi il tuo prodotto'}
             onChangeText={(text: any) => setDesc(text)}
             style={tw`h-48 text-white`}
             placeholderAlignment={'top'}
             labelStyle={tw`text-white font-AvenirLTProBlack`}
-            containerStyle={tw`border border-[#565358] `
+            containerStyle={tw`border bg-black border-[#565358] `
             }
             numberOfLines={20}
             maxLength={3000}
             cursorColor="white"
+            selectionColor="white"
+            multiline={true}
           />
 
         </View>

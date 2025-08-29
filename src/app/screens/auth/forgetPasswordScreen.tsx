@@ -3,7 +3,6 @@ import {
     ScrollView,
     StatusBar,
     Text,
-    TouchableOpacity,
     View
 } from 'react-native';
 import InputText from '../../../components/InputText';
@@ -11,9 +10,7 @@ import tw from '../../../lib/tailwind';
 
 import { useChangePasswordMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
-import { SvgXml } from 'react-native-svg';
 import {
-    IconBack,
     IconCloseEye,
     iconLock,
     IconOpenEye
@@ -82,19 +79,20 @@ const ForgetPass = ({ navigation }: any) => {
         <ScrollView
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={tw`bg-black flex-1 px-[4%] h-full justify-between`}>
+            contentContainerStyle={tw`bg-black flex-1 px-[4%] min-h-screen justify-between`}>
             <View>
                 <View style={tw`flex-row w-full justify-between mt-4`}>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() => router.back()}
                         style={tw`bg-PrimaryFocus rounded-full p-1`}>
                         <SvgXml xml={IconBack} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <View style={tw`w-[4%]`}></View>
                     <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
                         Reset your password
                     </Text>
                     {/* Placeholder view for symmetry */}
-                    <View style={tw`w-8`} />
+                    <View style={tw`w-[4%]`} />
                 </View>
                 <View>
 
@@ -139,7 +137,7 @@ const ForgetPass = ({ navigation }: any) => {
                 </View>
             </View>
 
-            <View style={tw`flex-col justify-end `}>
+            <View style={tw`my-4 `}>
                 {errorMessage?.data?.message && (
                     <Text style={tw`text-red-600 text-xs`}>{errorMessage?.data?.message}*</Text>
                 )}

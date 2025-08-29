@@ -21,7 +21,8 @@ const InputText = ({
   placeholderAlignment,
   cursorColor,
   value,
-  numberOfLines
+  numberOfLines,
+  multiline, 
 }: any) => {
   return (
     <View style={[tw`mb-2`, mainStyle]}>
@@ -49,7 +50,8 @@ const InputText = ({
           secureTextEntry={isShowPassword}
           keyboardType={keyboardType || "default"}
           textAlignVertical={placeholderAlignment || "center"}
-          multiline={true}
+          multiline={multiline}
+          
         />
         {rightItem && rightItem}
         {iconRight && <TouchableOpacity onPress={rightIconPress}><SvgXml xml={iconRight} /></TouchableOpacity>}

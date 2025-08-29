@@ -18,7 +18,7 @@ export default function DrawerLayout() {
     // Perform your logout logic here
     console.log('Logout pressed');
     setLogoutConfirmationModalVisible(false)
-    router.replace('/screens/auth/login')
+    router.replace('/screens/auth/onboarding1')
     lStorage.removeItem('token')
     CookieManager.clearAll()
   };

@@ -7,7 +7,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>patreonExpo</string>
+    <string>between</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>patreonexpo</string>
+          <string>between</string>
           <string>com.yxltechnology.between</string>
         </array>
       </dict>
@@ -40,10 +40,16 @@
     <true/>
     <key>NSAppTransportSecurity</key>
     <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <false/>
-      <key>NSAllowsLocalNetworking</key>
-      <true/>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>16.171.212.209</key>
+        <dict>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
+          <true/>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+      </dict>
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your camera</string>

@@ -1,27 +1,18 @@
-import {
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-  } from 'react-native';
-  import React, {useState} from 'react';
-  import {
-    IconAple,
-    IconBack,
-    IconGoogle,
-    IconLanguage,
-    IconNotification,
-    IconPaymentMethod,
-    IconPaypal,
-    IconSettingNotificaiton,
-    IconTermsAndCondition,
-  } from '../../assets/icons/icons';
-  import {SvgXml} from 'react-native-svg';
-  import tw from '../../lib/tailwind';
-  import {RadioButton} from 'react-native-ui-lib';
-  import TButton from '../../components/TButton';
 import { router } from 'expo-router';
+import React, { useState } from 'react';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SvgXml } from 'react-native-svg';
+import {
+  IconBack
+} from '../../assets/icons/icons';
+import tw from '../../lib/tailwind';
   // import RadioButtonRN from 'radio-buttons-react-native';
   
   type Props = {};
@@ -33,7 +24,7 @@ import { router } from 'expo-router';
       setSelectedOption(option);
     };
     return (
-      <View style={tw`flex-1 bg-black px-[4%]`}>
+      <ScrollView style={tw`flex-1 bg-black px-[4%]`}>
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
             onPress={() => {
@@ -66,7 +57,7 @@ import { router } from 'expo-router';
           </View>
         
         <StatusBar backgroundColor="black" translucent={false} />
-      </View>
+      </ScrollView>
     );
   };
   

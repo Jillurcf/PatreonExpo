@@ -29,45 +29,84 @@ const Onboarding1 = () => {
       params: { screenName: "signup" }
     })
   };
-  return (
-    <ScrollView contentContainerStyle={tw`bg-black flex-1 `}>
-      <View style={tw`flex-col justify-between h-full items-center`}>
-        <View style={tw`z-2 flex mx-auto items-center justify-center mt-32`}>
-          <Text
-            style={tw` font-AvenirLTProBlack text-center text-white  text-5xl`}>
-            Get expert
-          </Text>
-          <Text
-            style={tw`font-AvenirLTProBlack text-center text-white  text-5xl py-4`}>
-            advice anytime
-          </Text>
-          <Text
-            style={tw`font-AvenirLTProBlack text-center text-white  text-5xl`}>
-            anywhere
-          </Text>
-        </View>
-        <View style={tw`z-2 flex mx-auto mb-0 top-0`}>
-          <View style={tw`my-2 flex items-center justify-center`}>
-            <TButton
-              onPress={handleCreateUser}
-              titleStyle={tw`text-whiteBtnText font-bold font-AvenirLTProHeavy text-center mx-auto`}
-              title="Sign up"
-              containerStyle={tw`bg-white w-[90%] my-2 rounded-full`}
-            />
-            <TButton
-              onPress={() => router.push('/screens/auth/login', {from: 'Login'})}
-              titleStyle={tw`text-white font-bold font-AvenirLTProHeavy text-center mx-auto`}
-              title="Log in"
-              containerStyle={tw`bg-PrimaryFocus w-[90%] my-2 rounded-full`}
-            />
-          </View>
-        </View>
+  // return (
+  //   <ScrollView contentContainerStyle={tw`bg-black flex-1 `}>
+  //     <View style={tw`flex-col min-h-screen justify-between`}>
+  //       <View style={tw`z-2 flex mx-auto items-center justify-center mt-32`}>
+  //         <Text
+  //           style={tw` font-AvenirLTProBlack text-center text-white  text-5xl`}>
+  //           Get expert
+  //         </Text>
+  //         <Text
+  //           style={tw`font-AvenirLTProBlack text-center text-white  text-5xl py-4`}>
+  //           advice anytime
+  //         </Text>
+  //         <Text
+  //           style={tw`font-AvenirLTProBlack text-center text-white  text-5xl`}>
+  //           anywhere
+  //         </Text>
+  //       </View>
+  //       <View style={tw`z-2 flex mx-auto mb-0 top-0`}>
+  //         <View style={tw`my-2 flex items-center justify-center`}>
+  //           <TButton
+  //             onPress={handleCreateUser}
+  //             titleStyle={tw`text-whiteBtnText font-bold font-AvenirLTProHeavy text-center mx-auto`}
+  //             title="Sign up"
+  //             containerStyle={tw`bg-white w-[90%] my-2 rounded-full`}
+  //           />
+  //           <TButton
+  //             onPress={() => router.push('/screens/auth/login', {from: 'Login'})}
+  //             titleStyle={tw`text-white font-bold font-AvenirLTProHeavy text-center mx-auto`}
+  //             title="Log in"
+  //             containerStyle={tw`bg-PrimaryFocus w-[90%] my-4 rounded-full`}
+  //           />
+  //         </View>
+  //       </View>
+  //     </View>
+
+  //     <StatusBar backgroundColor={'black'} translucent />
+  //   </ScrollView>
+  // );
+
+return (
+    <ScrollView
+      style={tw`flex-1 bg-black`}
+      contentContainerStyle={tw`flex-grow justify-between min-h-full`}
+      keyboardShouldPersistTaps="handled"
+    >
+      {/* Top Content */}
+      <View style={tw`mt-32 items-center px-4`}>
+        <Text style={tw`text-white text-5xl font-AvenirLTProBlack text-center`}>
+          Get expert
+        </Text>
+        <Text style={tw`text-white text-5xl font-AvenirLTProBlack text-center py-4`}>
+          advice anytime
+        </Text>
+        <Text style={tw`text-white text-5xl font-AvenirLTProBlack text-center`}>
+          anywhere
+        </Text>
       </View>
 
-      <StatusBar backgroundColor={'black'} translucent />
+      {/* Bottom Buttons */}
+      <View style={tw`w-full items-center mb-8 px-4`}>
+        <TButton
+          onPress={handleCreateUser}
+          title="Sign up"
+          titleStyle={tw`text-whiteBtnText font-bold font-AvenirLTProHeavy text-center`}
+          containerStyle={tw`bg-white w-full my-2 rounded-full`}
+        />
+        <TButton
+          onPress={() => router.push('/screens/auth/login', { from: 'Login' })}
+          title="Log in"
+          titleStyle={tw`text-white font-bold font-AvenirLTProHeavy text-center`}
+          containerStyle={tw`bg-PrimaryFocus w-full my-4 rounded-full`}
+        />
+      </View>
+
+      <StatusBar backgroundColor="black" translucent />
     </ScrollView>
   );
-};
+}
 
 export default Onboarding1;
 

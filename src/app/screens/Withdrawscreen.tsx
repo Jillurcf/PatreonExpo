@@ -33,7 +33,7 @@ const WithdrawScreen = () => {
   const [globalPayout, { isLoading }] = useGlobalPayoutMutation();
   console.log(withdrawData?.data?.attachedBankAccounts, "withdrawData======================")
   const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
+  const [error, setError] = useState(false);
   const [payoutConfirmationModalVisible, setPayoutConfirmationModalVisible] =
     useState(false);
   const [amount, setAmount] = useState('');
@@ -72,9 +72,9 @@ const WithdrawScreen = () => {
       }
       const payoutResponse = await globalPayout(
         data
-      ).unwrap();
-      console.log(payoutResponse?.success === true, "Payout Response");
-      if (payoutResponse?.success === true) {
+      )
+      console.log(payoutResponse?.error?.data, "Payout Response");
+      if (payoutResponse?.data?.success === true || payoutResponse?.success === true) {
         setPayoutConfirmationModalVisible(true);
         setValue(null);
         setAmount('');

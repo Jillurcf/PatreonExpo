@@ -14,8 +14,6 @@ import tw from '../../../lib/tailwind';
 import { useOtipVerifyMutation, usePhoneNoVerificationMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import { OtpInput } from 'react-native-otp-entry';
-import { SvgXml } from 'react-native-svg';
-import { IconBack } from '../../../assets/icons/icons';
 
 interface ErrorResponse {
   data?: {
@@ -160,23 +158,24 @@ const VerifyScreen = () => {
   return (
     // <View style={tw``}>
     <ScrollView
-      contentContainerStyle={tw`bg-black flex-1 justify-between p-[4%] `}
+      contentContainerStyle={tw`bg-black flex-grow min-h-screen justify-between p-[4%] `}
       keyboardShouldPersistTaps="always"
       showsVerticalScrollIndicator={false}>
 
 
       <View>
         <View style={tw`flex-row w-full justify-between px-[4%] mt-4`}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => router.back()}
             style={tw`bg-PrimaryFocus rounded-full p-1`}>
             <SvgXml xml={IconBack} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={tw`w-[4%]`}></View>
           <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
             Verify
           </Text>
           {/* Placeholder view for symmetry */}
-          <View style={tw`w-8`} />
+          <View style={tw`w-[4%]`} />
         </View>
         <View style={tw`mt-4`}>
           <Text style={tw`text-white text-2xl font-AvenirLTProBlack mt-6`}>
@@ -259,7 +258,7 @@ const VerifyScreen = () => {
 
         </View>
       </View>
-      <View style={tw`flex-col justify-end `}>
+      <View style={tw`flex-col justify-end my-2 `}>
         {error && (
           <Text style={tw`text-red-500`}>{error}*</Text>
         )}

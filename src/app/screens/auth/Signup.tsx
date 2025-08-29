@@ -168,7 +168,7 @@ const SignUp = () => {
           </View>
         </View>
       </View>
-      <View style={tw`flex-col justify-end `}>
+      <View style={tw`flex-col justify-end my-4 `}>
         <Button
           disabled={!allFilled}
           title={isLoading ? "Wait..." : 'Register'}
