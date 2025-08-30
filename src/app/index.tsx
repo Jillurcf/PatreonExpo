@@ -45,7 +45,7 @@ const LoadingSplash = () => {
         style={tw`w-28 h-28 flex-1 `}
         resizeMode='contain'
         // resizeMode={FastImage.resizeMode.contain}
-        source={require('../assets/images/logo.png')}
+        source={require('../assets/images/betweenLogo.jpg')}
       />
       <StatusBar barStyle="light-content" backgroundColor={'black'} />
     </View>

@@ -35,6 +35,8 @@ const SignUp = () => {
   const [location, setLocation] = useState<string>('');
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+  const [responsFalse, setResponsFalse] = useState();
+  console.log(responsFalse, "responsFalse++++++++")
   const [SignUp, { isLoading, isError }] = useRegisterUserMutation();
   console.log('27', name, email, password, username);
   // const data = {email, password, name:username, address:location}
@@ -72,6 +74,8 @@ const SignUp = () => {
       console.log(response?.success, "response singup=========")
       if (response?.success === true) {
         router.push("/screens/auth/PopupScreen");
+      } else if (response?.success === false) {
+        setResponsFalse(response?.message)
       }
 
     } catch (err) {
@@ -149,6 +153,9 @@ const SignUp = () => {
               iconLeft={IconEnvelope}
               onChangeText={(text: any) => setEmail(text)}
             />
+            {responsFalse === "Please verify your email" && (
+              <Text style={tw`text-red-600 text-xs`}>Email already exists.*</Text>
+            )}
             <InputText
               cursorColor="white"
               style={tw`text-white`}
@@ -169,6 +176,7 @@ const SignUp = () => {
         </View>
       </View>
       <View style={tw`flex-col justify-end my-4 `}>
+
         <Button
           disabled={!allFilled}
           title={isLoading ? "Wait..." : 'Register'}

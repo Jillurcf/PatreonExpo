@@ -6,6 +6,7 @@ import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -20,11 +21,11 @@ import { SvgXml } from 'react-native-svg';
 
 
 const PaymentMethodScreen = () => {
-  const { data, isLoading, isError, refetch } = useGetUserQuery({});
+  const { data, isLoading, isError, refetch, isFetching: userIsfetching } = useGetUserQuery({});
   const { data: walletInformation, isLoading: walletLoading, isError: walletError, refetch: refetchWallet, isFetching } = useGetWalletByUserQuery({});
   const [postCreateWallet] = usePostCreateWalletMutation();
   const [walletData, setWalletData] = useState<any>(null);
-  // console.log(data?.data, "data======================")
+  console.log(data?.data, "data======================")
   // console.log(walletInformation?.data, "walletInformation======================")
 
   const handleCreateWallet = async () => {
@@ -40,13 +41,19 @@ const PaymentMethodScreen = () => {
   };
 
   // Condition for checking is walletInformation is exist or not
-  const balance = walletInformation?.data?.balance ?? 
-  walletInformation?.balance ??
-  null;
+  const balance = walletInformation?.data?.balance ??
+    walletInformation?.balance ??
+    null;
   const hasWallet = typeof balance === 'number' && !Number.isNaN(balance);
 
 
-
+  if (userIsfetching && !data) {
+    return (
+      <View style={tw`bg-black items-center justify-center flex-1`}>
+        <ActivityIndicator size="large" color="gray" />
+      </View>
+    );
+  }
   return (
     <ScrollView
       contentContainerStyle={tw`flex-1 bg-black h-[95%] px-[4%] items-center justify-between`}>
@@ -94,23 +101,35 @@ const PaymentMethodScreen = () => {
       </View>
 
       {/* Continue button */}
-      {data?.data?.wallet?.length >= 1 ? (
-        <View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
-          <TButton
-            onPress={() => router.push("/screens/Withdrawscreen")}
-            titleStyle={tw`text-black font-bold text-center`}
-            title="Withdraw"
-            containerStyle={tw`bg-primary w-[90%] rounded-full`}
-          />
+      {userIsfetching && !data ? (
+        <View style={tw`bg-black items-center justify-center flex-1`}>
+          <ActivityIndicator size="large" color="gray" />
         </View>
-      ) : (<View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
-        <TButton
-          onPress={handleCreateWallet}
-          titleStyle={tw`text-black font-bold text-center`}
-          title="Create Wallet"
-          containerStyle={tw`bg-primary w-[90%] rounded-full`}
-        />
-      </View>)}
+      ) : (
+        <>
+          {data?.data?.wallet?.length >= 1 ? (
+            <View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
+              <TButton
+                onPress={() => router.push("/screens/Withdrawscreen")}
+                titleStyle={tw`text-black font-bold text-center`}
+                title="Withdraw"
+                containerStyle={tw`bg-primary w-[90%] rounded-full`}
+              />
+            </View>
+          ) : (
+            <View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
+              <TButton
+                onPress={handleCreateWallet}
+                titleStyle={tw`text-black font-bold text-center`}
+                title="Create Wallet"
+                containerStyle={tw`bg-primary w-[90%] rounded-full`}
+              />
+            </View>
+          )}
+        </>
+      )}
+
+
 
 
       <StatusBar backgroundColor={'gray'} translucent={false} />
