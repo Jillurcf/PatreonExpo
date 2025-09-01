@@ -17,16 +17,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-
-
-
-
-
 import { SvgXml } from 'react-native-svg';
-
-
-
-
 
 const WithdrawScreen = () => {
   const { data: withdrawData, isError, refetch } = useGetUserQuery({});
@@ -38,13 +29,13 @@ const WithdrawScreen = () => {
     useState(false);
   const [amount, setAmount] = useState('');
   const [country, setCountry] = useState('');
-   const [payoutErrror, setPayoutErrror] = useState<string | null>(null);
+  const [payoutErrror, setPayoutErrror] = useState<string | null>(null);
 
   const [latestBankAccount, setLatestBankAccount] = useState<string | null>(null);
 
   const bankAccounts = withdrawData?.data?.attachedBankAccounts?.map((acc: string, index: number) => ({
-    label: acc, 
-    value: acc, 
+    label: acc,
+    value: acc,
   })) ?? [];
 
   console.log(latestBankAccount, "bankAccounts value")
@@ -61,9 +52,9 @@ const WithdrawScreen = () => {
 
 
   const handlePayout = async () => {
-    
+
     try {
-    
+
       console.log('Payout initiated with:', { accountId: value, amount, country });
       const data = {
         amount: amount,
@@ -73,22 +64,22 @@ const WithdrawScreen = () => {
       const payoutResponse = await globalPayout(
         data
       )
-      console.log(payoutResponse?.error?.data, "Payout Response");
+      console.log(payoutResponse?.error?.data?.message, "Payout Response");
       if (payoutResponse?.data?.success === true || payoutResponse?.success === true) {
         setPayoutConfirmationModalVisible(true);
         setValue(null);
         setAmount('');
         setCountry('');
         setError(null);
-      } else {
-        setError('Payout failed, please try again');
+      } else if(payoutResponse?.error?.data?.message) {
+        setError(payoutResponse?.error?.data?.message);
       }
       // Reset fields after successful payout
 
       // Alert.alert('Success', 'Payout initiated successfully');
     } catch (error) {
       console.error('Payout error:', error);
-      setPayoutErrror(error?.data?.message );
+      setPayoutErrror(error?.data?.message);
     }
   };
   return (
@@ -107,34 +98,7 @@ const WithdrawScreen = () => {
           <View style={tw`w-8`} />
         </View>
 
-        {/* ==========================drop down area =============================== */}
-
-
         <View style={tw`mt-8`}>
-          {/* {renderLabel()} */}
-          {/* <Text style={tw`text-white py-2`}>Account Id</Text>
-          <Dropdown
-            style={tw`bg-[#262329] py-4 px-2 rounded-2xl border border-[#565358]`}
-            //   style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
-            placeholderStyle={tw`text-[#A9A8AA]`}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={bankAccounts}
-            // search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={!isFocus ? 'Select it here' : '...'}
-            searchPlaceholder="Search..."
-            value={value}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={item => {
-              setValue(item.value);
-              setIsFocus(false);
-            }}
-          /> */}
           <Text style={tw`text-white mt-4`}>Amount</Text>
           <TextInput
             style={tw`border text-white border-[#262329] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
@@ -159,6 +123,9 @@ const WithdrawScreen = () => {
 
       {/* Continue button */}
       <View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
+        {error && (
+                <Text style={tw`text-red-600 tex-xs my-4`}>{error}*</Text>
+              )}
         {payoutErrror && (
           <Text style={tw`text-red-500 text-start text-xs my-2`}>
             {payoutErrror}*

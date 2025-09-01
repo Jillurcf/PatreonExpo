@@ -21,7 +21,6 @@ import Button from '../../../components/Button';
 
 const ForgetPass = ({ navigation }: any) => {
     // console.log('navigation', navigation);
-    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [username, setUsername] = useState<string>('');
@@ -30,8 +29,8 @@ const ForgetPass = ({ navigation }: any) => {
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
     const [checkValue, setCheckValue] = useState(false);
-    const { screenName, phoneNumber } = useLocalSearchParams();
-    console.log(phoneNumber, "phoneNumber++++++")
+    const { screenName, phoneNumber, email } = useLocalSearchParams();
+    console.log(email, "email++++++")
     const [changePassword, { isLoading, isError }] = useChangePasswordMutation();
     const [errorMessage, setErrorMessage] = useState()
     // console.log('27', password, confirmPassword);
@@ -48,7 +47,7 @@ const ForgetPass = ({ navigation }: any) => {
         try {
             console.log('handleChangePassword called');
             const formData = new FormData();
-            formData.append('phoneNumber', phoneNumber);
+            formData.append('email', email);
             formData.append('password', password);
             formData.append('confirmPassword', confirmPassword);
             console.log(formData, "formData+++++")

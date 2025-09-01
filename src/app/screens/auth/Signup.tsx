@@ -67,13 +67,13 @@ const SignUp = () => {
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("phone", phoneNumber);
+      // formData.append("phone", phoneNumber);
 
       console.log(formData, "formdata before sending---------------")
       const response = await SignUp(formData).unwrap();
       console.log(response?.success, "response singup=========")
       if (response?.success === true) {
-        router.push("/screens/auth/PopupScreen");
+        router.push({pathname: "/screens/auth/verifyScreen", params: {email: email}});
       } else if (response?.success === false) {
         setResponsFalse(response?.message)
       }

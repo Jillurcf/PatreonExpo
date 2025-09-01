@@ -11,7 +11,7 @@ import {
 import Button from '../../../components/Button';
 import tw from '../../../lib/tailwind';
 
-import { useOtipVerifyMutation, usePhoneNoVerificationMutation } from '@/src/redux/apiSlice/authSlice';
+import { useEmailVerifySignupMutation, usePhoneNoVerificationMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import { OtpInput } from 'react-native-otp-entry';
 
@@ -25,11 +25,10 @@ const VerifyScreen = () => {
   const [otp, setOtp] = useState<string>('');
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const inputs = useRef<Array<TextInput | null>>([]);
-  const [email, setEmail] = useState('');
-  const [otipVerify, { isLoading, isError }] = useOtipVerifyMutation();
+ const [emailVerify, {isLoading}] = useEmailVerifySignupMutation();
   const [seconds, setSeconds] = useState(119);
   const [isActive, setIsActive] = useState(true);
-  const { screenName, phoneNumber } = useLocalSearchParams()
+  const { screenName, phoneNumber, email, othersEmailvery } = useLocalSearchParams()
   const [alertVisible, setAlertVisible] = useState(false);
   const [error, setError] = useState<ErrorResponse | null>(null);
   const [phoneNoVerification,] = usePhoneNoVerificationMutation()
@@ -90,10 +89,10 @@ const VerifyScreen = () => {
 
     try {
       const formData = new FormData();
-      formData.append("phone", String(phoneNumber));
+      formData.append("email", String(email));
       formData.append("code", String(otp));
       console.log(formData, "formdata before sending+++++++")
-      const response = await otipVerify(formData).unwrap();
+      const response = await emailVerify(formData).unwrap();
 
       // Process the successful response
       console.log("response verify", response);
@@ -105,10 +104,10 @@ const VerifyScreen = () => {
           router.push(
             {
               pathname: '/screens/auth/forgetPasswordScreen',
-              params: { phoneNumber: phoneNumber },
+              params: { email: email },
             });
         } else {
-          router.push({ pathname: "/screens/auth/Signup", params: { phoneNumber: phoneNumber } })
+          router.push({ pathname: "/screens/auth/PopupScreen", params: { phoneNumber: phoneNumber } })
         }
       } else {
         console.error("OTP verification failed:", response?.message);

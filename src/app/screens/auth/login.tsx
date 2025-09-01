@@ -225,7 +225,7 @@ const Login = () => {
         </View>
         <View style={tw`flex-row gap-1`}>
           <Text style={tw`text-white text-xs`}>Do not have an account please </Text>
-          <TouchableOpacity onPress={()=> router.push({pathname: "/screens/auth/phoneVerification",  params: { screenName: "signup" }})}>
+          <TouchableOpacity onPress={()=> router.push({pathname: "/screens/auth/Signup",  params: { screenName: "signup" }})}>
             <Text style={tw`text-gray-400 text-xs underline`}>Signup</Text>
           </TouchableOpacity>
 
@@ -240,7 +240,7 @@ const Login = () => {
         <TouchableOpacity
           onPress={() =>
             router.push({
-              pathname: '/screens/auth/phoneVerification',
+              pathname: '/screens/auth/EmailVeriificationScreen',
               params: { screenName: 'forgetPass' },
             })
           }

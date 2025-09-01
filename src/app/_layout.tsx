@@ -1,3 +1,4 @@
+import { StripeProvider } from '@stripe/stripe-react-native';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import { SafeAreaView, StyleSheet } from 'react-native';
@@ -29,13 +30,17 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <SafeAreaView style={tw`flex-1 bg-black p-[4%]`}>
+    <StripeProvider publishableKey='pk_test_51RU8z5FKyrBH5NbyQJYa6IetLsNm5OXkwrWEkKl3knFqKhqqjf7pEveqcSv9ugfAitXz0ARA5slSEt9WPRPeBjaH00o6MCLwJB
+ '  >
+  <SafeAreaView style={tw`flex-1 bg-black p-[4%]`}>
       <GestureHandlerRootView style={tw`flex-1`}>
         <Provider store={store}>
           <Slot />
         </Provider>
       </GestureHandlerRootView>
     </SafeAreaView>
+    </StripeProvider >
+  
   );
 }
 

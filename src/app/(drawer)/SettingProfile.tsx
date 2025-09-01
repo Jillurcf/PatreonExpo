@@ -28,6 +28,7 @@ import tw from '../../lib/tailwind';
 
 const SettingProfile = () => {
   const { data, isError, refetch, isFetching } = useGetUserQuery({});
+  const [loading, setLoading] = useState(false)
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [postCreateConnect] = usePostCreateConnectMutation();
   const [postCreateRecipient, { isLoading }] = usePostCreateRecipientMutation();
