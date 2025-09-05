@@ -18,8 +18,7 @@ const serviceSlice = api.injectEndpoints({
           queryString += `?${queryParams}`;
         }
 
-        console.log("GET URL:", queryString); // 👈 Check this in browser/devtools console
-
+        console.log("GET URL:", queryString); 
         return {
           url: queryString,
           method: 'GET',
@@ -42,10 +41,16 @@ const serviceSlice = api.injectEndpoints({
         url: `/services/generate-reply-for-service/${id}`,
         method: "POST",
         body: data,
-        // 👇 DO NOT set headers manually here
-
       }),
       invalidatesTags: ['service'],
+
+    }),
+    messageHistory: builder.query({
+      query: () => ({
+        url: `/services/get-replies-by-user`,
+        method: "Get",
+      }),
+      providesTags: ['service'],
 
     }),
     gettMyServices: builder.query({
@@ -90,6 +95,7 @@ const serviceSlice = api.injectEndpoints({
 export const { useGetAllServiceQuery,
   usePostBecmeAContibutorMutation,
   usePostSendMessageMutation,
+  useMessageHistoryQuery,
   useGettMyServicesQuery,
   useDeleteServicesMutation,
   useGetServicesByIdQuery,

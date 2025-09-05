@@ -28,7 +28,7 @@ const EnterInput = () => {
   const [promptInput, setPromptInput] = useState('');
   const [inputConfirmationModalVisible, setInputConfirmationModalVisible] =
     useState(false);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // const [selectedPdf, setSelectedPdf] = useState(null);
   // const [selectedPdf, setSelectedPdf] = useState({
   //   // assets: [
@@ -42,13 +42,17 @@ const EnterInput = () => {
   //   // canceled: false,
   // });
 
-const [selectedPdf, setSelectedPdf] = useState<null | {
-  uri: string;
-  name: string;
-  size: number;
-  mimeType: string;
-}>(null);
+  const [selectedPdf, setSelectedPdf] = useState<null | {
+    uri: string;
+    name: string;
+    size: number;
+    mimeType: string;
+  }>(null);
+  const [isPdfLoaded, setIsPdfLoaded] = useState(false);
 
+  const handlePdfLoad = () => {
+    setIsPdfLoaded(true);
+  };
 
   const openFilePicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({ type: 'application/pdf' });
@@ -92,9 +96,9 @@ const [selectedPdf, setSelectedPdf] = useState<null | {
 
   const handleSave = () => {
     if (!selectedPdf || !promptInput) {
-    console.log('Error', 'Please upload a PDF and enter a title before saving.');
-    return;
-  }
+      console.log('Error', 'Please upload a PDF and enter a title before saving.');
+      return;
+    }
     setLoading(true);
     // console.log(selectedPdf, promptInput, 'data before sending ==========');
     saveMediaPromptData(selectedPdf, null, promptInput);
@@ -103,6 +107,8 @@ const [selectedPdf, setSelectedPdf] = useState<null | {
     console.log(savedImages, savedPrompt, 'Retrieved data from storage ++++++++');
     // Alert.alert('Saved', 'Your data has been saved successfully!');
     setInputConfirmationModalVisible(true)
+    setPromptInput('');
+    setSelectedPdf(null); // Reset PDF state after saving
     router.push('/screens/ExplainMembership');
   };
 
@@ -142,7 +148,7 @@ const [selectedPdf, setSelectedPdf] = useState<null | {
                 textAlignVertical="top"
                 underlineColorAndroid="transparent"
               />
-               {!promptInput && (
+              {!promptInput && (
                 <Text style={tw`text-red-600 text-xs mt-2`}>
                   Please enter your instruction here.*
                 </Text>
@@ -184,6 +190,7 @@ const [selectedPdf, setSelectedPdf] = useState<null | {
                   /> */}
                   <Pdf
                     source={{ uri: selectedPdf?.uri }}
+                    onLoadComplete={handlePdfLoad}
                     style={{ flex: 1 }}
                     trustAllCerts={false} // Optional: fix SSL issues
                     onError={(error) => console.log("PDF load error:", error)}
@@ -191,6 +198,7 @@ const [selectedPdf, setSelectedPdf] = useState<null | {
 
                 </View>
               )}
+              {/* {!isPdfLoaded && <Text style={tw`text-white`}>Loading PDF...</Text>} */}
             </View>
           </View>
         </View>
@@ -200,7 +208,7 @@ const [selectedPdf, setSelectedPdf] = useState<null | {
           <TButton
             onPress={handleSave}
             titleStyle={tw`text-black font-bold text-center`}
-            title={loading ? "Saving": "Save"}
+            title={loading ? "Saving" : "Save"}
             containerStyle={tw`bg-primary w-[90%] rounded-full`}
           />
         </View>

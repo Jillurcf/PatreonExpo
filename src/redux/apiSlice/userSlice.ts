@@ -58,7 +58,15 @@ const userSlice = api.injectEndpoints({
             }),
             invalidatesTags: ['user'],
           }),
-          
+           notification: builder.query({
+            query: () => ({
+              url: '/notifications/user',
+              method: 'GET',
+              
+            }),
+            providesTags: ['user'],
+            
+          }),
     })
 })
 
@@ -70,4 +78,5 @@ export const {
     useGetAllUserQuery,
     useHelpAndSupportMutation,
     useDeleteAccountMutation,
+    useNotificationQuery,
 } = userSlice;

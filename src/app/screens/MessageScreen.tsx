@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -20,10 +20,9 @@ import tw from 'twrnc'; // Tailwind for React Native
 
 import { SvgXml } from 'react-native-svg';
 
-import { usePostSendMessageMutation } from '@/src/redux/apiSlice/serviceSlice';
+import { useMessageHistoryQuery, usePostSendMessageMutation } from '@/src/redux/apiSlice/serviceSlice';
 import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { router, useLocalSearchParams } from 'expo-router';
-import moment from 'moment';
 import {
   AttachmentIcon,
   CrossIcon,
@@ -38,18 +37,28 @@ const MessageScreen = () => {
   const [openModal, setOpenModal] = useState(false);
   const [conversation_id, setConversation_id] = useState();
   const [postSendMessage, { isLoading, isError }] = usePostSendMessageMutation()
- 
-
   const [mediaUri, setMediaUri] = useState(null); // For holding the selected media URI
   const [mediaType, setMediaType] = useState(null); // 'image', 'video', or 'document'
   const [text, setText] = useState(''); // Message input field
   const [messages, setMessages] = useState([]); // Message state
   const [answer, setAnswer] = useState("");
-  console.log(serviceTitle, "Service Title=====================49")
-  console.log(userName, "username=====================49")
+  const { data: messageHistory } = useMessageHistoryQuery({});
+  console.log(messageHistory?.data, "Message History++++++++++++++++")
   const { data: user } = useGetUserQuery({})
-  console.log(user?.data?.name, "user+++++++++++++++++++++++++++")
- 
+
+
+  useEffect(() => {
+    if (messageHistory) {
+      const fetchedMessages = messageHistory.data.map((item) => ({
+        id: item._id,
+        user: item.user.name,
+        question: item.question,
+        answer: item.answer,
+        createdAt: item.createdAt,
+      }));
+      setMessages(fetchedMessages);
+    }
+  }, [messageHistory]);
 
   const sendMessage = async () => {
     if (text.trim() || mediaUri) {
@@ -88,6 +97,7 @@ const MessageScreen = () => {
 
       try {
         const res = await postSendMessage({ id: serviceId, data: formData });
+        console.log(res, "postSendMessage res+++++++++")
         const aiMessage = {
           text: res?.data?.data || "No response from AI.",
           user: title,
@@ -136,25 +146,6 @@ const MessageScreen = () => {
     }
   }
 
-  // const pickMedia = type => {
-  //   launchImageLibraryAsync(
-  //     {
-  //       mediaType: type,
-  //       quality: 1,
-  //       selectionLimit: 1, // Allow only one selection
-  //     },
-  //     response => {
-  //       if (response.didCancel) {
-  //         console.log('User cancelled media selection');
-  //       } else if (response.errorMessage) {
-  //         console.error('MediaPicker Error: ', response.errorMessage);
-  //       } else if (response.assets && response.assets.length > 0) {
-  //         setMediaUri(response.assets[0].uri); // Set the URI of the selected media
-  //         setMediaType(type); // Set the media type (image or video)
-  //       }
-  //     },
-  //   );
-  // };
 
   // Function to pick document (PDF, Word, etc.)
   const pickDocument = async () => {
@@ -173,9 +164,9 @@ const MessageScreen = () => {
     }
   };
 
-  
 
-  
+
+
 
   const toggleModal = () => setOpenModal(prev => !prev);
 
@@ -219,33 +210,33 @@ const MessageScreen = () => {
           <SvgXml xml={IconBack} />
         </TouchableOpacity>
         <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
-         {userName && (
-          userName
-         ) || "User Name"}
+          {userName && (
+            userName
+          ) || "User Name"}
         </Text>
         <View style={tw`w-8`} />
       </View>
       {/* Message List */}
-      <FlatList
-        data={messages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={tw`mb-2 px-4`}>
-            <Text style={tw`text-xs mt-4 text-gray-500 mb-1`}>
-              {item.user} • {moment(item.createdAt).format('hh:mm A')}
-            </Text>
-            <View
-              style={[
-                tw`p-3 rounded-lg`,
-                item.is_sender ? tw`bg-blue-200 self-end` : tw`bg-gray-200 self-start`,
-              ]}
-            >
-              <Text style={tw`text-sm`}>{item.text}</Text>
-            </View>
-          </View>
-        )}
-      />
-
+      <View style={tw`flex-1 px-4 py-2`}>
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            console.log(item, "item+++++++++++++")
+            if (!item?.answer) return null;
+            return (
+              (
+                <View style={tw`mb-4`}>
+                  <Text style={tw`font-semibold text-white text-lg`}>{item.user}</Text>
+                  <Text style={tw`text-sm text-white`}>Q. {item.question}</Text>
+                  <Text style={tw`text-sm text-white mt-2`}>Ans. {item?.answer}</Text>
+                  <Text style={tw`text-xs text-gray-400`}>{new Date(item.createdAt).toLocaleString()}</Text>
+                </View>
+              )
+            )
+          }}
+        />
+      </View>
 
       {/* Input and Send Button */}
       <View style={tw``}>

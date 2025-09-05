@@ -107,7 +107,7 @@ const VerifyScreen = () => {
               params: { email: email },
             });
         } else {
-          router.push({ pathname: "/screens/auth/PopupScreen", params: { phoneNumber: phoneNumber } })
+          router.push({ pathname: "/screens/auth/PopupScreen", params: { email: email } })
         }
       } else {
         console.error("OTP verification failed:", response?.message);
@@ -178,11 +178,11 @@ const VerifyScreen = () => {
         </View>
         <View style={tw`mt-4`}>
           <Text style={tw`text-white text-2xl font-AvenirLTProBlack mt-6`}>
-            Verify Your Number
+            Verify Your Email
           </Text>
           <Text style={tw`text-white text-xs font-AvenirLTProBlack mb-8`}>
-            Enter code that we send you on your number.
-          </Text>
+            Enter code that we send you on your email.
+          </Text> 
 
           <View style={tw` gap-y-4`}>
             <View style={tw`flex-row justify-between items-center gap-2`}>

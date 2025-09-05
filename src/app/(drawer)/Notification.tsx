@@ -1,3 +1,4 @@
+import { useNotificationQuery } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
 import React from 'react';
 import { FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -12,56 +13,9 @@ import tw from '../../lib/tailwind';
 type Props = {};
 
 const Notification = () => {
-  const notificationData = [
-    {
-      id: 1,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing. Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 2,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 3,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 4,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 5,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 6,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 7,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-    {
-      id: 8,
-      title: 'Update available',
-      message:
-        'Lorem ipsum dolor sit amet consectetur. Pharetra dolor est cursus massa vitae dictum tempus adipiscing.',
-    },
-  ];
+    const {data, isLoading, isError} = useNotificationQuery({});
+    console.log(data?.data, "data+++++++++")
+
   return (
     <ScrollView style={tw`flex-1 bg-black px-[4%]`}>
       <View style={tw`flex-row w-full justify-between mt-4`}>
@@ -80,17 +34,17 @@ const Notification = () => {
       </View>
       <View style={tw`mt-6`}>
         <FlatList
-          data={notificationData}
+          data={data?.data}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => {
             return (
               <View
-                style={tw`flex-row gap-3 bg-[#262329] p-4 my-1 rounded-lg px-[4%]`}>
+                style={tw`flex-row gap-3 bg-[#262329] items-center p-4 my-1 rounded-lg px-[4%]`}>
                 <SvgXml xml={IconNotificationMessage} />
                 <View style={tw``}>
-                  <Text style={tw`text-white font-AvenirLTProBlack pr-[2%]`}>
+                  {/* <Text style={tw`text-white font-AvenirLTProBlack pr-[2%]`}>
                     {item?.title}
-                  </Text>
+                  </Text> */}
                   <Text style={tw`text-white font-AvenirLTProBlack pr-[14%]`}>
                     {item?.message}
                   </Text>

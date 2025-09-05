@@ -60,7 +60,7 @@ const PaymentMethodScreen = () => {
       <View style={tw`my-10`}>
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={() => router.push('/(drawer)/(tab)')}
             style={tw`bg-PrimaryFocus rounded-full p-1`}>
             <SvgXml xml={IconBack} />
           </TouchableOpacity>
@@ -81,7 +81,7 @@ const PaymentMethodScreen = () => {
               <>
                 <Text
                   style={tw`text-white font-AvenirLTProBlack text-4xl text-center `}>
-                  {`$${balance.toFixed(2)}`}
+                  {`£${balance.toFixed(2)}`}
                 </Text>
                 <Text style={tw`text-white font-AvenirLTProBlack text-center mt-6`}>
                   Available for withdraw

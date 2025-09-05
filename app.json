@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "between",
-    "slug": "between",
+    "slug": "patreonExpo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/betweenLogo.jpg",
+    "icon": "./assets/images/logo.png",
     "scheme": "between",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -18,9 +18,9 @@
       }
     },
     "android": {
-        "usesCleartextTraffic": true,
+
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/betweenLogo.jpg",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -29,14 +29,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/betweenLogo.jpg"
+      "favicon": "./assets/images/logo.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/betweenLogo.jpg",
+          "image": "./assets/images/logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

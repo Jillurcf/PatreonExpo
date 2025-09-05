@@ -763,6 +763,7 @@ const ExplainMembership = () => {
 
     if (isNaN(price)) {
       console.log('Error', 'Please enter a valid number');
+      setPriceError("Please enter a valid number")
       return;
     }
 
@@ -795,13 +796,14 @@ const ExplainMembership = () => {
 
     setExplainMembershipConfirmationModalVisible(true);
     setExplainMemberValue(value);
-    value.title = "";
-    value.subtitle = "";
-    value.currency = "";
-    value.description = "";
-    value.category = "";
+    // setValue({
+    //   title: '',
+    //   subtitle: '',
+    //   currency: '',
+    //   description: '',
+    //   category: '',
+    // });
     router.push('/screens/ExplainMembership1');
-
   };
 
   const addNewCategory = () => {

@@ -8,13 +8,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
     SafeAreaView,
     ScrollView,
     Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import tw from 'twrnc'; // if using tailwind-rn
@@ -75,9 +74,15 @@ const ExplainMembershipScreen = () => {
 
             console.log(formData, "formData==================")
             const res = await postBecmeAContibutor(formData).unwrap();
-            router.push('/(drawer)/SettingProfile');
+           if (res?.success === true) {
+             router.push('/screens/PaymentMetodScreen');
             console.log(res, "res++++++++++++++++")
-            Alert.alert("Service created succcessfully")
+            setServiceCreationConfirmationModalVisible(true)
+            console.log("Service created succcessfully")
+           }
+            // router.push('/(drawer)/SettingProfile');
+            // console.log(res, "res++++++++++++++++")
+            // Alert.alert("Service created succcessfully")
         } catch (err) {
             console.log(err)
         }
@@ -147,7 +152,7 @@ const ExplainMembershipScreen = () => {
                     setVisible={setServiceCreationConfirmationModalVisible}>
                     <View>
                         <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
-                            Please fill in all fields before continue.
+                            Service created succcessfully
                         </Text>
 
                         <View style={tw`mt-2`}>

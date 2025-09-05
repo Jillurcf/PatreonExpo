@@ -4,7 +4,7 @@ import { imageUrl } from '@/src/redux/baseApi';
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -37,7 +37,11 @@ const SettingProfile = () => {
   console.log(data?.data, "data======================")
   const fullImageUrl = data?.data?.image ? `${imageUrl}/${data.data.image}` : null;
 
-
+ useEffect(() => {
+    data?.data?.stripeAccountId
+    refetch();
+  }, [data?.data]);
+  
 const selectImage = async () => {
   console.log("click");
   try {

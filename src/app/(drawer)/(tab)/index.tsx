@@ -1,4 +1,5 @@
 import { useGetAllCategoryQuery } from '@/src/redux/apiSlice/categorySlice';
+import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
@@ -22,6 +23,9 @@ const Discover = () => {
   const navigation = useNavigation();
   const [successModal, setSuccessModal] = useState(false);
   const { data, isLoading, isError } = useGetAllCategoryQuery({});
+  const { data: userData } = useGetUserQuery({});
+  console.log(userData?.data, "userData==========")
+
   // console.log(data, "data++++++")
   const DiscoverData = [
     { id: '1', title: 'marketing', route: '', icon: IconMarketing, iconType: 'image' },
@@ -55,7 +59,7 @@ const Discover = () => {
       });
     }
   };
-  
+
   return (
     <View style={tw`bg-black flex-1 px-[4%] `}>
       <View style={tw`flex-row justify-between my-4 items-center`}>
@@ -68,7 +72,7 @@ const Discover = () => {
             Welcome Back
           </Text>
           <Text style={tw`text-white font-AvenirLTProBlack text-lg text-right`}>
-            Sub Bou
+            {userData?.data?.name}
           </Text>
         </View>
       </View>
@@ -95,8 +99,8 @@ const Discover = () => {
           columnWrapperStyle={{ justifyContent: 'center' }}
           scrollEnabled={false} // Disable FlatList scrolling
           renderItem={({ item }) => {
-            console.log(item, "item in index.tsx++++++");
-          
+            // console.log(item, "item in index.tsx++++++");
+
             return (
               (
                 <TouchableOpacity

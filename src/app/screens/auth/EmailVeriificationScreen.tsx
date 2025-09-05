@@ -58,7 +58,7 @@ const EmailVerificationScreen = () => {
                 console.log(formData, "formData");
 
                 const res = await emailVerification(formData)
-             
+             console.log(res, "res+++++++++++++")
                 // if (res?.success) {
                 //   success = true;
                 if (res?.data?.success === true) {
