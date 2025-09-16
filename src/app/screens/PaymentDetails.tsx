@@ -1,41 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StatusBar,
-  Alert,
-  Image,
   ScrollView,
-  TouchableOpacity,
+  StatusBar,
   StyleSheet,
-  TextInput,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
-import NumericInput from 'react-native-numeric-input';
 
-import {NavigProps} from '../interface/NaviProps';
-import {Dropdown} from 'react-native-element-dropdown';
 import Textarea from 'react-native-textarea';
+import { NavigProps } from '../interface/NaviProps';
 
+import { SvgXml } from 'react-native-svg';
 import {
-  AttachmentIcon,
-  BulbIcon,
-  CrossIcon,
-  Gallery,
   IconAple,
   IconBack,
   IconCard,
-  IconDollar,
-  IconPaypal,
-  IconRightArrow,
-  StillCamera,
-  VideoCam,
+  IconPaypal
 } from '../../assets/icons/icons';
-import IButton from '../../components/IButton';
 import TButton from '../../components/TButton';
 import tw from '../../lib/tailwind';
-import IconArrow from '../../components/IconArrow';
-import {SvgXml} from 'react-native-svg';
 
 const data = [
   {label: 'Item 1', value: '1'},
@@ -70,7 +55,7 @@ const PaymentDetails = ({navigation}: NavigProps<null>) => {
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
             onPress={() => navigation?.goBack()}
-            style={tw`bg-PrimaryFocus rounded-full p-1`}>
+            style={tw`bg-black rounded-full p-1`}>
             <SvgXml xml={IconBack} />
           </TouchableOpacity>
           <Text style={tw`text-white font-bold font-AvenirLTProBlack text-2xl`}>

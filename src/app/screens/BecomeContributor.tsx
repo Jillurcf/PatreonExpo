@@ -1,3 +1,5 @@
+import { router } from 'expo-router';
+import React, { useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -5,24 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import { SvgXml } from 'react-native-svg';
 import {
-  IconAple,
   IconBack,
-  IconGoogle,
-  IconLanguage,
-  IconNotification,
-  IconPaymentMethod,
-  IconPaypal,
-  IconRightArrow,
-  IconSettingNotificaiton,
-  IconTermsAndCondition,
+  IconRightArrow
 } from '../../assets/icons/icons';
-import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
-import {RadioButton} from 'react-native-ui-lib';
-import TButton from '../../components/TButton';
-import { router } from 'expo-router';
 
 // import RadioButtonRN from 'radio-buttons-react-native';
 
@@ -40,7 +30,7 @@ const BecomeContributor = () => {
       <View style={tw`flex-row w-full justify-between mt-4`}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={tw`bg-PrimaryFocus rounded-full p-1`}>
+          style={tw`bg-black rounded-full p-1`}>
           <SvgXml xml={IconBack} />
         </TouchableOpacity>
         <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>

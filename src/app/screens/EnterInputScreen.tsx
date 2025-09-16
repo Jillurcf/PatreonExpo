@@ -123,7 +123,7 @@ const EnterInput = () => {
           <View style={tw`flex-row w-full justify-between mt-4`}>
             <TouchableOpacity
               onPress={() => router.back()}
-              style={tw`bg-PrimaryFocus rounded-full p-1`}
+              style={tw`bg-black rounded-full p-1`}
             >
               <SvgXml xml={IconBack} />
             </TouchableOpacity>
@@ -159,47 +159,52 @@ const EnterInput = () => {
           {/* Upload File */}
           <View style={tw`my-6`}>
             <Text style={tw`text-white font-AvenirLTProBlack`}>Upload Knowledge</Text>
-            <View
-              style={tw`flex items-center bg-[#262329] mt-2 rounded-2xl py-8 border border-[#565358] justify-center`}
-            >
-              <View style={tw`flex-row gap-6`}>
-                <TouchableOpacity onPress={openFilePicker}>
-                  <SvgXml xml={IconUpload} />
-                </TouchableOpacity>
-              </View>
+            <TouchableOpacity  onPress={openFilePicker}>
+              <View
+                style={tw`flex items-center bg-[#262329] mt-2 rounded-2xl py-8 border border-[#565358] justify-center`}
 
-              <Text style={tw`text-white my-4`}>Upload file (50 mb maximum)</Text>
-              {!selectedPdf && (
-                <Text style={tw`text-red-600 text-xs mt-2`}>
-                  Please upload a PDF file.*
-                </Text>)}
+              >
+             
+                  <View style={tw`flex-row gap-6`}>
+                    <TouchableOpacity onPress={openFilePicker}>
+                      <SvgXml xml={IconUpload} />
+                    </TouchableOpacity>
+                  </View>
 
-              {selectedPdf && (
-                <View style={tw`w-full h-[500px] mt-4`}>
-                  {/* <TouchableOpacity
+                  <Text style={tw`text-white my-4`}>Upload file (50 mb maximum)</Text>
+                  {!selectedPdf && (
+                    <Text style={tw`text-red-600 text-xs mt-2`}>
+                      Please upload a PDF file.*
+                    </Text>)}
+
+                  {selectedPdf && (
+                    <View style={tw`w-full h-[500px] mt-4`}>
+                      {/* <TouchableOpacity
                     onPress={() => setSelectedPdf(null)}
                     style={tw`absolute top-2 right-2 z-10 bg-black/60 p-1 rounded-full`}
                   >
                     <SvgXml xml={CrossIcon} width={20} height={20} />
                   </TouchableOpacity> */}
 
-                  {/* <WebView
+                      {/* <WebView
                     source={{ uri: selectedPdf?.assets[0]?.uri }}
                     style={{ flex: 1 }}
                     startInLoadingState
                   /> */}
-                  <Pdf
-                    source={{ uri: selectedPdf?.uri }}
-                    onLoadComplete={handlePdfLoad}
-                    style={{ flex: 1 }}
-                    trustAllCerts={false} // Optional: fix SSL issues
-                    onError={(error) => console.log("PDF load error:", error)}
-                  />
+                      <Pdf
+                        source={{ uri: selectedPdf?.uri }}
+                        onLoadComplete={handlePdfLoad}
+                        style={{ flex: 1 }}
+                        trustAllCerts={false} // Optional: fix SSL issues
+                        onError={(error) => console.log("PDF load error:", error)}
+                      />
 
-                </View>
-              )}
-              {/* {!isPdfLoaded && <Text style={tw`text-white`}>Loading PDF...</Text>} */}
-            </View>
+                    </View>
+                  )}
+            
+                {/* {!isPdfLoaded && <Text style={tw`text-white`}>Loading PDF...</Text>} */}
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
 

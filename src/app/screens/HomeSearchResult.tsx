@@ -85,7 +85,7 @@ const HomeSearchResult = () => {
                         onPress={() => {
                            router.back();
                         }}
-                        style={tw`bg-PrimaryFocus rounded-full p-2`}>
+                        style={tw`bg-black rounded-full p-2`}>
                         <SvgXml xml={IconBack} />
                     </TouchableOpacity>
                 </View>

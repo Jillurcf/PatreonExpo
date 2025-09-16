@@ -862,7 +862,7 @@ const ExplainMembership = () => {
     <ScrollView contentContainerStyle={tw`flex-1 bg-black px-[4%]`}>
       <View style={tw`mb-10`}>
         <View style={tw`flex-row w-full justify-between items-center`}>
-          <TouchableOpacity onPress={() => router.back()} style={tw`bg-PrimaryFocus rounded-full p-1`}>
+          <TouchableOpacity onPress={() => router.back()} style={tw`bg-black rounded-full p-1`}>
             <SvgXml xml={IconBack} />
           </TouchableOpacity>
           <Text style={tw`text-white font-bold text-2xl`}>Explain Membership</Text>

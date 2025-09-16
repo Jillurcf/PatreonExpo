@@ -35,7 +35,7 @@ const Language = () => {
           onPress={() => {
             router.back()
           }}
-          style={tw`bg-PrimaryFocus rounded-full p-1`}>
+          style={tw`bg-black rounded-full p-1`}>
           <SvgXml xml={IconBack} />
         </TouchableOpacity>
         <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
@@ -54,109 +54,117 @@ const Language = () => {
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
             English (US)
           </Text>
-           <RadioButton
-                          color="white"
-                          selected={selectedOption === 'english_us'}
-                          onPress={() => handleRadioButtonPress('english_us')}
-                        />
+          <RadioButton
+            color="white"
+            selected={selectedOption === 'english_us'}
+            onPress={() => handleRadioButtonPress('english_us')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-          English (UK)
+            English (UK)
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedOption === 'english_uk'}
-                          onPress={() => handleRadioButtonPress('english_uk')}
-                        />
+            color="white"
+            selected={selectedOption === 'english_uk'}
+            onPress={() => handleRadioButtonPress('english_uk')}
+          />
         </View>
       </View>
       {/* ===================Suggested============ */}
       <View style={tw`mt-8`}>
         <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-         Language
+          Language
         </Text>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-          Mandarin
+            Mandarin
           </Text>
-           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'mandarin'}
-                          onPress={() => handleRadioButtonLanguage('mandarin')}
-                        />
+          <RadioButton
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'mandarin'}
+            onPress={() => handleRadioButtonLanguage('mandarin')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-         Hindi
+            Hindi
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'hindi'}
-                          onPress={() => handleRadioButtonLanguage('hindi')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'hindi'}
+            onPress={() => handleRadioButtonLanguage('hindi')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-        Spanish
+            Spanish
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'spanish'}
-                          onPress={() => handleRadioButtonLanguage('spanish')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'spanish'}
+            onPress={() => handleRadioButtonLanguage('spanish')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-         French
+            French
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'french'}
-                          onPress={() => handleRadioButtonLanguage('french')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'french'}
+            onPress={() => handleRadioButtonLanguage('french')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-         Arabic
+            Arabic
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'arabic'}
-                          onPress={() => handleRadioButtonLanguage('arabic')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'arabic'}
+            onPress={() => handleRadioButtonLanguage('arabic')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-        Bengali
+            Bengali
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'bengali'}
-                          onPress={() => handleRadioButtonLanguage('bengali')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'bengali'}
+            onPress={() => handleRadioButtonLanguage('bengali')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-         Russian
+            Russian
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'russian'}
-                          onPress={() => handleRadioButtonLanguage('russian')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'russian'}
+            onPress={() => handleRadioButtonLanguage('russian')}
+          />
         </View>
         <View style={tw`mt-4 flex-row justify-between`}>
           <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
-        Indonesia
+            Indonesia
           </Text>
           <RadioButton
-                          color="white"
-                          selected={selectedLanguage === 'indonesia'}
-                          onPress={() => handleRadioButtonLanguage('indonesia')}
-                        />
+            style={tw`hidden`}
+            color="white"
+            selected={selectedLanguage === 'indonesia'}
+            onPress={() => handleRadioButtonLanguage('indonesia')}
+          />
         </View>
-       
+
       </View>
 
       <StatusBar backgroundColor="black" translucent={false} />

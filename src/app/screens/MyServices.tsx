@@ -58,7 +58,7 @@ const MyServices = (props: Props) => {
                 <View style={tw`flex-row w-full justify-between mt-4`}>
                     <TouchableOpacity
                         onPress={() => router.back()}
-                        style={tw`bg-PrimaryFocus rounded-full p-1`}>
+                        style={tw` rounded-full p-1`}>
                         <SvgXml xml={IconBack} />
                     </TouchableOpacity>
                     <Text style={tw`text-white font-bold font-AvenirLTProBlack text-2xl`}>

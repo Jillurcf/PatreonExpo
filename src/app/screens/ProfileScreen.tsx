@@ -369,12 +369,13 @@ const { height } = Dimensions.get('screen');
 const SUCCESS_HOST = 'patreonexpo://checkout/success';
 const CANCEL_HOST = 'patreonexpo://checkout/cancel';
 
-const ProfileScreen = ({ navigation }: { navigation: any }) => {
+const ProfileScreen = () => {
   const { userId, serviceId, title, price } = useLocalSearchParams();
   const [postPaymentMethods] = usePostPaymentMethodsMutation();
   const [postCreateTransaction] = usePostCreateTransactionMutation();
   const { data } = useGetSingleUserQuery(userId);
   const [serviceData, setServiceData] = React.useState<any>(null);
+  const [expanded, setExpanded] = useState(false);
   const [subscriptionError, setSubcriptionError] = useState()
   console.log(subscriptionError, "subscription error")
   const fullImageUrl = data?.data?.image
@@ -450,7 +451,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
       <View style={tw`flex-row w-full justify-between mt-4 px-[4%]`}>
         <TouchableOpacity
           onPress={() => router.back()}
-          style={tw`bg-PrimaryFocus rounded-full p-1`}>
+          style={tw`bg-black rounded-full p-1`}>
           <SvgXml xml={IconBack} />
         </TouchableOpacity>
         <View style={tw`w-8`} />
@@ -472,9 +473,18 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
         <Text style={tw`text-white font-AvenirLTProBlack text-lg mt-2`}>
           {data?.data?.username || 'Username'}
         </Text>
-        <Text style={tw`text-white font-AvenirLTProBlack`}>
-          {data?.data?.bio || 'Bio'}
-        </Text>
+        <View style={tw`px-[4%] mt-2`}>
+          <Text style={tw`text-white font-AvenirLTProBlack   `}>
+            {expanded ? data?.data?.bio : data?.data?.bio?.slice(0, 35) || 'Bio'}
+          </Text>
+          {data?.data?.bio?.length > 35 && (
+            <TouchableOpacity onPress={() => setExpanded(!expanded)}>
+              <Text style={tw`text-blue-600 font-AvenirLTProBlack underline text-xs`}>
+                {expanded ? " Show less" : "Show more..."}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {/* Stats */}
@@ -492,7 +502,7 @@ const ProfileScreen = ({ navigation }: { navigation: any }) => {
           </View>
           <View style={tw`w-[50%]`}>
             <Text style={tw`text-white text-center font-AvenirLTProBlack text-xl`}>
-              {data?.data?.services.length || '0'}
+              {data?.data?.services?.length || '0'}
             </Text>
             <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
               Services

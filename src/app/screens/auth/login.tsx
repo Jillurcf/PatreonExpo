@@ -80,99 +80,6 @@ const Login = ({navigation} : {navigation: any}) => {
 
 
 
-  //     return (
-  //         <ScrollView
-  //             keyboardShouldPersistTaps="always"
-  //             showsVerticalScrollIndicator={false}
-  //             contentContainerStyle={tw`bg-black flex-1 px-[4%] h-full justify-between`}>
-  //             <View>
-  //                 <View style={tw`flex-row w-full justify-between mt-4`}>
-  //                     <TouchableOpacity
-  //                         onPress={() => router.back()}
-  //                         style={tw`bg-PrimaryFocus rounded-full p-1`}>
-  //                         <SvgXml xml={IconBack} />
-  //                     </TouchableOpacity>
-  //                     <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
-  //                         Login into your account!
-  //                     </Text>
-  //                     {/* Placeholder view for symmetry */}
-  //                     <View style={tw`w-8`} />
-  //                 </View>
-  //                 <View>
-
-
-  //                     <View style={tw`mt-12`}>
-  //                         <InputText
-  //                             cursorColor="white"
-  //                             style={tw`text-white`}
-  //                             containerStyle={tw`bg-none h-14 border-b border-[#565358]`}
-  //                             labelStyle={tw`text-white font-AvenirLTProBlack mt-3`}
-  //                             placeholder={'Write it here'}
-  //                             placeholderColor={'#949494'}
-  //                             label={'Email'}
-  //                             iconLeft={IconEnvelope}
-  //                             // iconRight={isShowPassword ? iconLock : iconLock}
-  //                             onChangeText={(text: any) => setEmail(text)}
-  //                         // isShowPassword={!isShowPassword}
-  //                         // rightIconPress={() => setIsShowPassword(!isShowPassword)}
-  //                         />
-  //                         <InputText
-  //                             cursorColor="white"
-  //                             selectionColor="white"
-  //                             style={tw`text-white`}
-  //                             containerStyle={tw`bg-none bg-black h-14 border-b border-[#565358]`}
-  //                             labelStyle={tw`text-white font-AvenirLTProBlack mt-3`}
-  //                             placeholder={'Write it here'}
-  //                             placeholderColor={'#949494'}
-  //                             label={'Password'}
-  //                             iconLeft={iconLock}
-  //                             iconRight={isShowPassword ? IconOpenEye : IconCloseEye}
-  //                             onChangeText={(text: any) => setPassword(text)}
-  //                             isShowPassword={!isShowPassword}
-  //                             rightIconPress={() =>
-  //                                 setIsShowPassword(!isShowPassword)
-  //                             }
-  //                         />
-
-  //                     </View>
-  //                     <View style={tw``}>
-  //                         <Text style={tw`text-white`}>By logging in you accept our TOS & PP</Text>
-
-  //                     </View>
-  //                     <TouchableOpacity
-  //                         onPress={() =>
-  //                             router.push({
-  //                                 pathname: "/screens/auth/phoneVerification",
-  //                                 params: { screenName: "forgetPass" }
-  //                             })
-  //                         }
-  //                         style={tw`mt-8`}>
-  //                         <Text style={tw`text-white`}>Forget password</Text>
-  //                     </TouchableOpacity>
-  //                 </View>
-  //             </View>
-  //             <View style={tw`flex-col justify-end `}>
-  //                 {loginError && (
-  //                     <Text style={tw`text-red-500 text-center mb-4`}>
-  //                         {loginError}*
-  //                     </Text>
-  //                 )}
-  //                 <Button
-  //                     disabled={!allFilled}
-  //                     title={isLoading ? "Wait..." : 'Continue'}
-  //                     style={tw`${allFilled ? 'text-black' : 'text-gray-500'} font-AvenirLTProBlack items-center`}
-  //                     containerStyle={tw`${allFilled ? 'bg-white' : 'bg-PrimaryFocus'} my-4 h-14 rounded-2xl justify-center`}
-  //                     onPress={handleLogin}
-  //                 />
-  //             </View>
-  //             <StatusBar backgroundColor="black" translucent={false} />
-  //         </ScrollView>
-  //     );
-  // };
-
-  // export default Login;
-
-
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -184,7 +91,7 @@ const Login = ({navigation} : {navigation: any}) => {
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
             onPress={() => router.back()}
-            style={tw`bg-PrimaryFocus rounded-full p-1`}
+            style={tw`bg-black rounded-full p-1`}
           >
             <SvgXml xml={IconBack} />
           </TouchableOpacity>

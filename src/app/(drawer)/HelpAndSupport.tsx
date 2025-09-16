@@ -71,7 +71,7 @@ const HelpSupport = () => {
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
             onPress={() => router.back()}
-            style={tw`bg-PrimaryFocus rounded-full p-1`}>
+            style={tw`bg-black rounded-full p-1`}>
             <SvgXml xml={IconBack} />
           </TouchableOpacity>
           <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>
@@ -114,8 +114,7 @@ const HelpSupport = () => {
           />
 
         </View>
-      </ScrollView>
-      {errorMessage === "title cannot be empty" ? (
+         {errorMessage === "title cannot be empty" ? (
         <Text style={tw`text-xs text-red-600 mb-2`}>Subject cannot be empty</Text>
       ) : errorMessage === "description cannot be empty" ? (<Text style={tw`text-xs text-red-600 mb-2`}>Description cannot be empty*</Text>) : ""}
       <Button
@@ -126,6 +125,8 @@ const HelpSupport = () => {
         containerStyle={tw`${allData ? 'bg-white' : 'bg-PrimaryFocus'} mt-4 h-14 rounded-2xl justify-center`}
         onPress={handleSend}
       />
+      </ScrollView>
+     
         <NormalModal
               layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
                 containerStyle={tw`rounded-xl bg-zinc-900 p-5`}

@@ -41,12 +41,12 @@ const UpdateRecipientScreen = () => {
     };
 
     return (
-        <View style={tw`bg-black flex-1`}>
+        <ScrollView style={tw`bg-black flex-1`} keyboardDismissMode='on-drag' keyboardShouldPersistTaps="handled">
             {/* Header */}
             <View style={tw`flex-row w-full justify-between mt-4 px-[4%] items-center`}>
                 <TouchableOpacity
                     onPress={() => router.back()}
-                    style={tw`bg-PrimaryFocus rounded-full p-1`}>
+                    style={tw`bg-black rounded-full p-1`}>
                     <SvgXml xml={IconBack} />
                 </TouchableOpacity>
                 <Text style={tw`text-white font-AvenirLTProBlack text-lg`}>
@@ -57,6 +57,8 @@ const UpdateRecipientScreen = () => {
 
             {/* Form */}
             <Formik
+                // keboardShouldPersistTaps="handled"
+                // keboardDismissMode='on-drag'               
                 initialValues={{
                     first_name: '',
                     last_name: '',
@@ -173,7 +175,7 @@ const UpdateRecipientScreen = () => {
             </Formik>
 
             <StatusBar backgroundColor="black" translucent />
-        </View>
+        </ScrollView>
     );
 };
 

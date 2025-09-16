@@ -73,8 +73,8 @@ const EditProfile = () => {
       <View>
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
-            onPress={() => router.back()}
-            style={tw`bg-PrimaryFocus rounded-full p-1`}>
+            onPress={() => router.push("/SettingProfile")}
+            style={tw`bg-black rounded-full p-1`}>
             <SvgXml xml={IconBack} />
           </TouchableOpacity>
           <Text style={tw`text-white font-AvenirLTProBlack text-2xl`}>

@@ -98,7 +98,7 @@ const ExplainMembershipScreen = () => {
                     <View style={tw`flex-row items-center mb-6`}>
                         <TouchableOpacity
                             onPress={() => router.back()}
-                            style={tw`bg-PrimaryFocus rounded-full p-1`}>
+                            style={tw`bg-black rounded-full p-1`}>
                             <SvgXml xml={IconBack} />
                         </TouchableOpacity>
                         <Text style={tw`text-white text-lg font-bold ml-2`}>

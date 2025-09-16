@@ -1,4 +1,4 @@
-import { Image, InteractionManager, StatusBar, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, InteractionManager, StatusBar, StyleSheet, View } from 'react-native';
 // import {getSocket, initiateSocket} from '../../redux/services/socket';
 
 import React, { useEffect } from 'react';
@@ -41,12 +41,13 @@ const LoadingSplash = () => {
 
   return (
     <View style={tw`flex-1 w-full bg-black justify-center items-center`}>
-      <Image
+      {/* <Image
         style={tw`w-28 h-28 flex-1 `}
         resizeMode='contain'
         // resizeMode={FastImage.resizeMode.contain}
         source={require('../assets/images/betweenLogo.jpg')}
-      />
+      /> */}
+      <ActivityIndicator size="large" color="#FFFFFF" />
       <StatusBar barStyle="light-content" backgroundColor={'black'} />
     </View>
   );

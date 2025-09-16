@@ -45,9 +45,9 @@ export default function DrawerLayout() {
               <View style={tw`flex-row justify-end px-4`}>
                 <TouchableOpacity
                   onPress={() => props.navigation.closeDrawer()}
-                  style={tw`bg-[#262329] w-10 h-10 items-center justify-center rounded-full`}
+                  style={tw`bg-black w-10 h-10 items-center justify-center rounded-full`}
                 >
-                  <SvgXml xml={IconBack} width={20} height={20} />
+                  <SvgXml xml={IconBack} />
                 </TouchableOpacity>
               </View>
 

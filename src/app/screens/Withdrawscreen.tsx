@@ -8,14 +8,14 @@ import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    ActivityIndicator,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -89,7 +89,7 @@ const WithdrawScreen = () => {
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
             onPress={() => router.back()}
-            style={tw`bg-PrimaryFocus rounded-full p-1`}>
+            style={tw` rounded-full p-1`}>
             <SvgXml xml={IconBack} />
           </TouchableOpacity>
           <Text style={tw`text-white font-bold font-AvenirLTProBlack text-2xl`}>
