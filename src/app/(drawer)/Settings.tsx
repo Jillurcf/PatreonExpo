@@ -1,8 +1,8 @@
 import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
+import { usePostLogoutMutation } from '@/src/redux/apiSlice/authSlice';
 import { useDeleteAccountMutation } from '@/src/redux/apiSlice/userSlice';
-import { lStorage } from '@/src/utils';
-import CookieManager from '@react-native-cookies/cookies';
+import { removeStorageToken } from '@/src/utils';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -30,6 +30,7 @@ const Settings = () => {
   const [delteConfirmationModalVisible, setDeleteConfirmationModalVisible] =
     useState(false);
     const [deleteAccount, {refetch}] = useDeleteAccountMutation();
+    const [postLogout] = usePostLogoutMutation();
 
 
   
@@ -40,8 +41,12 @@ const Settings = () => {
     // await refetch()
     // console.log('Logout pressed');
     router.push('/screens/auth/onboarding1')
-    lStorage.removeItem('token')
-    CookieManager.clearAll()
+    removeStorageToken("token")
+    const res = await postLogout()
+    console.log(res, "logout res+++++++++")
+    // await refetch()
+    // lStorage.removeItem('token')
+    // CookieManager.clearAll()
 
   }
   return (

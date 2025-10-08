@@ -736,13 +736,17 @@ const ExplainMembership = () => {
     useState(false);
 
   useEffect(() => {
-    const savedValue = getExplainMemberValue();
-    if (savedValue) setValue(savedValue);
+    const loadSavedValue = async () => {
+      const savedValue = await getExplainMemberValue();
+      if (savedValue) setValue(savedValue);
+    }
+    loadSavedValue();
   }, []);
 
-  useEffect(() => {
-    setExplainMemberValue(value);
-  }, [value]);
+useEffect(() => {
+  console.log('Saving to storage:', value, "saving to storage+++++++++++++");
+  setExplainMemberValue(value);
+}, [value]);
 
   useEffect(() => {
     if (category?.data) {
@@ -751,7 +755,7 @@ const ExplainMembership = () => {
           label: item.name,
           value: item._id,
         })),
-        { label: 'Add New...', value: 'add_new' },
+        // { label: 'Add New...', value: 'add_new' },
       ];
       setDropdownItems(formatted);
     }
@@ -778,12 +782,12 @@ const ExplainMembership = () => {
 
 
     const isEmpty =
-      !value.title.trim() ||
-      !value.subtitle.trim() ||
-      !value.currency.trim() ||
+      !value?.title?.trim() ||
+      !value?.subtitle?.trim() ||
+      !value?.currency?.trim() ||
 
-      !value.description.trim() ||
-      !value.category.trim()
+      !value?.description?.trim() ||
+      !value?.category?.trim()
 
 
     if (isEmpty) {
@@ -807,7 +811,7 @@ const ExplainMembership = () => {
   };
 
   const addNewCategory = () => {
-    if (newCategory.trim() === '') return;
+    if (newCategory?.trim() === '') return;
 
     const updated = [
       ...dropdownItems.slice(0, -1),
@@ -877,7 +881,7 @@ const ExplainMembership = () => {
           value={value.title}
           onChangeText={text => setValue(prev => ({ ...prev, title: text }))}
         />
-        {!value.title.trim() && (
+        {!value?.title?.trim() && (
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please enter a title.*</Text>
         )}
@@ -889,7 +893,7 @@ const ExplainMembership = () => {
           value={value.subtitle}
           onChangeText={text => setValue(prev => ({ ...prev, subtitle: text }))}
         />
-        {!value.subtitle.trim() && (
+        {!value?.subtitle?.trim() && (
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please enter a subtitle.*</Text>
         )}
@@ -911,7 +915,7 @@ const ExplainMembership = () => {
         {priceError ? (
           <Text style={tw`text-red-600 text-xs mt-2`}>{priceError}</Text>
         ) : null}
-        {!value.currency.trim() && (
+        {!value?.currency?.trim() && (
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please enter a price.*</Text>
         )}
@@ -930,7 +934,7 @@ const ExplainMembership = () => {
             textAlignVertical="top" // keeps text starting from top
           />
         </View>
-        {!value.description.trim() && (
+        {!value?.description?.trim() && (
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please enter a description.*</Text>
         )}
@@ -959,7 +963,7 @@ const ExplainMembership = () => {
             renderItem={renderItem}
           />
         </View>
-        {!value.description.trim() && (
+        {!value?.description?.trim() && (
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please select a category.*</Text>
         )}

@@ -121,6 +121,17 @@ const authSlice = api.injectEndpoints({
         },
         body: data,
       })
+    }),
+    postLogout: builder.mutation({
+      query: (data) => ({
+        url: `/auth/logout`,
+        method: "POST",
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        //   // 'Content-Type': 'application/json',
+        // },
+        body: data,
+      })
     })
 
   }),
@@ -136,5 +147,6 @@ export const { useLoginUserMutation,
   useChangePasswordMutation,
   usePostSocialLoginMutation,
   usePhoneNoVerificationMutation,
-  usePostCheckTokenMutation
+  usePostCheckTokenMutation,
+  usePostLogoutMutation
 } = authSlice;

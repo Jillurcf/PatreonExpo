@@ -2,8 +2,8 @@ import { IconBack, IconLogout, IconNotification, IconProfile, IconSettings, Icon
 import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
 import tw from '@/src/lib/tailwind';
-import { lStorage } from '@/src/utils';
-import CookieManager from '@react-native-cookies/cookies';
+import { usePostLogoutMutation } from '@/src/redux/apiSlice/authSlice';
+import { removeStorageToken } from '@/src/utils';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
@@ -14,13 +14,16 @@ import { SvgXml } from 'react-native-svg';
 export default function DrawerLayout() {
   const [logoutConfirmationModalVisible, setLogoutConfirmationModalVisible] =
     useState(false);
-  const handleLogout = () => {
+    const [postLogout] = usePostLogoutMutation();
+  const handleLogout = async () => {
     // Perform your logout logic here
     console.log('Logout pressed');
     setLogoutConfirmationModalVisible(false)
-    router.replace('/screens/auth/onboarding1')
-    lStorage.removeItem('token')
-    CookieManager.clearAll()
+    router.replace('/screens/auth/onboarding1');
+    const res = await postLogout()
+    console.log(res, "logout res+++++++++")
+    removeStorageToken("token")
+    // CookieManager.clearAll()
   };
   return (
     <Drawer
@@ -65,37 +68,37 @@ export default function DrawerLayout() {
             </TouchableOpacity>
           </View>
           <NormalModal
-              layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-                containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+            layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
+            containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
             visible={logoutConfirmationModalVisible}
             setVisible={setLogoutConfirmationModalVisible}
           >
-                  <View>
-          <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
-            Are you sure {'\n'} You want to logout?
-          </Text>
+            <View>
+              <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+                Are you sure {'\n'} You want to logout?
+              </Text>
 
-          <View style={tw`mt-2`}>
-            <View style={tw`border-t-2 border-gray-800 w-full`}>
-              <Button
-                title="Yes"
-                style={tw`text-white`}
-                containerStyle={tw`bg-transparent px-6`}
-                onPress={handleLogout}
-              />
+              <View style={tw`mt-2`}>
+                <View style={tw`border-t-2 border-gray-800 w-full`}>
+                  <Button
+                    title="Yes"
+                    style={tw`text-white`}
+                    containerStyle={tw`bg-transparent px-6`}
+                    onPress={handleLogout}
+                  />
+                </View>
+                <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+                  <Button
+                    title="Cancel"
+                    style={tw`text-white px-6`}
+                    containerStyle={tw`bg-gray-900`}
+                    onPress={() => {
+                      setLogoutConfirmationModalVisible(false);
+                    }}
+                  />
+                </View>
+              </View>
             </View>
-            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
-              <Button
-                title="Cancel"
-                style={tw`text-white px-6`}
-                containerStyle={tw`bg-gray-900`}
-                onPress={() => {
-                  setLogoutConfirmationModalVisible(false);
-                }}
-              />
-            </View>
-          </View>
-        </View>
           </NormalModal>
         </View>
       )}

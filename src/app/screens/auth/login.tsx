@@ -9,7 +9,7 @@ import {
 import InputText from '../../../components/InputText';
 import tw from '../../../lib/tailwind';
 
-import { getStorageToken, lStorage, setStorageToken } from '@/src/utils';
+import { getStorageToken, setStorageToken } from '@/src/utils';
 import { router } from 'expo-router';
 import { SvgXml } from 'react-native-svg';
 import {
@@ -62,7 +62,7 @@ const Login = ({navigation} : {navigation: any}) => {
       //   setLoginError(res)
       console.log("login res++++++++", res?.data?.token)
       if (res?.data?.token) {
-        lStorage.setString('token', res?.data?.token);
+        // lStorage.setString('token', res?.data?.token);
         setStorageToken(res?.data?.token);
         const token = getStorageToken();
         console.log(token, "token++++++ after set")

@@ -9,20 +9,22 @@ import tw from '../lib/tailwind';
 import { useRouter } from 'expo-router';
 
 import { usePostCheckTokenMutation } from '../redux/apiSlice/authSlice';
-import { lStorage } from '../utils';
+import { getStorageToken } from '../utils';
 // import {getStorageToken} from '../../utils/utils';
 
 const LoadingSplash = () => {
  
   const [postCheckToken, { data, error, isLoading }] = usePostCheckTokenMutation()
- const token = lStorage.getString("token")
 
- 
+
  const router = useRouter();
 
  useEffect(() => {
    const task = InteractionManager.runAfterInteractions(async () => {
      try {
+       const token = await getStorageToken("token")
+       console.log(token, "token in LoadingSplash++++++++++++++++++++++")
+ 
        const res = await postCheckToken(token);
        console.log(res, 'res after sending');
        if (res?.data?.success === true) {

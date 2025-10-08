@@ -38,15 +38,24 @@ const ExplainMembershipScreen = () => {
     console.log(fields, "fields data +++++++++++++++++++++++++")
 
     useEffect(() => {
-        const savedValue = getExplainMemberValue();
-        console.log(savedValue?.category, "savedValue+++++++++++++")
-        setValue(savedValue);
-        const promptInput = loadMediaPromptData();
-        const mediaData = loadMediaPromptData(); // returns an object
-        setPromptInput(mediaData.promptInput);   // assigns only the string part
-        setSelectedImages(mediaData?.selectedImages)
-        console.log(promptInput, selectedImages, "promptInput+++++++++++++")
+        const loadInitialData = async () => {
+            try {
+                const savedValue = await getExplainMemberValue();
+                console.log(savedValue?.category, "savedValue+++++++++++++");
+                setValue(savedValue);
+
+                const mediaData = await loadMediaPromptData(); // ✅ await it
+                console.log(mediaData, "mediaData+++++++++++++");
+                setPromptInput(mediaData.promptInput);          // ✅ now it's safe
+                setSelectedImages(mediaData.selectedImages);
+            } catch (err) {
+                console.error("Error loading from storage:", err);
+            }
+        };
+
+        loadInitialData();
     }, []);
+
 
     const handleAddField = () => {
         setFields([...fields, '']);
@@ -74,12 +83,12 @@ const ExplainMembershipScreen = () => {
 
             console.log(formData, "formData==================")
             const res = await postBecmeAContibutor(formData).unwrap();
-           if (res?.success === true) {
-             router.push('/screens/PaymentMetodScreen');
-            console.log(res, "res++++++++++++++++")
-            setServiceCreationConfirmationModalVisible(true)
-            console.log("Service created succcessfully")
-           }
+            if (res?.success === true) {
+                router.push('/screens/PaymentMetodScreen');
+                console.log(res, "res++++++++++++++++")
+                setServiceCreationConfirmationModalVisible(true)
+                console.log("Service created succcessfully")
+            }
             // router.push('/(drawer)/SettingProfile');
             // console.log(res, "res++++++++++++++++")
             // Alert.alert("Service created succcessfully")

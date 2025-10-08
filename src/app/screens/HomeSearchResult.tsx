@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
     Dimensions,
     Image,
+    ScrollView,
     StatusBar,
     StyleSheet,
     Text,
@@ -9,7 +10,7 @@ import {
     View
 } from 'react-native';
 
-import { IconBack, IconGeneralSearch } from '@/src/assets/icons/icons';
+import { IconBack, IconGeneralSearch, IconRightArrow } from '@/src/assets/icons/icons';
 import InputText from '@/src/components/InputText';
 import tw from '@/src/lib/tailwind';
 import { useGetAllUserQuery } from '@/src/redux/apiSlice/userSlice';
@@ -30,7 +31,7 @@ const HomeSearchResult = () => {
 
     const [showDropdown, setShowDropdown] = useState(false);
     // const { data, isLoading, isError } = useGetAllCategoryQuery({});
-     const { data, isLoading, isError } = useGetAllUserQuery(search, {
+    const { data, isLoading, isError } = useGetAllUserQuery(search, {
         skip: !search // Skip query if no search text
     });
 
@@ -55,7 +56,7 @@ const HomeSearchResult = () => {
         if (taskId === '3') {
             setSuccessModal(true);
         } else {
-           router.push("/screens/DiscoverResult", {
+            router.push("/screens/DiscoverResult", {
                 ttile: title,
                 taskId: taskId,
                 route: route
@@ -79,11 +80,11 @@ const HomeSearchResult = () => {
 
     return (
         <View style={tw`bg-black flex-1 px-[4%] `}>
-            <View style={tw`flex-row w-full  h-14 gap-4 mt-4 px-[4%] items-center`}>
+            <View style={tw`flex-row w-[95%] mt-[4%] items-center`}>
                 <View>
                     <TouchableOpacity
                         onPress={() => {
-                           router.back();
+                            router.back();
                         }}
                         style={tw`bg-black rounded-full p-2`}>
                         <SvgXml xml={IconBack} />
@@ -107,9 +108,9 @@ const HomeSearchResult = () => {
 
             </View>
 
-            <View style={tw``}>
+            <ScrollView style={tw`mt-4`}>
                 {showDropdown && search.length > 0 && (
-                    <View style={tw`absolute bg-[#1e1e1e] w-full rounded-md z-50 p-2`}>
+                    <View style={tw``}>
                         {isLoading ? (
                             <Text style={tw`text-white`}>Loading...</Text>
                         ) : data?.data?.result.length === 0 ? (
@@ -123,23 +124,29 @@ const HomeSearchResult = () => {
                                         onPress={() => {
                                             setShowDropdown(false);
                                             // setSearch('');
-                                           router.push({pathname: '/screens/ProfileScreen', params: { userId: user?._id, serviceId:user?.services[0]?._id, title: user?.services[0]?.title
-                                        }}); // 👈 Pass full user data
+                                            router.push({
+                                                pathname: '/screens/ProfileScreen', params: {
+                                                    userId: user?._id, serviceId: user?.services[0]?._id, title: user?.services[0]?.title
+                                                }
+                                            }); // 👈 Pass full user data
                                         }}
-                                        style={tw`p-2 border-b border-[#444]`}
+                                        style={tw`p-4 bg-[#262329] my-1 rounded-3xl`}
                                     >
-                                        <View style={tw`flex-row items-center gap-4`}>
+                                        <View style={tw`flex-row justify-center items-center gap-4`}>
                                             <Image source={{ uri: `${imageUrl}/${user?.image}` }} style={tw`w-12 h-12 rounded-full`} />
                                             {/* <Text style={tw`text-white`}>{user.username}</Text> */}
-                                            <View style={tw``}>
-                                                <Text style={tw`text-white`}>{user.name || "No user name found"}</Text>
-                                                <Text style={tw`text-white`}>{user.services[0]?.title || "No service"}</Text>
-                                                <Text style={tw`text-white`}>
-                                                    {user.services?.length > 0 && user.services[0]?.description
-                                                        ? user.services[0].description.slice(0, 20)
-                                                        : ''}
-                                                </Text>
+                                            <View style={tw`flex-row justify-between items-center w-[80%]`}>
+                                                <View style={tw`flex-col gap-2`}>
+                                                    {/* <Text style={tw`text-white`}>{user.name || "No user name found"}</Text> */}
+                                                    <Text style={tw`text-[#FFFFFF] font-AvenirLTProBlack text-[16px]`}>{user.services[0]?.title || "No service"}</Text>
+                                                    <Text style={tw`text-[#C9C8C9] font-AvenirLTProLight text-[12px]`}>
+                                                        {user.services?.length > 0 && user.services[0]?.description
+                                                            ? user.services[0].description.slice(0, 20)
+                                                            : ''}
+                                                    </Text>
 
+                                                </View>
+                                                <SvgXml xml={IconRightArrow} />
                                             </View>
                                         </View>
 
@@ -149,7 +156,7 @@ const HomeSearchResult = () => {
                         )}
                     </View>
                 )}
-            </View>
+            </ScrollView>
 
 
             <StatusBar backgroundColor="black" translucent />

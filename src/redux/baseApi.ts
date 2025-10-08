@@ -1,5 +1,6 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getStorageToken } from '../utils';
 
 // Define the types for login credentials and other responses
 interface LoginCredentials {
@@ -54,7 +55,10 @@ interface rateus {
 }
 
 // Base API configuration with cookie support
+ const token = getStorageToken();
+ console.log(token, "token in base api++++++++++++++++")
 export const api = createApi({
+  
   keepUnusedDataFor: 0,
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
@@ -64,8 +68,18 @@ export const api = createApi({
     prepareHeaders: (headers) => {
       // Optionally, set custom headers if needed (e.g., JSON request type)
       // headers.set('Content-Type', 'application/json');
-      return headers;
+       if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+
     },
+    
+     headers: {
+      
+        Authorization: token ? `Bearer ${token}` : '',
+        // Accept: token ? `application/json` : '',
+      },
   }),
   endpoints: () => ({}),
   tagTypes: ['user', 'notification', 'service', 'category', 'Profile'],

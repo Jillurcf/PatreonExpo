@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
-    "@react-native-cookies/cookies": "^6.2.1",
+    "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/drawer": "^7.3.9",
     "@react-navigation/elements": "^2.3.8",
@@ -22,6 +22,7 @@
     "expo": "53.0.22",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
+    "expo-dev-client": "~5.2.4",
     "expo-document-picker": "~13.1.6",
     "expo-file-system": "^18.1.11",
     "expo-font": "~13.3.2",
@@ -35,6 +36,7 @@
     "expo-status-bar": "~2.2.3",
     "expo-symbols": "~0.4.5",
     "expo-system-ui": "~5.0.11",
+    "expo-updates": "~0.28.17",
     "expo-web-browser": "~14.2.0",
     "formik": "^2.4.6",
     "moment": "^2.30.1",
@@ -45,7 +47,6 @@
     "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-image-picker": "^8.2.1",
-    "react-native-mmkv-storage": "^0.11.2",
     "react-native-otp-entry": "^1.8.5",
     "react-native-pdf": "^6.7.7",
     "react-native-phone-number-input": "^2.1.0",
@@ -73,7 +74,6 @@
     "doctor": {
       "reactNativeDirectoryCheck": {
         "exclude": [
-          "@react-native-cookies/cookies",
           "react-native-swipe-list-view",
           "moment",
           "react-native-textarea"
