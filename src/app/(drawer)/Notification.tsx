@@ -1,6 +1,6 @@
 import { useNotificationQuery } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SvgXml } from 'react-native-svg';
@@ -13,15 +13,22 @@ import tw from '../../lib/tailwind';
 type Props = {};
 
 const Notification = () => {
-    const {data, isLoading, isError} = useNotificationQuery({});
-    console.log(data?.data, "data+++++++++")
+  const { data, isLoading, isError } = useNotificationQuery({});
+  console.log(data?.data, "data+++++++++")
+
+  const storedData = useMemo(() => {
+    return [...(data?.data ?? [])].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [data]);
+
 
   return (
     <ScrollView style={tw`flex-1 bg-black px-[4%]`}>
       <View style={tw`flex-row w-full justify-between mt-4`}>
         <TouchableOpacity
           onPress={() => {
-           router.back()
+            router.back()
           }}
           style={tw`bg-black rounded-full p-1`}>
           <SvgXml xml={IconBack} />
@@ -34,9 +41,9 @@ const Notification = () => {
       </View>
       <View style={tw`mt-6`}>
         <FlatList
-          data={data?.data}
+         data={storedData}
           keyExtractor={item => item.id}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <View
                 style={tw`flex-row gap-3 bg-[#262329] items-center p-4 my-1 rounded-lg px-[4%]`}>
@@ -54,7 +61,7 @@ const Notification = () => {
           }}
         />
       </View>
-          <StatusBar backgroundColor="black" translucent />
+      <StatusBar backgroundColor="black" translucent />
     </ScrollView>
   );
 };

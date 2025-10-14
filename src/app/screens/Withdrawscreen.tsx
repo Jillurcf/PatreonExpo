@@ -8,14 +8,14 @@ import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -101,7 +101,7 @@ const WithdrawScreen = () => {
         <View style={tw`mt-8`}>
           <Text style={tw`text-white mt-4`}>Amount</Text>
           <TextInput
-            style={tw`border text-white border-[#262329] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
+            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
             placeholder="Enter Amount"
             placeholderTextColor={'#A9A8AA'}
             cursorColor="white"
@@ -111,7 +111,7 @@ const WithdrawScreen = () => {
           <Text style={tw`text-white`}>Currency
           </Text>
           <TextInput
-            style={tw`border text-white border-[#262329] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
+            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
             placeholder="gbp"
             placeholderTextColor={'#A9A8AA'}
             cursorColor="white"
@@ -161,7 +161,7 @@ const WithdrawScreen = () => {
 
           <View style={tw`mt-2`}>
 
-            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
               <Button
                 title="Done"
                 style={tw`text-white px-6`}

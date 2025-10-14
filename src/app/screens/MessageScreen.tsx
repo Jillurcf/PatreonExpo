@@ -32,8 +32,9 @@ import {
 import NormalModal from '../../components/NormalModal';
 
 const MessageScreen = () => {
-  const { id, serviceId, title, serviceTitle, userName } = useLocalSearchParams();
-  console.log(id, serviceId, title, "id+++++++++++++++++++++++41")
+  const {  } = useLocalSearchParams();
+  const { serviceId, serviceTitle: title, userName } = useLocalSearchParams();
+  console.log(serviceId, title, userName, "serviceId from message screen++++++++++++++")
   const [openModal, setOpenModal] = useState(false);
   const [conversation_id, setConversation_id] = useState();
   const [postSendMessage, { isLoading, isError }] = usePostSendMessageMutation()
@@ -43,13 +44,15 @@ const MessageScreen = () => {
   const [messages, setMessages] = useState([]); // Message state
   const [answer, setAnswer] = useState("");
   const { data: messageHistory } = useMessageHistoryQuery({});
-  console.log(messageHistory?.data, "Message History++++++++++++++++")
-  const { data: user } = useGetUserQuery({})
+  // console.log(messageHistory?.data, "Message History++++++++++++++++")
+  const { data: user } = useGetUserQuery({});
+  const { data: messageByServiceId, isLoading: userLoading } = useGetUserQuery(serviceId);
+  console.log(messageByServiceId?.data, "messageByServiceId++++++++++++++")
 
-
+console.log(messages)
   useEffect(() => {
     if (messageHistory) {
-      const fetchedMessages = messageHistory.data.map((item) => ({
+      const fetchedMessages = messageHistory?.data?.map((item) => ({
         id: item._id,
         user: item.user.name,
         question: item.question,
@@ -97,7 +100,7 @@ const MessageScreen = () => {
 
       try {
         const res = await postSendMessage({ id: serviceId, data: formData });
-        console.log(res, "postSendMessage res+++++++++")
+        // console.log(res, "postSendMessage res+++++++++")
         const aiMessage = {
           text: res?.data?.data || "No response from AI.",
           user: title,
@@ -205,7 +208,7 @@ const MessageScreen = () => {
     <View style={tw`flex-1 px-2 bg-black`}>
       <View style={tw`flex-row w-full justify-between mt-4`}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => router.push("/(drawer)/(tab)/MessageList")}
           style={tw`bg-black rounded-full p-1`}>
           <SvgXml xml={IconBack} />
         </TouchableOpacity>
@@ -222,19 +225,36 @@ const MessageScreen = () => {
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
-            console.log(item, "item+++++++++++++")
+            // console.log(item, "item+++++++++++++")
             if (!item?.answer) return null;
             return (
               (
                 <View style={tw`mb-4`}>
-                  <Text style={tw`font-semibold text-white text-lg`}>{item.user}</Text>
-                  <Text style={tw`text-sm text-white`}>Q. {item.question}</Text>
-                  <Text style={tw`text-sm text-white mt-2`}>Ans. {item?.answer}</Text>
-                  <Text style={tw`text-xs text-gray-400`}>{new Date(item.createdAt).toLocaleString()}</Text>
+                  {/* <Text style={tw`font-semibold text-white text-lg`}>{item.user}</Text> */}
+                  <View style={tw`bg-[#262329] p-3 rounded-3xl rounded-l-none rounded-b-2xl mt-2 w-[80%] flex-row items-end`}>
+                    <View style={tw`w-[85%]`}>
+                      <Text style={tw`text-sm text-white mt-2`}>{item?.answer}</Text>
+                    </View>
+                    <View style={tw`w-15%`}>
+                      <Text style={tw`text-xs text-[#C9C8C9]`}>{new Date(item.createdAt).toLocaleString().slice(12, 17)}</Text>
+                    </View>
+                  </View>
+                  <View style={tw`bg-[#FFFFFF] p-3 rounded-3xl rounded-r-none rounded-b-2xl mt-4 w-[80%] flex-row items-end ml-[20%] `}>
+                   <View style={tw`w-85%`}>
+                      <Text style={tw`text-sm text-[#141316]`}>{item.question}</Text>
+                    </View>
+                    <View style={tw`w-15%`}>
+                      <Text style={tw`text-xs text-[#616161]`}>{new Date(item.createdAt).toLocaleString().slice(12, 17)}</Text>
+                    </View>
+
+                  </View>
+
+
                 </View>
               )
             )
           }}
+          inverted
         />
       </View>
 
@@ -242,7 +262,8 @@ const MessageScreen = () => {
       <View style={tw``}>
         <View style={tw`flex-row items-center p-3  w-[95%]`}>
           <TouchableOpacity
-            onPress={() => selectMediaType()}
+            // onPress={() => selectMediaType()}
+            onPress={() => console.log("Attachment pressed")}
             style={tw`mr-2 absolute right-14 z-30`}>
 
             <Text style={tw`text-white`}>
@@ -256,7 +277,7 @@ const MessageScreen = () => {
           <View
             style={tw`flex-row w-[90%] gap-1 px-[2%] items-center relative`}>
             <TextInput
-              style={tw`w-full h-10 border text-white bg-[#262329] border-gray-400 rounded-2xl px-2`}
+              style={tw`w-full h-14 border text-white bg-[#262329]  rounded-2xl px-2`}
               placeholder="Message..."
               placeholderTextColor={'white'}
               cursorColor={'white'}
@@ -269,8 +290,8 @@ const MessageScreen = () => {
               style={tw` border items-center justify-center p-2 rounded-2xl`}>
               {/* <Text style={tw`text-white text-sm font-MontserratBold`}>Send</Text> */}
               <View
-                style={tw`bg-white h-10 w-10 justify-center rounded-full items-center`}>
-                <SvgXml xml={Uparrow} width={20} />
+                style={tw`bg-white h-12 w-12 justify-center rounded-full items-center`}>
+                <SvgXml xml={Uparrow} width={30} />
               </View>
             </TouchableOpacity>
           </View>

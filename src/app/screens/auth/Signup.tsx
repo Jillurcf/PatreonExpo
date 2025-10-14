@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -11,7 +10,9 @@ import InputText from '../../../components/InputText';
 import tw from '../../../lib/tailwind';
 
 import { useRegisterUserMutation } from '@/src/redux/apiSlice/authSlice';
+import { useCheckExistingUserNameQuery } from '@/src/redux/apiSlice/userSlice';
 import { router, useLocalSearchParams } from 'expo-router';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SvgXml } from 'react-native-svg';
 import {
   IconBack,
@@ -31,14 +32,18 @@ const SignUp = () => {
   console.log(phoneNumber)
   // const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [username, setUsername] = useState<string>('');
+  const [existingUserName, setExistingUserName] = useState<string>('');
+  const [spaceError, setSpaceError] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [isShowPassword, setIsShowPassword] = useState(false);
-    const [signupError, setSignupError] = useState();
+  const [signupError, setSignupError] = useState();
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const [responsFalse, setResponsFalse] = useState();
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   console.log(responsFalse, "responsFalse++++++++")
   const [SignUp, { isLoading, isError }] = useRegisterUserMutation();
+  const { data, isFetching, refetch: userRefetch } = useCheckExistingUserNameQuery(username, { skip: !username });
   console.log('27', name, email, password, username);
   // const data = {email, password, name:username, address:location}
 
@@ -50,7 +55,60 @@ const SignUp = () => {
 
   console.log(allFilled, "allFilled")
 
+  console.log(allFilled, "allFilled")
+
+  const handleUsernameChange = async (text: string) => {
+    if (text.includes(' ')) {
+      setSpaceError('Username cannot contain spaces.');
+      setUsername('');
+      setExistingUserName('');
+      return;
+    } else {
+      setSpaceError(null);
+      setUsername(text);
+    }
+
+    if (text) {
+      setExistingUserName('Checking username...');
+      try {
+        const result = await userRefetch(); // wait for query to finish
+        console.log(result.data, 'refetch result');
+        if (result.data?.success === true) {
+          setExistingUserName('Username already exists. Please choose another.');
+        } else {
+          setExistingUserName('Username is available.');
+        }
+      } catch (err) {
+        console.error(err);
+        setExistingUserName('Error checking username.');
+      }
+    } else {
+      setExistingUserName('');
+    }
+  };
+  const validatePassword = () => {
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters long.');
+      return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    if (!username) {
+
+      return;
+    }
+    if (data?.success === true) {
+      setExistingUserName('Username already exists. Please choose another.');
+    } else if (data?.success === false) {
+      setExistingUserName('Username is available.');
+    }
+  }, [data, username]);
+
   const handleSignup = async () => {
+    if (!validatePassword()) return;
+    if (existingUserName === "Username already exists. Please choose another.") return;
     console.log("click")
     try {
       // Validate required fields before sending the request
@@ -74,23 +132,22 @@ const SignUp = () => {
       const response = await SignUp(formData).unwrap();
       console.log(response, "response singup=========")
       if (response?.success === true) {
-        router.push({pathname: "/screens/auth/verifyScreen", params: {email: email}});
+        router.push({ pathname: "/screens/auth/verifyScreen", params: { email: email } });
       } else if (response?.success === false) {
         setResponsFalse(response?.message)
       }
 
     } catch (err) {
       console.error('Error during SignUp:', err);
-      setSignupError(err?.data?.message)    
+      setSignupError(err?.data?.message)
 
 
     }
   };
 
   return (
-    <ScrollView
-      keyboardShouldPersistTaps="always"
-      showsVerticalScrollIndicator={false}
+    <KeyboardAwareScrollView
+   
       contentContainerStyle={tw`bg-black flex-1 px-[4%] h-full justify-between`}>
       <View>
         <View style={tw`flex-row w-full justify-between mt-4`}>
@@ -140,8 +197,19 @@ const SignUp = () => {
                   placeholderColor={'#949494'}
                   label={'User name'}
                   iconRight={IconUser}
-                  onChangeText={(text: any) => setUsername(text)}
+                  onChangeText={handleUsernameChange}
                 />
+                {spaceError && (
+                  <Text style={tw`text-red-600 text-xs`}>{spaceError}*</Text>
+                )}
+                {existingUserName ? (
+                  existingUserName.includes("available") ? (
+                    <Text style={tw`text-green-600 text-xs`}>{existingUserName}*</Text>
+                  ) : (
+                    <Text style={tw`text-red-600 text-xs`}>{existingUserName}*</Text>
+                  )
+                ) : null}
+
               </View>
             </View>
             <InputText
@@ -155,7 +223,7 @@ const SignUp = () => {
               iconLeft={IconEnvelope}
               onChangeText={(text: any) => setEmail(text)}
             />
-              {signupError && (
+            {signupError && (
               <Text style={tw`text-red-600 text-xs`}>{signupError}*</Text>
             )}
             {responsFalse === "Please verify your email" && (
@@ -177,6 +245,9 @@ const SignUp = () => {
                 setIsShowPassword(!isShowPassword)
               }
             />
+            {passwordError && (
+              <Text style={tw`text-red-600 text-xs`}>{passwordError}*</Text>
+            )}
           </View>
         </View>
       </View>
@@ -191,7 +262,7 @@ const SignUp = () => {
         />
       </View>
       <StatusBar backgroundColor="black" translucent={false} />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

@@ -11,7 +11,7 @@ import {
 import Button from '../../../components/Button';
 import tw from '../../../lib/tailwind';
 
-import { useEmailVerifySignupMutation, usePhoneNoVerificationMutation } from '@/src/redux/apiSlice/authSlice';
+import { useEmailVerifySignupMutation, useOthersEmailVerifyMutation, usePhoneNoVerificationMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import { OtpInput } from 'react-native-otp-entry';
 
@@ -25,7 +25,8 @@ const VerifyScreen = () => {
   const [otp, setOtp] = useState<string>('');
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const inputs = useRef<Array<TextInput | null>>([]);
- const [emailVerify, {isLoading}] = useEmailVerifySignupMutation();
+  const [emailVerify, { isLoading }] = useEmailVerifySignupMutation();
+  const [emailVerification] = useOthersEmailVerifyMutation();
   const [seconds, setSeconds] = useState(119);
   const [isActive, setIsActive] = useState(true);
   const { screenName, phoneNumber, email, othersEmailvery } = useLocalSearchParams()
@@ -120,30 +121,34 @@ const VerifyScreen = () => {
 
   };
 
-  const handleOtopSendAgain = async () => {
+  const handleSendAgainOtp = async () => {
+    setSeconds(119);
+    setIsActive(true);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.log('Error', 'Please enter a valid email address.');
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append("phone", phoneNumber);
+      formData.append("email", email);
       console.log(formData, "formData");
 
-      const res = await phoneNoVerification(formData)
-      // console.log(`Phone verification response (attempt ${attempts + 1}):`, res?.data?.data);
-      console.log(res?.data?.data, "otp send again +++++++++++++++res")
+      const res = await emailVerification(formData);
+      console.log(res, "resend otp response");
+
       // if (res?.success) {
       //   success = true;
       // if (res?.data?.success === true) {
-      //   router.push({
-      //     pathname: '/screens/auth/verifyScreen',
-      //     params: { screenName, phoneNumber: phoneNumber },
-      //   });
-      //   return; // Stop execution after successful navigation
-      //   // }
+      //   navigation.navigate("Verify", { screenName: screenName, email: email });
+      //   return;
       // }
 
     } catch (err) {
-      console.error(`Verification error `, err);
+      console.error(`Verification error (attempt)`, err);
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -182,7 +187,7 @@ const VerifyScreen = () => {
           </Text>
           <Text style={tw`text-white text-xs font-AvenirLTProBlack mb-8`}>
             Enter code that we send you on your email.
-          </Text> 
+          </Text>
 
           <View style={tw` gap-y-4`}>
             <View style={tw`flex-row justify-between items-center gap-2`}>
@@ -236,7 +241,7 @@ const VerifyScreen = () => {
                   // pinCodeContainerStyle: tw`bg-red-300`,
                   pinCodeTextStyle: tw`text-white `,
                   focusStickStyle: tw`bg-red-400 text-red-700`,
-                  focusedPinCodeContainerStyle: tw`border-gray-600`,
+                  focusedPinCodeContainerStyle: tw`border-[#565358]`,
                   placeholderTextStyle: tw`text-white`,
                   filledPinCodeContainerStyle: tw``,
                   disabledPinCodeContainerStyle: tw`border-red-500`,
@@ -248,7 +253,7 @@ const VerifyScreen = () => {
                 Haven't received any code?
               </Text>
               <TouchableOpacity
-                onPress={handleOtopSendAgain}
+                  onPress={handleSendAgainOtp}
               >
                 <Text style={tw`text-white font-AvenirLTProBlack underline`}>Send again</Text>
               </TouchableOpacity>

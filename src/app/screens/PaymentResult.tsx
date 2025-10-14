@@ -1,3 +1,5 @@
+import { router, useLocalSearchParams } from 'expo-router';
+import React from 'react';
 import {
   Image,
   StatusBar,
@@ -5,29 +7,27 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import tw from '../../lib/tailwind';
 import TButton from '../../components/TButton';
-import { router, useLocalSearchParams } from 'expo-router';
+import tw from '../../lib/tailwind';
 
 type Props = {};
 
 const PaymentResult = () => {
    const { id, serviceId, title } = useLocalSearchParams();
    console.log(id, serviceId, "id===================17")
-    useEffect(() => {
-      const timer = setTimeout(() => {
-       router.replace({
-        pathname: "/screens/MessageScreen", 
-        params: {
-          id:id,
-          serviceId: serviceId,
-          title: title,
-        }
-       })
-      }, 1000);
-      return () => clearTimeout(timer)
-    }, []);
+    // useEffect(() => {
+    //   const timer = setTimeout(() => {
+    //    router.replace({
+    //     pathname: "/screens/MessageScreen", 
+    //     params: {
+    //       id:id,
+    //       serviceId: serviceId,
+    //       title: title,
+    //     }
+    //    })
+    //   }, 1000);
+    //   return () => clearTimeout(timer)
+    // }, []);
   return (
     <View style={tw`flex-1 bg-black items-center justify-center px-[4%]`}>
       
@@ -47,7 +47,7 @@ const PaymentResult = () => {
           
           <View style={tw`w-full items-center my-6`}>
             <TButton
-              onPress={() => router.back()}
+              onPress={() => router.push("/(drawer)/(tab)")}
               title="Back"
               titleStyle={tw`text-black`}
               containerStyle={tw`w-[90%] bg-white`}

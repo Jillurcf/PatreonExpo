@@ -18,7 +18,7 @@ const serviceSlice = api.injectEndpoints({
           queryString += `?${queryParams}`;
         }
 
-        console.log("GET URL:", queryString); 
+        console.log("GET URL:", queryString);
         return {
           url: queryString,
           method: 'GET',
@@ -67,7 +67,14 @@ const serviceSlice = api.injectEndpoints({
       }),
       providesTags: ['service'],
     }),
-
+    updateServicesById: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/services/update-service-by-id/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ['service'],
+    }),
     deleteServices: builder.mutation({
       query: (id) => ({
         url: `/services/delete-service-by-id/${id}`,
@@ -87,9 +94,14 @@ const serviceSlice = api.injectEndpoints({
       },
       providesTags: ['service'],
     }),
-
-  }),
-
+    getMessageByServiceId: builder.query({
+      query: (id) => ({
+        url: `/services/get-replies-for-service/${id}`,
+        method: "GET",
+      }),
+      providesTags: ['service'],
+    }),
+  })
 });
 
 export const { useGetAllServiceQuery,
@@ -99,5 +111,6 @@ export const { useGetAllServiceQuery,
   useGettMyServicesQuery,
   useDeleteServicesMutation,
   useGetServicesByIdQuery,
-  useGetMessageListQuery
+  useGetMessageListQuery,
+  useUpdateServicesByIdMutation
 } = serviceSlice;

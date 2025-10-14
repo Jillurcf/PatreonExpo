@@ -224,7 +224,7 @@ const EnterInput = () => {
             onPress={handleSave}
             titleStyle={tw`text-black font-bold text-center`}
             title={loading ? "Saving" : "Save"}
-            containerStyle={tw`bg-primary w-[90%] rounded-full`}
+            containerStyle={tw`bg-primary w-[100%] rounded-2xl`}
           />
         </View>
         <NormalModal
@@ -238,10 +238,10 @@ const EnterInput = () => {
             </Text>
 
             <View style={tw`mt-2`}>
-              <View style={tw`border-t-2 border-gray-800 w-full`}>
+              <View style={tw`border-t-2 border-[#565358] w-full`}>
 
               </View>
-              <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+              <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
                 <Button
                   title="Continue"
                   style={tw`text-white px-6`}

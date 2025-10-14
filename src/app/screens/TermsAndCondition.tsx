@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -15,11 +16,13 @@ import { SvgXml } from 'react-native-svg';
 import { IconBack } from '../../assets/icons/icons';
 import tw from '../../lib/tailwind';
 
+import HtmlToText from '@/src/components/HtmlToText';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 const TermsAndCondition = () => {
+  const { width } = useWindowDimensions();
   const handleDownload = async () => {
     try {
       // Load the asset (PDF in assets/pdfs/)
@@ -57,9 +60,11 @@ const TermsAndCondition = () => {
         </Text>
         <View style={tw`w-8`} />
       </View>
-
+      <ScrollView style={{ flex: 1, padding: 15, backgroundColor: '#fff', marginTop: 20, borderRadius: 10, minHeight: 600 }}>
+        <HtmlToText />
+      </ScrollView>
       {/* Content */}
-      <View style={tw`my-6`}>
+      {/* <View style={tw`my-6`}>
         <Text style={tw`text-white font-AvenirLTProBlack text-xl`}>
           1. Introduction
         </Text>
@@ -72,17 +77,17 @@ const TermsAndCondition = () => {
           This agreement is effective between you and Betweenai Limited (“we”, “us” “our”) as
           of the date of your accepting these Terms. Additional terms may apply...
         </Text>
-      </View>
+      </View> */}
 
       {/* Download Button */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={handleDownload}
         style={tw`bg-PrimaryFocus p-4 rounded-2xl mb-10`}
       >
         <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
           Read more? Download TOS as PDF
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <StatusBar backgroundColor="black" translucent={false} />
     </ScrollView>

@@ -16,8 +16,8 @@ const HelpSupport = () => {
   const [desc, setDesc] = useState('');
   const [helpAndSupport, { isLoading, isError }] = useHelpAndSupportMutation();
   const [errorMessage, setEroorMessage] = useState('');
-   const [messageConfirmationModalVisible, setMessageConfirmationModallVisible] =
-      useState(false);
+  const [messageConfirmationModalVisible, setMessageConfirmationModallVisible] =
+    useState(false);
   console.log(errorMessage, 'error message');
 
   const [alertVisible, setAlertVisible] = useState(false);
@@ -88,9 +88,9 @@ const HelpSupport = () => {
             placeholderColor={'#949494'}
             label={'Subject'}
             onChangeText={(text: any) => setSubject(text)}
-              style={tw` text-white`}
+            style={tw` text-white`}
             labelStyle={tw`text-white font-AvenirLTProBlack`}
-            containerStyle={tw`border bg-black border-[#565358] h-10`}
+            containerStyle={tw` bg-[#262329] h-10`}
             cursorColor="white"
 
           />
@@ -104,7 +104,7 @@ const HelpSupport = () => {
             style={tw`h-48 text-white`}
             placeholderAlignment={'top'}
             labelStyle={tw`text-white font-AvenirLTProBlack`}
-            containerStyle={tw`border bg-black border-[#565358] `
+            containerStyle={tw` bg-[#262329]`
             }
             numberOfLines={20}
             maxLength={3000}
@@ -114,33 +114,33 @@ const HelpSupport = () => {
           />
 
         </View>
-         {errorMessage === "title cannot be empty" ? (
-        <Text style={tw`text-xs text-red-600 mb-2`}>Subject cannot be empty</Text>
-      ) : errorMessage === "description cannot be empty" ? (<Text style={tw`text-xs text-red-600 mb-2`}>Description cannot be empty*</Text>) : ""}
-      <Button
-        disabled={!allData}
+        {errorMessage === "title cannot be empty" ? (
+          <Text style={tw`text-xs text-red-600 mb-2`}>Subject cannot be empty</Text>
+        ) : errorMessage === "description cannot be empty" ? (<Text style={tw`text-xs text-red-600 mb-2`}>Description cannot be empty*</Text>) : ""}
+        <Button
+          disabled={!allData}
 
-        title={'Continue'}
-        style={tw`${allData ? 'text-black' : 'text-gray-500'} font-AvenirLTProBlack items-center`}
-        containerStyle={tw`${allData ? 'bg-white' : 'bg-PrimaryFocus'} mt-4 h-14 rounded-2xl justify-center`}
-        onPress={handleSend}
-      />
+          title={'Continue'}
+          style={tw`${allData ? 'text-black' : 'text-gray-500'} font-AvenirLTProBlack items-center`}
+          containerStyle={tw`${allData ? 'bg-white' : 'bg-PrimaryFocus'} mt-4 h-14 rounded-2xl justify-center`}
+          onPress={handleSend}
+        />
       </ScrollView>
-     
-        <NormalModal
-              layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-                containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
-            visible={messageConfirmationModalVisible}
-            setVisible={setMessageConfirmationModallVisible}
-          >
-                  <View>
+
+      <NormalModal
+        layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
+        containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+        visible={messageConfirmationModalVisible}
+        setVisible={setMessageConfirmationModallVisible}
+      >
+        <View>
           <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
-          Message sent successfully!
+            Message sent successfully!
           </Text>
 
           <View style={tw`mt-2`}>
-            
-            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+
+            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
               <Button
                 title="Done"
                 style={tw`text-white px-6`}
@@ -152,7 +152,7 @@ const HelpSupport = () => {
             </View>
           </View>
         </View>
-          </NormalModal>
+      </NormalModal>
     </View>
   );
 };

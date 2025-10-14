@@ -124,7 +124,7 @@ const ExplainMembershipScreen = () => {
                                 placeholderTextColor="#ccc"
                                 value={value}
                                 onChangeText={(text) => handleChange(text, index)}
-                                style={tw`flex-1 bg-neutral-900 text-white px-4 py-3 rounded-lg`}
+                                style={tw`flex-1 bg-neutral-900 text-white px-4 border border-[#565358] py-4 rounded-2xl`}
                             />
                         </View>
                     ))}
@@ -151,7 +151,7 @@ const ExplainMembershipScreen = () => {
                         onPress={handleSave}
                         title={isLoading ? "Saving..." : "Save"}
                         titleStyle={tw`text-black font-bold`}
-                        containerStyle={tw`bg-white w-[90%] rounded-full`}
+                        containerStyle={tw`bg-white w-[100%] rounded-2xl`}
                     />
                 </View>
                 <NormalModal
@@ -165,10 +165,10 @@ const ExplainMembershipScreen = () => {
                         </Text>
 
                         <View style={tw`mt-2`}>
-                            <View style={tw`border-t-2 border-gray-800 w-full`}>
+                            <View style={tw`border-t-2 border-[#565358] w-full`}>
 
                             </View>
-                            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+                            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
                                 <Button
                                     title="Continue"
                                     style={tw`text-white px-6`}

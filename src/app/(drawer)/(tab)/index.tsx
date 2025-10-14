@@ -83,7 +83,7 @@ const Discover = () => {
       <View style={tw`my-4`}>
         <TouchableOpacity
           onPress={() => router.push('/screens/HomeSearchResult')}
-          style={tw`bg-[#262329] border h-14 border-[#565358] rounded-2xl  px-4 justify-center`}>
+          style={tw`bg-[#262329]  h-14  rounded-2xl  px-4 justify-center`}>
           <View style={tw`flex-row items-center gap-3`}>
             <SvgXml xml={IconSearch} />
             <Text style={tw`text-white text-base`}>Search here</Text>

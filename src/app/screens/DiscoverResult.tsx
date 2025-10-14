@@ -244,12 +244,12 @@ const DiscoverResult = () => {
   });
 
 
-// initial data logging code for testing purposes
+  // initial data logging code for testing purposes
   useEffect(() => {
     console.log("DATA:", data);
     console.log("ERROR:", error);
   }, [data, error]);
-  console.log(data, 'data+++++++');
+  console.log(data?.data?.result?.length, 'data+++++++');
 
 
 
@@ -300,7 +300,7 @@ const DiscoverResult = () => {
       <View style={tw`my-8`}>
         <InputText
           style={tw`text-white`}
-          containerStyle={tw`bg-[#262329] border h-14 relative border-[#565358]`}
+          containerStyle={tw`bg-[#262329] h-14 relative`}
           labelStyle={tw`text-white font-AvenirLTProBlack mt-3`}
           placeholder={'Search by service title'}
           cursorColor={'white'}
@@ -334,24 +334,31 @@ const DiscoverResult = () => {
           return (
             <TouchableOpacity
               onPress={() => handleService(index, item)}
-              style={tw`flex-row items-center bg-[#262329] my-1 rounded-2xl gap-2 p-2`}>
-              <View style={tw`flex-row items-center`}>
-                <Image
-                  source={contributorImage}
-                  style={tw`w-12 h-12 rounded-full mr-2`}
-                  resizeMode="cover"
-                />
+              style={tw`flex-row items-center bg-[#262329] my-1 rounded-2xl gap-2 p-3`}>
+              <View style={tw`flex-row items-center justify-center`}>
+                <View style={tw`relative items-center mr-2`}>
+                  <Image
+                    source={contributorImage}
+                    style={tw`w-12 h-12 rounded-full`}
+                    resizeMode="cover"
+                  />
+                </View>
 
-                <View style={tw`flex-1 pb-2`}>
-                  <Text style={tw`text-white font-AvenirLTProBlack`}>
-                    {item?.title}
-                  </Text>
-                  <Text style={tw`text-white mt-2 font-AvenirLTProBlack`}>
-                    {item?.subtitle}
-                  </Text>
-                  <Text style={tw`text-white text-xs mt-2 font-AvenirLTProBlack`}>
-                    Price: ${item?.price}
-                  </Text>
+                <View style={tw`flex-1 justify-center`}>
+                  <View style={tw`flex-col gap-2`}>
+                    <Text style={tw`text-white font-AvenirLTProBlack`}>
+                      {item?.title}
+                    </Text>
+                     <Text style={tw`text-[#C9C8C9] font-AvenirLTProLight`}>
+                      {item?.description
+                        ? item.description.replace(/\s*\n\s*/g, ' ').trim().slice(0, 30)
+                        : "Service Description"}
+                    </Text>
+                  </View>
+                  {/* <View style={tw`flex-row justify-between `}>
+                   
+                  </View> */}
+
                 </View>
 
                 <SvgXml xml={IconRightArrow} />

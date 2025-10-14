@@ -113,7 +113,7 @@ const PaymentMethodScreen = () => {
                 onPress={() => router.push("/screens/Withdrawscreen")}
                 titleStyle={tw`text-black font-bold text-center`}
                 title="Withdraw"
-                containerStyle={tw`bg-primary w-[90%] rounded-full`}
+                containerStyle={tw`bg-primary w-[100%] rounded-2xl`}
               />
             </View>
           ) : (
@@ -122,7 +122,7 @@ const PaymentMethodScreen = () => {
                 onPress={handleCreateWallet}
                 titleStyle={tw`text-black font-bold text-center`}
                 title="Create Wallet"
-                containerStyle={tw`bg-primary w-[90%] rounded-full`}
+                containerStyle={tw`bg-primary w-[100%] rounded-2xl`}
               />
             </View>
           )}
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   dropdown: {
     height: 50,
     color: 'white',
-    borderColor: 'gray',
+    borderColor: '#565358',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,

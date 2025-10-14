@@ -1,6 +1,8 @@
 import { IconBack, IconDollar, IconUpload } from '@/src/assets/icons/icons';
+import Button from '@/src/components/Button';
+import NormalModal from '@/src/components/NormalModal';
 import tw from '@/src/lib/tailwind';
-import { useGetServicesByIdQuery } from '@/src/redux/apiSlice/serviceSlice';
+import { useGetServicesByIdQuery, useUpdateServicesByIdMutation } from '@/src/redux/apiSlice/serviceSlice';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -34,16 +36,21 @@ type Props = {};
 
 const EditService = (props: Props) => {
     const { id, } = useLocalSearchParams();
-    console.log(id, "id==================")
+    // console.log(id, "id==================")
     const isMounted = useRef(true);
     const [fields, setFields] = useState(['', '', '']);
     const [promptInput, setPromptInput] = useState('');
     const [selectedPdf, setSelectedPdf] = useState<any>(null);
+    const [updateError, setUpdateError] = useState();
+    console.log(promptInput, "promptInput==================")
     const [isFocus, setIsFocus] = useState(false);
     const [selectedImages, setSelectedImages] = useState();
-    const { data: serviceData } = useGetServicesByIdQuery(id)
+    const { data: serviceData } = useGetServicesByIdQuery(id);
+    const [updateServicesById] = useUpdateServicesByIdMutation();
+    const [serviceCreationConfirmationModalVisible, setServiceCreationConfirmationModalVisible] =
+        useState(false);
     const [services, setServices] = useState({})
-    console.log(serviceData?.data, "serviceData=======================")
+    // console.log(serviceData?.data, "serviceData=======================")
 
     const [value, setValue] = useState({
         title: '',
@@ -53,7 +60,7 @@ const EditService = (props: Props) => {
         description: '',
         category: '',
     });
-    console.log(value, "value=====================")
+    // console.log(value, "value=====================")
     const [initialized, setInitialized] = useState(false); // to prevent overwriting on every render
     // useEffect(() => {
     //     const service = serviceData?.data;
@@ -150,13 +157,15 @@ const EditService = (props: Props) => {
             formData.append('about', promptInput)
             formData.append('pdfFiles', selectedImages)
             // formData.append('explainMembership', fields)
-            formData.append("explainMembership", JSON.stringify(fields)); // ← becomes: '["Member ", "Member 1", "Member 2"]'
+            formData.append("explainMembership", JSON.stringify(fields));
+            const res = await updateServicesById({ id, data: formData })
+            if (res?.data?.success === true) {
+                router.push('/(drawer)/SettingProfile');
+                setServiceCreationConfirmationModalVisible(true)
+            } else if (res?.data?.error) {
+                setUpdateError(res?.data?.error)
+            }
 
-            console.log(formData, "formData==================")
-            // const res = await postBecmeAContibutor(formData).unwrap();
-            router.push('/(drawer)/SettingProfile');
-            console.log(res, "res++++++++++++++++")
-            Alert.alert("Service created succcessfully")
         } catch (err) {
             console.log(err)
         }
@@ -219,7 +228,7 @@ const EditService = (props: Props) => {
             <View style={tw`flex-row w-full items-center p-3`}>
 
                 <TextInput
-                    style={tw`w-full h-10 border text-white bg-[#262329] border-gray-400 rounded-2xl px-2`}
+                    style={tw`w-full h-10 border text-white bg-[#262329] -[#565358] rounded-2xl px-2`}
                     placeholder="Write title here"
                     placeholderTextColor={'white'}
                     defaultValue={services?.title}
@@ -229,10 +238,10 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Subtitle */}
-             <Text style={tw`text-white font-bold text-xs`}>Subtitle</Text>
+            <Text style={tw`text-white font-bold text-xs`}>Subtitle</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
                 <TextInput
-                    style={tw`w-full h-10 border text-white bg-[#262329] border-gray-400 rounded-2xl px-2`}
+                    style={tw`w-full h-10 border text-white bg-[#262329] border-[#565358] rounded-2xl px-2`}
                     placeholder="Write subtitle"
                     placeholderTextColor={'white'}
                     defaultValue={services?.subtitle}
@@ -241,13 +250,13 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Currency */}
-              <Text style={tw`text-white font-bold text-xs`}>Price</Text>
+            <Text style={tw`text-white font-bold text-xs`}>Price</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
                 <TouchableOpacity style={tw`absolute right-6 z-30`}>
                     <SvgXml xml={IconDollar} width={20} height={20} />
                 </TouchableOpacity>
                 <TextInput
-                    style={tw`w-full h-10 border text-white bg-[#262329] border-gray-400 rounded-2xl px-2`}
+                    style={tw`w-full h-10 border text-white bg-[#262329] border-[#565358] rounded-2xl px-2`}
                     placeholder="Input currency"
                     placeholderTextColor={'white'}
                     defaultValue={services?.price?.toString()}
@@ -276,9 +285,9 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Dropdown */}
-            
+
             <View style={tw`mt-8`}>
-                  <Text style={tw`text-white font-bold text-xs mb-2 `}>Category</Text>
+                <Text style={tw`text-white font-bold text-xs mb-2 `}>Category</Text>
                 <Dropdown
                     style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
                     placeholderStyle={styles.placeholderStyle}
@@ -324,6 +333,9 @@ const EditService = (props: Props) => {
             >
                 <Ionicons name="add" size={24} color="white" />
             </TouchableOpacity>
+            {updateError && (
+                <Text style={tw`text-red-600 py-4`}>{updateError}*</Text>
+            )}
             {/* Save Button */}
             <TouchableOpacity
                 onPress={handleSave}
@@ -331,6 +343,33 @@ const EditService = (props: Props) => {
             >
                 <Text style={tw`text-black font-bold text-base`}>Save</Text>
             </TouchableOpacity>
+            <NormalModal
+                layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
+                containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+                visible={serviceCreationConfirmationModalVisible}
+                setVisible={setServiceCreationConfirmationModalVisible}>
+                <View>
+                    <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+                        Service updated succcessfully
+                    </Text>
+
+                    <View style={tw`mt-2`}>
+                        <View style={tw`border-t-2 border-[#565358] w-full`}>
+
+                        </View>
+                        <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
+                            <Button
+                                title="Continue"
+                                style={tw`text-white px-6`}
+                                containerStyle={tw`bg-gray-900`}
+                                onPress={() => {
+                                    setServiceCreationConfirmationModalVisible(false);
+                                }}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </NormalModal>
         </ScrollView>
     );
 };

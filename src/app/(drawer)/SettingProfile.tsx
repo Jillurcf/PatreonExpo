@@ -1,4 +1,5 @@
 import { usePostCreateConnectMutation, usePostCreateRecipientMutation } from '@/src/redux/apiSlice/paymentSlice';
+import { useGettMyServicesQuery } from '@/src/redux/apiSlice/serviceSlice';
 import { useGetUserQuery, usePatchUpdateUserProfileMutation } from '@/src/redux/apiSlice/userSlice';
 import { imageUrl } from '@/src/redux/baseApi';
 import * as FileSystem from "expo-file-system";
@@ -35,6 +36,7 @@ const SettingProfile = () => {
   const [onboardingUrl, setOnboardingUrl] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [patchUpdateUserProfile] = usePatchUpdateUserProfileMutation();
+  const { data: myService } = useGettMyServicesQuery({});
   console.log(data?.data, "data======================")
   const fullImageUrl = data?.data?.image ? `${imageUrl}/${data.data.image}` : null;
 
@@ -167,11 +169,11 @@ const SettingProfile = () => {
           {data?.data?.username || 'Username'}
         </Text>
         <View style={tw`px-[4%] mt-2`}>
-        {data && (
+          {data && (
             <Text style={tw`text-white font-AvenirLTProBlack`}>
-            {expanded ? data?.data?.bio : data?.data?.bio?.slice(0, 35) }
-          </Text>
-        )}
+              {expanded ? data?.data?.bio : data?.data?.bio?.slice(0, 35)}
+            </Text>
+          )}
           {data?.data?.bio?.length > 35 && (
             <TouchableOpacity onPress={() => setExpanded(!expanded)}>
               <Text style={tw`text-blue-600 font-AvenirLTProBlack underline text-xs`}>
@@ -185,7 +187,7 @@ const SettingProfile = () => {
       {/* Stats Box */}
       <View style={tw`flex items-center justify-center my-8`}>
         <View style={tw`bg-[#262329] w-[90%] h-20 rounded-2xl flex-row items-center justify-between`}>
-          <View style={tw`border-r-2 w-[33%] h-12 border-[#091218] items-center justify-center`}>
+          <View style={tw`border-r-2 w-[33%] h-12 border-[#565358] items-center justify-center`}>
             <TouchableOpacity>
               <Text style={tw`text-white text-center font-AvenirLTProBlack text-xl`}>
                 {data?.data?.subscriptions?.length}
@@ -197,10 +199,10 @@ const SettingProfile = () => {
             </TouchableOpacity>
           </View>
 
-          <View style={tw`border-r-2 w-[33%] h-12 border-[#091218] items-center justify-center`}>
+          <View style={tw`border-r-2 w-[33%] h-12 border-[#565358] items-center justify-center`}>
             <TouchableOpacity>
               <Text style={tw`text-white text-center font-AvenirLTProBlack text-xl`}>
-                {data?.data?.subscriberCount}
+                {myService?.data[0].subscribers.length || 0}
               </Text>
               <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
                 Subscribers
@@ -235,15 +237,29 @@ const SettingProfile = () => {
       {/* Contributor Box */}
       <View style={tw`items-center justify-center`}>
         <View style={tw`bg-[#262329] w-[90%] mt-6 rounded-2xl p-[6%]`}>
-          <Text style={tw`text-white text-xl text-center font-AvenirLTProBlack`}>
-            Become A Contributor
-          </Text>
-          <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
-            Consult People anytime anywhere.
-          </Text>
-          <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
-            First connect your stripe account for payouts, then create your agent.
-          </Text>
+          {(data?.data?.services?.length ?? 0) < 1 ? (
+            <View>
+              <Text style={tw`text-white text-xl text-center font-AvenirLTProBlack`}>
+                Become A Contributor
+              </Text>
+              <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
+                Consult People anytime anywhere.
+              </Text>
+              <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
+                First connect your stripe account for payouts, then create your agent.
+              </Text>
+            </View>
+          ) : (
+            <View>
+              <Text style={tw`text-white text-lg text-center font-AvenirLTProBlack`}>
+                Welcome!
+              </Text>
+              <Text style={tw`text-white text-center font-AvenirLTProBlack`}>
+               Now you are a contributor.
+              </Text>
+            </View>
+          )}
+
           <View style={tw`w-full items-center mt-8`}>
             {/* {data?.data?.attachedBankAccounts.length < 0 ? (
               <TButton

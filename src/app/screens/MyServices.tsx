@@ -109,7 +109,7 @@ const MyServices = (props: Props) => {
                                         <TouchableOpacity
                                             onPress={() => handleDelete(item)}
                                             style={tw`py-1 px-3 rounded-xl bg-red-500`}>
-                                            <Text style={tw`text-white font-AvenirLTProBlack border-b border-white`}>Del.</Text>
+                                            <Text style={tw`text-white font-AvenirLTProBlack border-b border-[#565358]`}>Del.</Text>
                                         </TouchableOpacity>
 
                                     </View>

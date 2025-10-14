@@ -65,7 +65,7 @@ const AttachBankAccountScreen = () => {
                         {/* First Name */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Routing Number</Text>
                         <TextInput
-                            style={tw`border text-white border-[#262329] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="108800"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -77,7 +77,7 @@ const AttachBankAccountScreen = () => {
                         {/* Last Name */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Account Number</Text>
                         <TextInput
-                            style={tw`border text-white border-[#262329] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="00012345"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -93,7 +93,7 @@ const AttachBankAccountScreen = () => {
                             </Text>
                         )}
                         <Button
-                            containerStyle={tw`h-10`}
+                            containerStyle={tw`py-3`}
                             titleStyle={tw`font-AvenirLTProHeavy`}
                             onPress={handleSubmit} // Formik's handleSubmit
                             title={isLoading ? "Saving..." :"Save"}
@@ -113,12 +113,12 @@ const AttachBankAccountScreen = () => {
                     </Text>
 
                     <View style={tw`mt-2`}>
-                        <View style={tw`border-t-2 border-gray-800 w-full`}>
+                        <View style={tw`border-t-2 border-[#565358] w-full`}>
                             <Text style={tw`text-white text-xs font-RoboBold my-2`}>Account number: {updatedValue?.account_number}</Text>
                             <Text style={tw`text-white text-xs font-RoboBold `}>Routing number: {updatedValue?.sort_code}</Text>
                             <Text style={tw`text-white text-xs font-RoboBold my-2`}>Account Id: {updatedResponse?.id}</Text>
                         </View>
-                        <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+                        <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
                             <Button
                                 title="Done"
                                 style={tw`text-white px-6`}

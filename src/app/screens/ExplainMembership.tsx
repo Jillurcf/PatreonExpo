@@ -702,7 +702,6 @@ import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   Modal,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -712,6 +711,7 @@ import {
 
 import { useColorScheme } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SvgXml } from 'react-native-svg';
 
 
@@ -863,7 +863,8 @@ useEffect(() => {
 
 
   return (
-    <ScrollView contentContainerStyle={tw`flex-1 bg-black px-[4%]`}>
+    <KeyboardAwareScrollView
+    contentContainerStyle={tw`flex-1 bg-black px-[4%]`}>
       <View style={tw`mb-10`}>
         <View style={tw`flex-row w-full justify-between items-center`}>
           <TouchableOpacity onPress={() => router.back()} style={tw`bg-black rounded-full p-1`}>
@@ -875,7 +876,7 @@ useEffect(() => {
 
         <Text style={tw`text-white font-bold text-xs mt-4`}>Title</Text>
         <TextInput
-          style={tw`mt-1 w-full h-10 text-white bg-[#262329] border border-gray-400 rounded-2xl px-3`}
+          style={tw`mt-1 w-full h-10 text-white bg-[#262329] border border-[#565358] rounded-2xl px-3`}
           placeholder="Write title here"
           placeholderTextColor="white"
           value={value.title}
@@ -887,7 +888,7 @@ useEffect(() => {
         )}
         <Text style={tw`text-white font-bold text-xs mt-2`}>Subtitle</Text>
         <TextInput
-          style={tw`mt-1 w-full h-10 text-white bg-[#262329] border border-gray-400 rounded-2xl px-3`}
+          style={tw`mt-1 w-full h-10 text-white bg-[#262329] border border-[#565358] rounded-2xl px-3`}
           placeholder="Write subtitle here"
           placeholderTextColor="white"
           value={value.subtitle}
@@ -900,7 +901,7 @@ useEffect(() => {
         <Text style={tw`text-white font-bold text-xs mt-2`}>Price</Text>
         <View style={tw`relative mt-2`}>
           <TextInput
-            style={tw`w-full h-10 text-white bg-[#262329] border border-gray-400 rounded-2xl px-10`}
+            style={tw`w-full h-10 text-white bg-[#262329] border border-[#565358] rounded-2xl px-10`}
             placeholder="Enter price (Minimum 3$)"
             placeholderTextColor="white"
             value={value.currency}
@@ -920,7 +921,7 @@ useEffect(() => {
             Please enter a price.*</Text>
         )}
         <Text style={tw`text-white font-bold text-xs mt-2`}>About</Text>
-        <View style={tw`h-44 mt-2 p-2 bg-[#262329] border border-gray-400 w-full rounded-2xl`}>
+        <View style={tw`h-44 mt-2 p-2 bg-[#262329] border border-[#565358] w-full rounded-2xl`}>
 
 
           <TextInput
@@ -974,7 +975,7 @@ useEffect(() => {
           onPress={handleSave}
           title="Continue"
           titleStyle={tw`text-black font-bold`}
-          containerStyle={tw`bg-primary w-[90%] rounded-full`}
+          containerStyle={tw`bg-primary w-[100%] rounded-2xl`}
         />
       </View>
 
@@ -988,7 +989,7 @@ useEffect(() => {
               value={newCategory}
               onChangeText={setNewCategory}
               placeholderTextColor="#999"
-              style={tw`border border-gray-300 px-3 py-2 rounded-lg text-white`}
+              style={tw`border border-[#565358] px-3 py-2 rounded-lg text-white`}
             />
 
             <View style={tw`flex-row justify-end mt-4`}>
@@ -1020,10 +1021,10 @@ useEffect(() => {
           </Text>
 
           <View style={tw`mt-2`}>
-            <View style={tw`border-t-2 border-gray-800 w-full`}>
+            <View style={tw`border-t-2 border-[#565358] w-full`}>
 
             </View>
-            <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
               <Button
                 title="Continue"
                 style={tw`text-white px-6`}
@@ -1036,14 +1037,14 @@ useEffect(() => {
           </View>
         </View>
       </NormalModal>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   dropdown: {
     height: 40,
-    borderColor: '#888',
+    borderColor: '#565358',
     borderWidth: 1,
     borderRadius: 18,
     paddingHorizontal: 10,

@@ -336,8 +336,7 @@
 // export default ProfileScreen;
 
 // const styles = StyleSheet.create({});
-import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -359,41 +358,154 @@ import {
   usePostCreateTransactionMutation,
   usePostPaymentMethodsMutation,
 } from '@/src/redux/apiSlice/paymentSlice';
-import { useGetSingleUserQuery } from '@/src/redux/apiSlice/userSlice';
+import { useGetServicesByIdQuery } from '@/src/redux/apiSlice/serviceSlice';
+import { useGetSingleUserQuery, useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { imageUrl } from '@/src/redux/baseApi';
 import { getServiceData } from '@/src/utils';
 import { router, useLocalSearchParams } from 'expo-router';
-
+import { WebView } from 'react-native-webview';
 const { height } = Dimensions.get('screen');
 
 const SUCCESS_HOST = 'patreonexpo://checkout/success';
 const CANCEL_HOST = 'patreonexpo://checkout/cancel';
 
 const ProfileScreen = () => {
-  const { userId, serviceId, title, price } = useLocalSearchParams();
+  const { userId, serviceId, title, price } = useLocalSearchParams() || {};
+
   const [postPaymentMethods] = usePostPaymentMethodsMutation();
   const [postCreateTransaction] = usePostCreateTransactionMutation();
-  const { data } = useGetSingleUserQuery(userId);
-  const [serviceData, setServiceData] = React.useState<any>(null);
+  const { data, error, isLoading } = useGetSingleUserQuery(userId, {
+    skip: !userId,
+  });
+  // console.log(data?.data?.services[0], '=======================data');
+  const { data: loginUserData, refetch: fetchLoginUser, isFetching } = useGetUserQuery({});
+  const { data: serviceData } = useGetServicesByIdQuery(data?.data?.services[0], {
+    skip: !data?.data?.services,
+  })
+  // const [serviceData, setServiceData] = React.useState<any>(null);
+  console.log(serviceData?.data?.explainMembership, 'serviceData++++++');
   const [expanded, setExpanded] = useState(false);
-  const [subscriptionError, setSubcriptionError] = useState()
+  const [subscriptionError, setSubcriptionError] = useState();
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
+  const [subscribed, setSubscribed] = useState(false);
+
+  const webviewRef = useRef<WebView>(null);
+  const handledRef = useRef(false);
+  const [reloadKey, setReloadKey] = useState(0);
   console.log(subscriptionError, "subscription error")
+  const serviceIdfromUser = data?.data?.services[0];
+  const userSubscription = loginUserData?.data?.subscriptions || [];
+  useEffect(() => {
+    fetchLoginUser()
+    if (userSubscription?.includes(serviceIdfromUser)) {
+      console.log("subscribed")
+      setSubscribed(true);
+    } else {
+      console.log("not subscribed")
+    }
+  }, [serviceIdfromUser, userSubscription]);
+
   const fullImageUrl = data?.data?.image
     ? `${imageUrl}/${data.data.image}`
     : null;
 
   useEffect(() => {
-    const service = getServiceData();
-    setServiceData(service);
+    const fetchServiceData = async () => {
+      const data = await getServiceData();
+      if (data) {
+        setServiceData(data);
+
+      }
+    }
+    fetchServiceData();
   }, []);
 
   // --- Handle Stripe Deep Link Redirects ---
-  useEffect(() => {
-    const handleDeepLink = async (event: Linking.EventType) => {
-      const url = event.url;
-      console.log('🔗 Deep link received:', url);
+  // useEffect(() => {
+  //   const handleDeepLink = async (event: Linking.EventType) => {
+  //     const url = event.url;
+  //     console.log('🔗 Deep link received:', url);
 
-      if (url.startsWith(SUCCESS_HOST)) {
+  //     if (url.startsWith(SUCCESS_HOST)) {
+  //       const match = url.match(/[?&]session_id=([^&]+)/);
+  //       const sessionId = match ? decodeURIComponent(match[1]) : null;
+
+  //       if (sessionId) {
+  //         try {
+  //           const formData = new FormData();
+  //           formData.append('serviceId', serviceId);
+  //           formData.append('sessionId', sessionId);
+
+  //           const res = await postCreateTransaction(formData).unwrap();
+  //           console.log('✅ Transaction Created:', res);
+
+  //           // Alert.alert('Success', 'Transaction completed successfully!');
+  //           router.push('/screens/PaymentResult');
+  //         } catch (err) {
+  //           console.error('❌ Transaction creation failed:', err);
+  //           router.push('/screens/PaymentFailed');
+  //         }
+  //       }
+  //     }
+
+  //     if (url.startsWith(CANCEL_HOST)) {
+  //       console.warn('⚠️ User cancelled');
+  //       router.push('/screens/DiscoverResult');
+  //     }
+  //   };
+
+  //   const sub = Linking.addEventListener('url', handleDeepLink);
+  //   return () => sub.remove();
+  // }, [postCreateTransaction, serviceId]);
+
+  // --- Trigger Stripe Checkout using Expo WebBrowser ---
+  // const handleSubscribe = async () => {
+  //   try {
+  //     const res = await postPaymentMethods(serviceId).unwrap();
+  //     const url = res?.url;
+
+  //     if (url) {
+  //       console.log('🌍 Opening Checkout:', url);
+  //       // Open in-app browser using Expo WebBrowser
+  //       const result = await WebBrowser.openBrowserAsync(url);
+  //       console.log('WebBrowser result:', result);
+  //     } else {
+  //       console.warn('⚠️ Checkout URL missing in response:', res);
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Error creating Checkout session:', error?.data?.message);
+  //     setSubcriptionError(error)
+  //   }
+  // };
+  // Trigger Stripe Checkout inside WebView
+  const handleSubscribe = async () => {
+    try {
+      const res = await postPaymentMethods(serviceId).unwrap();
+      const url = res?.url;
+
+
+      if (url) {
+        console.log('🌍 Opening Checkout WebView:', url);
+        setCheckoutUrl(url); // open WebView
+      } else {
+        console.warn('⚠️ Checkout URL missing in response:', res);
+      }
+    } catch (error: any) {
+      console.error('❌ Error creating Checkout session:', error?.data?.message);
+      setSubcriptionError(error?.data?.message || 'Error initiating checkout');
+    }
+  };
+
+  // Handle WebView navigation to detect success/cancel
+  const handleWebViewNavigation = useCallback(
+    async (navState: any) => {
+      const url = navState?.url ?? '';
+      console.log('🌐 WebView Navigation:', url);
+
+      if (url) {
+        // if (handledRef.current) return; // prevent multiple triggers
+        // handledRef.current = true;
+
         const match = url.match(/[?&]session_id=([^&]+)/);
         const sessionId = match ? decodeURIComponent(match[1]) : null;
 
@@ -406,44 +518,57 @@ const ProfileScreen = () => {
             const res = await postCreateTransaction(formData).unwrap();
             console.log('✅ Transaction Created:', res);
 
-            // Alert.alert('Success', 'Transaction completed successfully!');
+            setCheckoutUrl(null);
             router.push('/screens/PaymentResult');
           } catch (err) {
             console.error('❌ Transaction creation failed:', err);
-            router.push('/screens/PaymentFailed');
+            setCheckoutUrl(null);
+            // router.push('/screens/PaymentFailed');
           }
         }
+        return;
       }
 
       if (url.startsWith(CANCEL_HOST)) {
         console.warn('⚠️ User cancelled');
+        setCheckoutUrl(null);
         router.push('/screens/DiscoverResult');
+        return;
       }
-    };
+    },
+    [serviceId, postCreateTransaction, router]
+  );
 
-    const sub = Linking.addEventListener('url', handleDeepLink);
-    return () => sub.remove();
-  }, [postCreateTransaction, serviceId]);
+  // If checkoutUrl is set, render WebView instead of main profile
+  if (checkoutUrl) {
+    return (
+      <WebView
+        key={reloadKey}
+        source={{ uri: checkoutUrl }}
+        originWhitelist={['*']}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        sharedCookiesEnabled={true}
+        thirdPartyCookiesEnabled={true}
+        cacheEnabled={false}
+        allowsInlineMediaPlayback={true}
+        setSupportMultipleWindows={false}
+        onNavigationStateChange={handleWebViewNavigation}
+        onError={(e) => {
+          const code = e.nativeEvent.code;
+          if (code === -1017) {
+            console.warn('⚠️ Parse error, switching to Safari');
+            Linking.openURL(checkoutUrl);
+          } else {
+            console.error('❌ WebView error:', e.nativeEvent);
+          }
+        }}
+      />
 
-  // --- Trigger Stripe Checkout using Expo WebBrowser ---
-  const handleSubscribe = async () => {
-    try {
-      const res = await postPaymentMethods(serviceId).unwrap();
-      const url = res?.url;
 
-      if (url) {
-        console.log('🌍 Opening Checkout:', url);
-        // Open in-app browser using Expo WebBrowser
-        const result = await WebBrowser.openBrowserAsync(url);
-        console.log('WebBrowser result:', result);
-      } else {
-        console.warn('⚠️ Checkout URL missing in response:', res);
-      }
-    } catch (error) {
-      console.error('❌ Error creating Checkout session:', error?.data?.message);
-      setSubcriptionError(error?.data?.message)
-    }
-  };
+    );
+  }
+
 
   return (
     <ScrollView style={tw`bg-black flex-1`}>
@@ -492,7 +617,7 @@ const ProfileScreen = () => {
         <View
           style={tw`bg-[#262329] w-[90%] h-20 rounded-2xl justify-between flex-row items-center`}>
           <View
-            style={tw`border-r-2 w-[50%] h-12 border-[#091218] items-center justify-center`}>
+            style={tw`border-r-2 w-[50%] h-12 border-[#565358] items-center justify-center`}>
             <Text style={tw`text-white text-center font-AvenirLTProBlack text-xl`}>
               {data?.data?.subscriberCount || '0'}
             </Text>
@@ -527,21 +652,26 @@ const ProfileScreen = () => {
           <Text style={tw`text-white font-AvenirLTProBlack`}>
             ${price || 150} Transaction/3 months
           </Text>
-          <FlatList
-            data={serviceData?.explainMembership}
-            renderItem={({ item }) => (
-              <View style={tw`flex-row gap-4 items-center my-1`}>
-                <SvgXml xml={IconDot} />
-                <Text style={tw`text-white text-xl font-AvenirLTProBlack`}>
-                  {item}
-                </Text>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={tw`bg-[#262329]`}
-            style={tw`h-40`}
-          />
+          <View style={tw`mt-2`}>
+            <FlatList
+              data={serviceData?.data?.explainMembership}
+              renderItem={({ item }) => {
+                console.log(item, "item++++++")
+                return (
+                  <View style={tw`flex-row gap-4 items-center my-1`}>
+                    <SvgXml xml={IconDot} />
+                    <Text style={tw`text-white text-xl font-AvenirLTProBlack`}>
+                      {item || 'No Data available'}
+                    </Text>
+                  </View>
+                )
+              }}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={tw`bg-[#262329]`}
+              style={tw`h-40`}
+            />
+          </View>
         </View>
       </View>
 
@@ -550,9 +680,13 @@ const ProfileScreen = () => {
         {subscriptionError === "Contributor has not completed Stripe onboarding and does not have a wallet too" && (
           <Text style={tw`text-red-600 text-xs`}>Service not updated yet*</Text>
         )}
+
+
         <TButton
+          disabled={subscribed || data === undefined}
           onPress={handleSubscribe}
-          title="Subscribe"
+          title={subscribed ? "Subscribed" : data === undefined ? "Not Available" : "Subscribe"}
+          // title={subscribed ? "Subscribed" : "Subscribe"}
           titleStyle={tw`text-black`}
           containerStyle={tw`w-[90%] bg-white`}
         />

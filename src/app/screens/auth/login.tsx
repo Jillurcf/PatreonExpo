@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
@@ -22,6 +21,7 @@ import {
 import Button from '../../../components/Button';
 // import { useLoginUserMutation } from '@/src/redux/apiSlice/authSlice';
 import { useLoginUserMutation } from '@/src/redux/apiSlice/authSlice';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 // import {useSignupMutation} from '../../redux/api/apiSlice/apiSlice';
 
@@ -81,7 +81,7 @@ const Login = ({navigation} : {navigation: any}) => {
 
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={tw`flex-grow bg-black px-[4%] justify-between min-h-screen`}
@@ -186,7 +186,7 @@ const Login = ({navigation} : {navigation: any}) => {
       </View>
 
       <StatusBar backgroundColor="black" translucent={false} />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

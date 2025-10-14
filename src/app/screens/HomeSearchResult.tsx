@@ -94,7 +94,7 @@ const HomeSearchResult = () => {
                     <InputText
                         style={tw`text-white`}
                         cursorColor="whtie"
-                        containerStyle={tw`bg-[#262329] border h-12 relative border-[#565358]`}
+                        containerStyle={tw`bg-[#262329] h-12 relative`}
                         labelStyle={tw`text-white font-AvenirLTProBlack mt-3`}
                         placeholder={'Search by user name'}
                         placeholderColor={'#949494'}
