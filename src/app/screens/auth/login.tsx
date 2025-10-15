@@ -84,7 +84,7 @@ const Login = ({navigation} : {navigation: any}) => {
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={tw`flex-grow bg-black px-[4%] justify-between min-h-screen`}
+      contentContainerStyle={tw`flex-1 bg-black px-[4%] justify-between min-h-screen`}
     >
       {/* Top Section */}
       <View>

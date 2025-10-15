@@ -863,7 +863,7 @@ useEffect(() => {
 
 
   return (
-    <KeyboardAwareScrollView
+    <KeyboardAwareScrollView 
     contentContainerStyle={tw`flex-1 bg-black px-[4%]`}>
       <View style={tw`mb-10`}>
         <View style={tw`flex-row w-full justify-between items-center`}>

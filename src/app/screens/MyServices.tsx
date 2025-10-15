@@ -68,7 +68,7 @@ const MyServices = (props: Props) => {
                 </View>
             </View>
             {/* =============== my services section =================== */}
-            <View>
+            <View style={tw`flex-1 mt-6 mb-4`}>
                 <FlatList
                     data={data?.data}
                     keyExtractor={(item, index) => item.id?.toString() || index.toString()}
@@ -85,18 +85,23 @@ const MyServices = (props: Props) => {
                                             </Text>
                                         </View>
                                         <View style={tw`flex-row justify-between mt-2`}>
-                                            <Text style={tw`text-white font-AvenirLTProBlack`}>
+                                            <Text style={tw`text-[#C9C8C9] font-AvenirLTProLight`}>
                                                 {item?.subtitle}
                                             </Text>
                                         </View>
                                         <View style={tw`flex-row justify-between mt-2`}>
-                                            <Text style={tw`text-white font-AvenirLTProBlack`}>
+                                            <Text style={tw`text-[#C9C8C9] font-AvenirLTProLight`}>
                                                 {item?.category}
                                             </Text>
                                         </View>
                                         <View style={tw`flex-row justify-between mt-2`}>
-                                            <Text style={tw`text-white font-AvenirLTProBlack`}>
+                                            {/* <Text style={tw`text-white font-AvenirLTProBlack`}>
                                                 {item?.description.slice(0, 100)}...
+                                            </Text> */}
+                                            <Text style={tw`text-[#C9C8C9] font-AvenirLTProLight`}>
+                                                {item?.description
+                                                    ? item.description.replace(/\s*\n\s*/g, ' ').trim().slice(0, 100)
+                                                    : "Service Description"}
                                             </Text>
                                         </View>
                                     </View>
@@ -109,7 +114,7 @@ const MyServices = (props: Props) => {
                                         <TouchableOpacity
                                             onPress={() => handleDelete(item)}
                                             style={tw`py-1 px-3 rounded-xl bg-red-500`}>
-                                            <Text style={tw`text-white font-AvenirLTProBlack border-b border-[#565358]`}>Del.</Text>
+                                            <Text style={tw`text-white font-AvenirLTProBlack`}>Del.</Text>
                                         </TouchableOpacity>
 
                                     </View>

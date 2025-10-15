@@ -20,7 +20,7 @@ import tw from 'twrnc'; // Tailwind for React Native
 
 import { SvgXml } from 'react-native-svg';
 
-import { useMessageHistoryQuery, usePostSendMessageMutation } from '@/src/redux/apiSlice/serviceSlice';
+import { useMessageHistoryByIdQuery, usePostSendMessageMutation } from '@/src/redux/apiSlice/serviceSlice';
 import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
@@ -43,13 +43,13 @@ const MessageScreen = () => {
   const [text, setText] = useState(''); // Message input field
   const [messages, setMessages] = useState([]); // Message state
   const [answer, setAnswer] = useState("");
-  const { data: messageHistory } = useMessageHistoryQuery({});
+  const { data: messageHistory } = useMessageHistoryByIdQuery(serviceId);
+  // const { data: messageHistory } = useMessageHistoryQuery({});
   // console.log(messageHistory?.data, "Message History++++++++++++++++")
   const { data: user } = useGetUserQuery({});
-  const { data: messageByServiceId, isLoading: userLoading } = useGetUserQuery(serviceId);
-  console.log(messageByServiceId?.data, "messageByServiceId++++++++++++++")
-
-console.log(messages)
+  
+  console.log(messages)
+  
   useEffect(() => {
     if (messageHistory) {
       const fetchedMessages = messageHistory?.data?.map((item) => ({

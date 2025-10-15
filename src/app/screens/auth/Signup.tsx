@@ -147,8 +147,7 @@ const SignUp = () => {
 
   return (
     <KeyboardAwareScrollView
-   
-      contentContainerStyle={tw`bg-black flex-1 px-[4%] h-full justify-between`}>
+         contentContainerStyle={tw`bg-black flex-1 px-[4%] h-full justify-between`}>
       <View>
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
