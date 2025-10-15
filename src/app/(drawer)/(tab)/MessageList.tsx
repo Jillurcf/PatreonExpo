@@ -18,15 +18,27 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 
 
 type ItemData = {
-  id: string;
-  image: string;
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  latestResponse?: any; // or a specific type if known
+};
+
+type MessageListResponse = {
+  data: ItemData[];
 };
 
 const MessageList = () => {
   const [searchTitle, setSearchTitle] = useState('');
-  const { data, isLoading, isError, isFetching, refetch } = useGetMessageListQuery(searchTitle);
-  
-
+  const { data, isLoading, isError, isFetching, refetch } = useGetMessageListQuery(searchTitle) as {
+  data?: ItemData[];
+  isLoading: boolean;
+  isError: boolean;
+  isFetching: boolean;
+  refetch: () => void;
+};
+console.log(data, "data from message list++++++++++++++")
   return (
     <View style={tw`flex-1 bg-black px-[4%]`}>
       <Text style={tw`text-white text-2xl  font-AvenirLTProBlack my-6`}>
@@ -52,7 +64,7 @@ const MessageList = () => {
         data={data?.data || []}
         keyExtractor={item => item._id.toString()}
         renderItem={({ item }) => {
-          console.log(item?._id, 'item from message list');
+          console.log(item?.latestResponse, 'item from message list');
           return (
             <TouchableOpacity
               onPress={() => router.push({ pathname: "/screens/MessageScreen", params: { serviceId: item?._id, serviceTitle: item?.title, userName: item?.contributor?.username } })}
@@ -81,8 +93,8 @@ const MessageList = () => {
                   {item?.contributor?.username || "Service Title"}
                 </Text>
                 <Text style={tw`text-[#C9C8C9] font-AvenirLTProLight`}>
-                  {item?.description
-                    ? item.description.replace(/\s*\n\s*/g, ' ').trim().slice(0, 30)
+                  {item?.latestResponse?.answer
+                    ? item?.latestResponse?.answer.replace(/\s*\n\s*/g, ' ').trim().slice(0, 30)
                     : "Service Description"}
                 </Text>
 

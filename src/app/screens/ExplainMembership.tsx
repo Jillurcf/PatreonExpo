@@ -876,7 +876,7 @@ useEffect(() => {
 
         <Text style={tw`text-white font-bold text-xs mt-4`}>Title</Text>
         <TextInput
-          style={tw`mt-1 w-full h-10 text-white bg-[#262329] border border-[#565358] rounded-2xl px-3`}
+          style={tw`mt-1 w-full h-10 text-white bg-[#262329] rounded-2xl px-3`}
           placeholder="Write title here"
           placeholderTextColor="white"
           value={value.title}
@@ -888,7 +888,7 @@ useEffect(() => {
         )}
         <Text style={tw`text-white font-bold text-xs mt-2`}>Subtitle</Text>
         <TextInput
-          style={tw`mt-1 w-full h-10 text-white bg-[#262329] border border-[#565358] rounded-2xl px-3`}
+          style={tw`mt-1 w-full h-10 text-white bg-[#262329] rounded-2xl px-3`}
           placeholder="Write subtitle here"
           placeholderTextColor="white"
           value={value.subtitle}
@@ -901,7 +901,7 @@ useEffect(() => {
         <Text style={tw`text-white font-bold text-xs mt-2`}>Price</Text>
         <View style={tw`relative mt-2`}>
           <TextInput
-            style={tw`w-full h-10 text-white bg-[#262329] border border-[#565358] rounded-2xl px-10`}
+            style={tw`w-full h-10 text-white bg-[#262329] rounded-2xl px-10`}
             placeholder="Enter price (Minimum 3$)"
             placeholderTextColor="white"
             value={value.currency}
@@ -921,7 +921,7 @@ useEffect(() => {
             Please enter a price.*</Text>
         )}
         <Text style={tw`text-white font-bold text-xs mt-2`}>About</Text>
-        <View style={tw`h-44 mt-2 p-2 bg-[#262329] border border-[#565358] w-full rounded-2xl`}>
+        <View style={tw`h-44 mt-2 p-2 bg-[#262329] w-full rounded-2xl`}>
 
 
           <TextInput
@@ -1044,8 +1044,8 @@ useEffect(() => {
 const styles = StyleSheet.create({
   dropdown: {
     height: 40,
-    borderColor: '#565358',
-    borderWidth: 1,
+    // borderColor: '#565358',
+    // borderWidth: 1,
     borderRadius: 18,
     paddingHorizontal: 10,
     backgroundColor: '#262329',

@@ -65,7 +65,7 @@ const AttachBankAccountScreen = () => {
                         {/* First Name */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Routing Number</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw` text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="108800"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -77,7 +77,7 @@ const AttachBankAccountScreen = () => {
                         {/* Last Name */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Account Number</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw` text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="00012345"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"

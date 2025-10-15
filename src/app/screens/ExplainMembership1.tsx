@@ -124,7 +124,7 @@ const ExplainMembershipScreen = () => {
                                 placeholderTextColor="#ccc"
                                 value={value}
                                 onChangeText={(text) => handleChange(text, index)}
-                                style={tw`flex-1 bg-neutral-900 text-white px-4 border border-[#565358] py-4 rounded-2xl`}
+                                style={tw`flex-1 bg-neutral-900 text-white px-4 py-4 rounded-2xl`}
                             />
                         </View>
                     ))}

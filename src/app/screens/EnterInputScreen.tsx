@@ -146,7 +146,7 @@ const EnterInput = () => {
           {/* Prompt Input */}
           <View style={tw`mt-8`}>
             <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Add instruction</Text>
-            <View style={tw`h-44 p-2 bg-[#262329] border border-[#565358] w-full rounded-lg`}>
+            <View style={tw`h-44 p-2 bg-[#262329] w-full rounded-lg`}>
               <TextInput
                 value={promptInput}
                 onChangeText={(text) => setPromptInput(text)}
@@ -171,7 +171,7 @@ const EnterInput = () => {
             <Text style={tw`text-white font-AvenirLTProBlack`}>Upload Knowledge</Text>
             <TouchableOpacity onPress={openFilePicker}>
               <View
-                style={tw`flex items-center bg-[#262329] mt-2 rounded-2xl py-8 border border-[#565358] justify-center`}
+                style={tw`flex items-center bg-[#262329] mt-2 rounded-2xl py-8 justify-center`}
 
               >
 

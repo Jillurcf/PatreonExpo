@@ -133,7 +133,12 @@ const HomeSearchResult = () => {
                                         style={tw`p-4 bg-[#262329] my-1 rounded-3xl`}
                                     >
                                         <View style={tw`flex-row justify-center items-center gap-4`}>
-                                            <Image source={{ uri: `${imageUrl}/${user?.image}` }} style={tw`w-12 h-12 rounded-full`} />
+                                            {user?.image ? (
+                                                 <Image source={{ uri: `${imageUrl}/${user?.image}` }} style={tw`w-12 h-12 rounded-full`} />
+                                            ) : (
+                                                <Image source={require('../../assets/images/alteravater.png')} style={tw`w-12 h-12 rounded-full`} />
+                                            )}
+                                           
                                             {/* <Text style={tw`text-white`}>{user.username}</Text> */}
                                             <View style={tw`flex-row justify-between items-center w-[80%]`}>
                                                 <View style={tw`flex-col gap-2`}>

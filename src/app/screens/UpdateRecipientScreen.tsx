@@ -77,7 +77,7 @@ const UpdateRecipientScreen = () => {
                         {/* First Name */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>First Name</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw` text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="viga"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -89,7 +89,7 @@ const UpdateRecipientScreen = () => {
                         {/* Last Name */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Last Name</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw`text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="wak"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -101,7 +101,7 @@ const UpdateRecipientScreen = () => {
                         {/* Address Line 1 */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Address Line</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw` text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="221B Baker Street"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -113,7 +113,7 @@ const UpdateRecipientScreen = () => {
                         {/* City */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>City</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw`text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="London"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -125,7 +125,7 @@ const UpdateRecipientScreen = () => {
                         {/* State */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>State</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw`text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="England"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -137,7 +137,7 @@ const UpdateRecipientScreen = () => {
                         {/* Postal Code */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Postal Code</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329]`}
+                            style={tw`text-white rounded-xl p-2 mb-4 bg-[#262329]`}
                             placeholder="NW1 6XE"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"
@@ -150,7 +150,7 @@ const UpdateRecipientScreen = () => {
                         {/* Country */}
                         <Text style={tw`mb-1 font-AvenirLTProHeavy text-white`}>Country</Text>
                         <TextInput
-                            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-6 bg-[#262329]`}
+                            style={tw` text-white rounded-xl p-2 mb-6 bg-[#262329]`}
                             placeholder="GB"
                             placeholderTextColor={'#A9A8AA'}
                             cursorColor="white"

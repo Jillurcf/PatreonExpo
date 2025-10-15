@@ -56,7 +56,7 @@ const serviceSlice = api.injectEndpoints({
     messageHistoryById: builder.query({
       query: (id) => ({
         url: `/services/get-replies-for-service/${id}`,
-        method: "Get",
+        method: "GET",
       }),
       providesTags: ['service'],
 

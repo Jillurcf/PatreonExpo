@@ -101,7 +101,7 @@ const WithdrawScreen = () => {
         <View style={tw`mt-8`}>
           <Text style={tw`text-white mt-4`}>Amount</Text>
           <TextInput
-            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
+            style={tw`text-white rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
             placeholder="Enter Amount"
             placeholderTextColor={'#A9A8AA'}
             cursorColor="white"
@@ -111,7 +111,7 @@ const WithdrawScreen = () => {
           <Text style={tw`text-white`}>Currency
           </Text>
           <TextInput
-            style={tw`border text-white border-[#565358] rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
+            style={tw` text-white rounded-xl p-2 mb-4 bg-[#262329] mt-1`}
             placeholder="gbp"
             placeholderTextColor={'#A9A8AA'}
             cursorColor="white"

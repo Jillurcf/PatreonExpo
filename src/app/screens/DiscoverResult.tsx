@@ -329,7 +329,7 @@ const DiscoverResult = () => {
           console.log(item, 'item in flatlist+++++++');
           const contributorImage = item?.contributor?.image
             ? { uri: `${imageUrl}/${item?.contributor?.image}` }
-            : require('@/src/assets/images/logo.png');
+            : require('../../assets/images/alteravater.png');
 
           return (
             <TouchableOpacity
