@@ -1,6 +1,6 @@
 import { IconBack, IconLogout, IconNotification, IconProfile, IconSettings, IconSupport } from '@/src/assets/icons/icons';
-import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
+import TButton from '@/src/components/TButton';
 import tw from '@/src/lib/tailwind';
 import { usePostLogoutMutation } from '@/src/redux/apiSlice/authSlice';
 import { removeStorageToken } from '@/src/utils';
@@ -14,7 +14,7 @@ import { SvgXml } from 'react-native-svg';
 export default function DrawerLayout() {
   const [logoutConfirmationModalVisible, setLogoutConfirmationModalVisible] =
     useState(false);
-    const [postLogout] = usePostLogoutMutation();
+  const [postLogout] = usePostLogoutMutation();
   const handleLogout = async () => {
     // Perform your logout logic here
     console.log('Logout pressed');
@@ -68,30 +68,30 @@ export default function DrawerLayout() {
             </TouchableOpacity>
           </View>
           <NormalModal
-            layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-            containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+            layerContainerStyle={tw`flex-1 justify-center items-center `}
+            containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
             visible={logoutConfirmationModalVisible}
             setVisible={setLogoutConfirmationModalVisible}
           >
             <View>
-              <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
-                Are you sure {'\n'} You want to logout?
+              <Text style={tw`text-white text-2xl text-center font-AvenirLTProBlack mb-2`}>
+                Are you sure to {'\n'}Logout?
               </Text>
 
               <View style={tw`mt-2`}>
-                <View style={tw`border-t-2 border-[#565358] w-full`}>
-                  <Button
+                <View style={tw`items-center mb-4`}>
+                  <TButton
                     title="Yes"
-                    style={tw`text-white`}
-                    containerStyle={tw`bg-transparent px-6`}
+                    titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                    containerStyle={tw`w-[100%] bg-white `}
                     onPress={handleLogout}
                   />
                 </View>
-                <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
-                  <Button
+                <View style={tw`items-center w-full`}>
+                  <TButton
                     title="Cancel"
-                    style={tw`text-white px-6`}
-                    containerStyle={tw`bg-gray-900`}
+                    titleStyle={tw`text-white text-[16px] font-AvenirLTProBlack`}
+                    containerStyle={[tw`w-[100%]`, { backgroundColor: 'rgba(255,255,255,0.2)' }]}
                     onPress={() => {
                       setLogoutConfirmationModalVisible(false);
                     }}

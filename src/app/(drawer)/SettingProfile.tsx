@@ -119,7 +119,7 @@ const SettingProfile = () => {
   if (isFetching && !data) {
     return (
       <View style={tw`bg-black items-center justify-center flex-1`}>
-        <ActivityIndicator size="large" color="gray" />
+        <ActivityIndicator size="large" color="#ffffff" />
       </View>
     );
   }
@@ -188,9 +188,11 @@ const SettingProfile = () => {
       <View style={tw`flex items-center justify-center my-8`}>
         <View style={tw`bg-[#262329] w-[90%] h-20 rounded-2xl flex-row items-center justify-between`}>
           <View style={tw`border-r-2 w-[33%] h-12 border-[#565358] items-center justify-center`}>
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => router.push('/screens/Subscriptions')}
+            >
               <Text style={tw`text-white text-center font-AvenirLTProBlack text-xl`}>
-                {data?.data?.subscriptions?.length}
+                {data?.data?.subscriptions?.length || 0}
                 {/* {data?.data?.subscriptions} */}
               </Text>
               <Text style={tw`text-white text-center font-AvenirLTProBlack`}>

@@ -1,6 +1,6 @@
-import { IconBack, IconDollar, IconUpload } from '@/src/assets/icons/icons';
-import Button from '@/src/components/Button';
+import { IconBack, IconUpload } from '@/src/assets/icons/icons';
 import NormalModal from '@/src/components/NormalModal';
+import TButton from '@/src/components/TButton';
 import tw from '@/src/lib/tailwind';
 import { useGetServicesByIdQuery, useUpdateServicesByIdMutation } from '@/src/redux/apiSlice/serviceSlice';
 import { Ionicons } from '@expo/vector-icons';
@@ -194,7 +194,7 @@ const EditService = (props: Props) => {
 
             {/* Prompt Input */}
             <View style={tw`mt-8`}>
-                <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Prompt Input</Text>
+                <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Edit Instruction</Text>
                 <View style={tw`h-44 p-2 bg-[#262329] border border-[#565358] w-full rounded-lg`}>
                     <TextInput
                         defaultValue={services?.about}
@@ -238,7 +238,7 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Subtitle */}
-            <Text style={tw`text-white font-bold text-xs`}>Subtitle</Text>
+            {/* <Text style={tw`text-white font-bold text-xs`}>Subtitle</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
                 <TextInput
                     style={tw`w-full h-10 border text-white bg-[#262329] border-[#565358] rounded-2xl px-2`}
@@ -247,10 +247,10 @@ const EditService = (props: Props) => {
                     defaultValue={services?.subtitle}
                     onChangeText={text => setValue(prev => ({ ...prev, subtitle: text }))}
                 />
-            </View>
+            </View> */}
 
             {/* Currency */}
-            <Text style={tw`text-white font-bold text-xs`}>Price</Text>
+            {/* <Text style={tw`text-white font-bold text-xs`}>Price</Text>
             <View style={tw`flex-row w-full items-center p-3`}>
                 <TouchableOpacity style={tw`absolute right-6 z-30`}>
                     <SvgXml xml={IconDollar} width={20} height={20} />
@@ -262,7 +262,7 @@ const EditService = (props: Props) => {
                     defaultValue={services?.price?.toString()}
                     onChangeText={text => setValue(prev => ({ ...prev, currency: text }))}
                 />
-            </View>
+            </View> */}
 
             {/* Description */}
             <Text style={tw`text-white font-bold text-xs `}>Discription</Text>
@@ -344,8 +344,8 @@ const EditService = (props: Props) => {
                 <Text style={tw`text-black font-bold text-base`}>Save</Text>
             </TouchableOpacity>
             <NormalModal
-                layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-                containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+                layerContainerStyle={tw`flex-1 justify-center items-center `}
+                containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
                 visible={serviceCreationConfirmationModalVisible}
                 setVisible={setServiceCreationConfirmationModalVisible}>
                 <View>
@@ -358,10 +358,10 @@ const EditService = (props: Props) => {
 
                         </View>
                         <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
-                            <Button
+                            <TButton
                                 title="Continue"
-                                style={tw`text-white px-6`}
-                                containerStyle={tw`bg-gray-900`}
+                                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                                containerStyle={tw`w-[100%] bg-white `}
                                 onPress={() => {
                                     setServiceCreationConfirmationModalVisible(false);
                                 }}

@@ -1,7 +1,7 @@
 import { IconMessage, IconMessageFocus, IconSearch, IconSearchFocus } from '@/src/assets/icons/icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 
@@ -15,18 +15,21 @@ const _layout = () => {
         tabBarStyle: {
           backgroundColor: '#141316',
           borderTopWidth: 0,
-          elevation: 0,
-          height: 60 + insets.bottom, // Adjust the tab bar height
-          paddingBottom: insets.bottom, // Add padding to the bottom
+          elevation: 8,
           position: 'absolute',
+          bottom: 0,
           left: 0,
           right: 0,
-          bottom: 0,
+          // 👇 Platform-specific bottom height
+          height: Platform.OS === 'ios' ? 60 + insets.bottom : 60,
+          paddingBottom: Platform.OS === 'ios' ? insets.bottom : 8,
         },
-        tabBarItemStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
-          // height: '100%',
+        // tabBarItemStyle: {
+        //   marginVertical: 10,
+        // },
+         tabBarLabelStyle: {
+          display: 'none',
+          backgroundColor: 'none'
         },
         tabBarIconStyle: {
           justifyContent: 'center',

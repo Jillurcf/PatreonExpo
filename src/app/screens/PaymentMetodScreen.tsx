@@ -50,7 +50,7 @@ const PaymentMethodScreen = () => {
   if (userIsfetching && !data) {
     return (
       <View style={tw`bg-black items-center justify-center flex-1`}>
-        <ActivityIndicator size="large" color="gray" />
+        <ActivityIndicator size="large" color="#ffffff" />
       </View>
     );
   }

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Platform,
   StatusBar,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View
@@ -147,7 +149,11 @@ const SignUp = () => {
 
   return (
     <KeyboardAwareScrollView
-         contentContainerStyle={tw`bg-black flex-1 px-[4%] h-full justify-between`}>
+        style={styles.container}
+            //  contentContainerStyle={styles.contentContainer}
+             keyboardShouldPersistTaps="handled"
+             extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}
+             >
       <View>
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
@@ -265,4 +271,13 @@ const SignUp = () => {
   );
 };
 
+
+const styles = StyleSheet.create({
+  container: { flex: 1, paddingHorizontal: "4%" },
+  contentContainer: { flexGrow: 1,},
+  // inputWrapper: { marginVertical: 20, paddingHorizontal: 16 },
+  // input: { height: 50, borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 },
+ 
+});
 export default SignUp;
+

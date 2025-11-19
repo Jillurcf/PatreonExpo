@@ -90,6 +90,13 @@ const serviceSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['service'],
     }),
+    unSubscribeServices: builder.mutation({
+      query: (id) => ({
+        url: `/services/unsubscribe/${id}`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['service'],
+    }),
     getMessageList: builder.query({
       query: (title) => {
         const hasTitle = title?.trim(); // Check if title is not empty
@@ -121,5 +128,6 @@ export const { useGetAllServiceQuery,
   useDeleteServicesMutation,
   useGetServicesByIdQuery,
   useGetMessageListQuery,
-  useUpdateServicesByIdMutation
+  useUpdateServicesByIdMutation,
+  useUnSubscribeServicesMutation,
 } = serviceSlice;

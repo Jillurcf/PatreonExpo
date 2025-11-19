@@ -1,5 +1,5 @@
-import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
+import TButton from '@/src/components/TButton';
 import { usePostLogoutMutation } from '@/src/redux/apiSlice/authSlice';
 import { useDeleteAccountMutation } from '@/src/redux/apiSlice/userSlice';
 import { removeStorageToken } from '@/src/utils';
@@ -29,11 +29,11 @@ type Props = {};
 const Settings = () => {
   const [delteConfirmationModalVisible, setDeleteConfirmationModalVisible] =
     useState(false);
-    const [deleteAccount, {refetch}] = useDeleteAccountMutation();
-    const [postLogout] = usePostLogoutMutation();
+  const [deleteAccount, { refetch }] = useDeleteAccountMutation();
+  const [postLogout] = usePostLogoutMutation();
 
 
-  
+
   const handleDelete = async () => {
     console.log("click delete")
     const deleteRes = await deleteAccount()
@@ -140,33 +140,34 @@ const Settings = () => {
         </View>
       </View>
       <NormalModal
-        layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-        containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+        layerContainerStyle={tw`flex-1 justify-center items-center `}
+        containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
         visible={delteConfirmationModalVisible}
         setVisible={setDeleteConfirmationModalVisible}>
         <View>
-          <Text style={tw`text-red-600 text-xs text-center font-RoboBold mb-2`}>
-            Sure! you want to delete the account?
+          <Text style={tw`text-white text-xl text-center font-RoboBold mb-2`}>
+            Are you Sure to {"\n"}Delete the account?
           </Text>
 
           <View style={tw`mt-2`}>
-            <View style={tw`border-t-2 border-[#565358] w-full`}>
 
-            </View>
-            <View style={tw`border-t-2 border-b-2 flex-row gap-6 items-center justify-center border-[#565358] w-full`}>
-              <Button
+            <View style={tw`items-center mb-4`}>
+              <TButton
                 title="Yes"
-                style={tw`text-white px-6`}
-                containerStyle={tw`bg-gray-900`}
+                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                containerStyle={tw`w-[100%] bg-white `}
                 onPress={handleDelete}
               />
-              <Button
-                title="No"
-                style={tw`text-white px-6`}
-                containerStyle={tw`bg-gray-900`}
-                onPress={() => setDeleteConfirmationModalVisible(false)}
-              />
-            </View>
+               </View>
+              <View style={tw`items-center w-full`}>
+                <TButton
+                  title="No"
+                  titleStyle={tw`text-white text-[16px] font-AvenirLTProBlack`}
+                  containerStyle={[tw`w-[100%]`, { backgroundColor: 'rgba(255,255,255,0.2)' }]}
+                  onPress={() => setDeleteConfirmationModalVisible(false)}
+                />
+              </View>
+           
           </View>
         </View>
       </NormalModal>

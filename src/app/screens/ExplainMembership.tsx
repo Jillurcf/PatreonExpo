@@ -699,9 +699,10 @@ import tw from '@/src/lib/tailwind';
 import { useGetAllCategoryQuery } from '@/src/redux/apiSlice/categorySlice';
 import { getExplainMemberValue, setExplainMemberValue } from '@/src/utils';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -743,10 +744,10 @@ const ExplainMembership = () => {
     loadSavedValue();
   }, []);
 
-useEffect(() => {
-  console.log('Saving to storage:', value, "saving to storage+++++++++++++");
-  setExplainMemberValue(value);
-}, [value]);
+  useEffect(() => {
+    console.log('Saving to storage:', value, "saving to storage+++++++++++++");
+    setExplainMemberValue(value);
+  }, [value]);
 
   useEffect(() => {
     if (category?.data) {
@@ -860,11 +861,15 @@ useEffect(() => {
     // Allow user to type anything, just store the value
     setValue(prev => ({ ...prev, currency: text }));
   };
-
+  const scrollRef = useRef<KeyboardAwareScrollView>(null);
 
   return (
-    <KeyboardAwareScrollView 
-    contentContainerStyle={tw`flex-1 bg-black px-[4%]`}>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      keyboardShouldPersistTaps="handled"
+      extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0} // space above keyboard
+    >
       <View style={tw`mb-10`}>
         <View style={tw`flex-row w-full justify-between items-center`}>
           <TouchableOpacity onPress={() => router.back()} style={tw`bg-black rounded-full p-1`}>
@@ -886,7 +891,7 @@ useEffect(() => {
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please enter a title.*</Text>
         )}
-        <Text style={tw`text-white font-bold text-xs mt-2`}>Subtitle</Text>
+        {/* <Text style={tw`text-white font-bold text-xs mt-2`}>Subtitle</Text>
         <TextInput
           style={tw`mt-1 w-full h-10 text-white bg-[#262329] rounded-2xl px-3`}
           placeholder="Write subtitle here"
@@ -897,7 +902,7 @@ useEffect(() => {
         {!value?.subtitle?.trim() && (
           <Text style={tw`text-red-600 text-xs mt-2`}>
             Please enter a subtitle.*</Text>
-        )}
+        )} */}
         <Text style={tw`text-white font-bold text-xs mt-2`}>Price</Text>
         <View style={tw`relative mt-2`}>
           <TextInput
@@ -1042,6 +1047,10 @@ useEffect(() => {
 };
 
 const styles = StyleSheet.create({
+  container: { flex: 1, paddingHorizontal: "4%" },
+  contentContainer: { flexGrow: 1,},
+  inputWrapper: { marginVertical: 20, paddingHorizontal: 16 },
+  input: { height: 50, borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 },
   dropdown: {
     height: 40,
     // borderColor: '#565358',
@@ -1067,3 +1076,4 @@ const styles = StyleSheet.create({
 });
 
 export default ExplainMembership;
+

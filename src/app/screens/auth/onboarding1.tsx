@@ -21,7 +21,7 @@ const Onboarding1 = () => {
     }
     router.push({
       pathname: "/screens/auth/Signup",
-      params: { screenName: "signup" }
+      params: { screenName: "signup", }
     })
   };
   

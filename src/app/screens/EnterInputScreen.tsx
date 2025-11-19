@@ -4,8 +4,10 @@ import * as FileSystem from 'expo-file-system';
 import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Platform,
   ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -22,6 +24,7 @@ import {
 
 import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import TButton from '../../components/TButton';
 
 const EnterInput = () => {
@@ -123,7 +126,11 @@ const EnterInput = () => {
   };
 
   return (
-    <ScrollView style={tw`flex-1 bg-black`}>
+   <KeyboardAwareScrollView
+        style={styles.container}
+             contentContainerStyle={styles.contentContainer}
+             keyboardShouldPersistTaps="handled"
+             extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}>
       <ScrollView
         contentContainerStyle={tw`flex-grow bg-black items-center justify-between px-4`}
         keyboardShouldPersistTaps="handled"
@@ -256,8 +263,15 @@ const EnterInput = () => {
         </NormalModal>
         <StatusBar backgroundColor={'gray'} translucent={false} />
       </ScrollView>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
 export default EnterInput;
+const styles = StyleSheet.create({
+  container: { flex: 1, paddingHorizontal: "4%" },
+  contentContainer: { flexGrow: 1,},
+  inputWrapper: { marginVertical: 20, paddingHorizontal: 16 },
+  input: { height: 50, borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 },
+ 
+});

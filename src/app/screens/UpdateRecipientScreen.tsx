@@ -5,7 +5,7 @@ import { usePutUpdateRecipientMutation } from '@/src/redux/apiSlice/paymentSlice
 import { router } from 'expo-router';
 import { Formik } from 'formik';
 import React from 'react';
-import { Dimensions, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SvgXml } from 'react-native-svg';
 
@@ -43,7 +43,11 @@ const UpdateRecipientScreen = () => {
 
     return (
      <KeyboardAwareScrollView
-         style={tw`bg-black flex-1`} >
+        style={styles.container}
+             contentContainerStyle={styles.contentContainer}
+             keyboardShouldPersistTaps="handled"
+             extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}
+        >
             {/* Header */}
             <View style={tw`flex-row w-full justify-between mt-4 px-[4%] items-center`}>
                 <TouchableOpacity
@@ -180,5 +184,13 @@ const UpdateRecipientScreen = () => {
        </KeyboardAwareScrollView>
     );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1, paddingHorizontal: "4%" },
+  contentContainer: { flexGrow: 1, },
+  inputWrapper: { marginVertical: 20, paddingHorizontal: 16 },
+  input: { height: 50, borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 },
+ 
+});
 
 export default UpdateRecipientScreen;

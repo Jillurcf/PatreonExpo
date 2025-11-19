@@ -1,5 +1,4 @@
 import { IconBack } from '@/src/assets/icons/icons';
-import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
 import TButton from '@/src/components/TButton';
 import tw from '@/src/lib/tailwind';
@@ -22,7 +21,7 @@ import { SvgXml } from 'react-native-svg';
 const WithdrawScreen = () => {
   const { data: withdrawData, isError, refetch } = useGetUserQuery({});
   const [globalPayout, { isLoading }] = useGlobalPayoutMutation();
-  console.log(withdrawData?.data?.attachedBankAccounts, "withdrawData======================")
+  // console.log(withdrawData?.data?.attachedBankAccounts, "withdrawData======================")
   const [value, setValue] = useState(null);
   const [error, setError] = useState(false);
   const [payoutConfirmationModalVisible, setPayoutConfirmationModalVisible] =
@@ -38,7 +37,7 @@ const WithdrawScreen = () => {
     value: acc,
   })) ?? [];
 
-  console.log(latestBankAccount, "bankAccounts value")
+  // console.log(latestBankAccount, "bankAccounts value")
   useEffect(() => {
     if (bankAccounts.length > 0) {
       const lastValue = bankAccounts[bankAccounts.length - 1].value;
@@ -64,14 +63,14 @@ const WithdrawScreen = () => {
       const payoutResponse = await globalPayout(
         data
       )
-      console.log(payoutResponse?.error?.data?.message, "Payout Response");
+      console.log(payoutResponse?.error?.data, "Payout Response");
       if (payoutResponse?.data?.success === true || payoutResponse?.success === true) {
         setPayoutConfirmationModalVisible(true);
         setValue(null);
         setAmount('');
         setCountry('');
         setError(null);
-      } else if(payoutResponse?.error?.data?.message) {
+      } else if (payoutResponse?.error?.data?.message) {
         setError(payoutResponse?.error?.data?.message);
       }
       // Reset fields after successful payout
@@ -124,8 +123,8 @@ const WithdrawScreen = () => {
       {/* Continue button */}
       <View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
         {error && (
-                <Text style={tw`text-red-600 tex-xs my-4`}>{error}*</Text>
-              )}
+          <Text style={tw`text-red-600 tex-xs my-4`}>{error}*</Text>
+        )}
         {payoutErrror && (
           <Text style={tw`text-red-500 text-start text-xs my-2`}>
             {payoutErrror}*
@@ -150,22 +149,22 @@ const WithdrawScreen = () => {
         />
       </View>
       <NormalModal
-        layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-        containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+        layerContainerStyle={tw`flex-1 justify-center items-center `}
+        containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
         visible={payoutConfirmationModalVisible}
         setVisible={setPayoutConfirmationModalVisible}>
         <View>
-          <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+          <Text style={tw`text-white text-2xl text-center font-AvenirLTProBlack mb-2`}>
             Payout successful!
           </Text>
 
           <View style={tw`mt-2`}>
 
-            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
-              <Button
+            <View style={tw`items-center mb-4`}>
+              <TButton
                 title="Done"
-                style={tw`text-white px-6`}
-                containerStyle={tw`bg-gray-900`}
+                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                containerStyle={tw`w-[100%] bg-white `}
                 onPress={() => {
                   setPayoutConfirmationModalVisible(false);
                   router.back();

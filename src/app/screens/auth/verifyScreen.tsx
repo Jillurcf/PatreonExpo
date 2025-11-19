@@ -153,7 +153,7 @@ const VerifyScreen = () => {
   if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center items-center`}>
-        <ActivityIndicator size="large" color="#064145" />
+        <ActivityIndicator size="large" color="#ffffff" />
         <Text style={tw`text-primary mt-2`}>Loading products...</Text>
       </View>
     );

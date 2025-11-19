@@ -1,5 +1,4 @@
 import { IconBack, IconEnvelope, IconUser } from '@/src/assets/icons/icons';
-import Button from '@/src/components/Button';
 import InputText from '@/src/components/InputText';
 import NormalModal from '@/src/components/NormalModal';
 import TButton from '@/src/components/TButton';
@@ -27,7 +26,7 @@ const EditProfile = () => {
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   console.log(name, username, bio, 'state values');
   console.log(data?.data?.name, 'data from get user query');
-  
+
 
   // ✅ Set default values when data is fetched
   useEffect(() => {
@@ -132,7 +131,7 @@ const EditProfile = () => {
         </View>
       </View>
 
-      <View style={tw`flex-col justify-end `}>
+      <View style={tw`mb-6`}>
 
         <TButton
           onPress={HandleSave}
@@ -152,8 +151,8 @@ const EditProfile = () => {
         />
       </View>
       <NormalModal
-        layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-        containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+        layerContainerStyle={tw`flex-1 justify-center items-center `}
+        containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
         visible={successModalVisible}
         setVisible={setSuccessModalVisible}>
         <View>
@@ -162,14 +161,14 @@ const EditProfile = () => {
           </Text>
 
           <View style={tw`mt-2`}>
-            <View style={tw`border-t-2 border-[#565358] w-full`}>
+            <View style={tw` w-full`}>
 
             </View>
-            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
-              <Button
+            <View style={tw`items-center mb-6`}>
+              <TButton
                 title="Done"
-                style={tw`text-white px-6`}
-                containerStyle={tw`bg-gray-900`}
+                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                containerStyle={tw`w-[100%] bg-white `}
                 onPress={() => {
                   setSuccessModalVisible(false);
                 }}

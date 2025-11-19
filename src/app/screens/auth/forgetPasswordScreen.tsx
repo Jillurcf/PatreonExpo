@@ -8,6 +8,8 @@ import {
 import InputText from '../../../components/InputText';
 import tw from '../../../lib/tailwind';
 
+import NormalModal from '@/src/components/NormalModal';
+import TButton from '@/src/components/TButton';
 import { useChangePasswordMutation } from '@/src/redux/apiSlice/authSlice';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
@@ -21,6 +23,8 @@ import Button from '../../../components/Button';
 
 const ForgetPass = ({ navigation }: any) => {
     // console.log('navigation', navigation);
+    const [resetPaswordModalVisible, setresetPaswordModalVisible] =
+        useState(false);
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [username, setUsername] = useState<string>('');
@@ -32,6 +36,7 @@ const ForgetPass = ({ navigation }: any) => {
     const { screenName, phoneNumber, email } = useLocalSearchParams();
     console.log(email, "email++++++")
     const [changePassword, { isLoading, isError }] = useChangePasswordMutation();
+
     const [errorMessage, setErrorMessage] = useState()
     // console.log('27', password, confirmPassword);
     // const data = {email, password, name:username, address:location}
@@ -62,7 +67,8 @@ const ForgetPass = ({ navigation }: any) => {
             console.log(response, "response+++++")
             // Validate required fields before sending the request
             if (response?.data?.success === true) {
-                router.push("/screens/auth/login");
+                // router.push("/screens/auth/login");
+                setresetPaswordModalVisible(true);
             } else {
                 console.log('Please fill all fields');
                 setErrorMessage(response?.error)
@@ -150,6 +156,32 @@ const ForgetPass = ({ navigation }: any) => {
 
                 />
             </View>
+            <NormalModal
+                layerContainerStyle={tw`flex-1 justify-center items-center `}
+                containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
+                visible={resetPaswordModalVisible}
+                setVisible={setresetPaswordModalVisible}>
+                <View>
+                    <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
+                        Password changed successfully!
+                    </Text>
+
+                    <View style={tw`my-4`}>
+
+                        <View style={tw`border-t-2 border-b-2 border-slate-800 w-full`}>
+                            <TButton
+                                title="Done"
+                                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                                containerStyle={tw`w-[100%] bg-white `}
+                                onPress={() => {
+                                    setresetPaswordModalVisible(false);
+                                    router.push("/screens/auth/login");
+                                }}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </NormalModal>
             <StatusBar backgroundColor="black" translucent={false} />
         </ScrollView>
     );

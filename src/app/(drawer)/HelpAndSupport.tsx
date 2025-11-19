@@ -8,6 +8,7 @@ import InputText from '../../components/InputText';
 
 import { IconBack } from '@/src/assets/icons/icons';
 import NormalModal from '@/src/components/NormalModal';
+import TButton from '@/src/components/TButton';
 import { useHelpAndSupportMutation } from '@/src/redux/apiSlice/userSlice';
 import { router } from 'expo-router';
 
@@ -56,7 +57,7 @@ const HelpSupport = () => {
   if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center items-center`}>
-        <ActivityIndicator size="large" color="#064145" />
+        <ActivityIndicator size="large" color="#ffffff" />
         <Text style={tw`text-primary mt-2`}>Loading ...</Text>
       </View>
     );
@@ -128,23 +129,25 @@ const HelpSupport = () => {
       </ScrollView>
 
       <NormalModal
-        layerContainerStyle={tw`flex-1 justify-center items-center mx-5`}
-        containerStyle={tw`rounded-xl bg-zinc-900 p-5`}
+        layerContainerStyle={tw`flex-1 justify-center items-center `}
+        containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
         visible={messageConfirmationModalVisible}
         setVisible={setMessageConfirmationModallVisible}
       >
         <View>
-          <Text style={tw`text-white text-lg text-center font-RoboBold mb-2`}>
-            Message sent successfully!
-          </Text>
+          <View style={tw``}>
+            <Text style={tw`text-white text-2xl text-center font-RoboBold mb-2`}>
+              Message sent uccessfully!
+            </Text>
+          </View>
 
           <View style={tw`mt-2`}>
 
-            <View style={tw`border-t-2 border-b-2 border-[#565358] w-full`}>
-              <Button
+            <View style={tw`w-full items-center`}>
+              <TButton
                 title="Done"
-                style={tw`text-white px-6`}
-                containerStyle={tw`bg-gray-900`}
+                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                containerStyle={tw`w-[100%] bg-white `}
                 onPress={() => {
                   setMessageConfirmationModallVisible(false);
                 }}

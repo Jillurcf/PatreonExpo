@@ -58,7 +58,6 @@ interface rateus {
  const token = getStorageToken();
  console.log(token, "token in base api++++++++++++++++")
 export const api = createApi({
-  
   keepUnusedDataFor: 0,
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({

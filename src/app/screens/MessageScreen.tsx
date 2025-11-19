@@ -2,7 +2,6 @@ import * as DocumentPicker from 'expo-document-picker';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Button,
   FlatList,
   Image,
@@ -32,24 +31,23 @@ import {
 import NormalModal from '../../components/NormalModal';
 
 const MessageScreen = () => {
-  const {  } = useLocalSearchParams();
+  const { } = useLocalSearchParams();
   const { serviceId, serviceTitle: title, userName } = useLocalSearchParams();
   console.log(serviceId, title, userName, "serviceId from message screen++++++++++++++")
   const [openModal, setOpenModal] = useState(false);
   const [conversation_id, setConversation_id] = useState();
   const [postSendMessage, { isLoading, isError }] = usePostSendMessageMutation()
-  const [mediaUri, setMediaUri] = useState(null); // For holding the selected media URI
-  const [mediaType, setMediaType] = useState(null); // 'image', 'video', or 'document'
-  const [text, setText] = useState(''); // Message input field
-  const [messages, setMessages] = useState([]); // Message state
+  const [mediaUri, setMediaUri] = useState(null); 
+  const [mediaType, setMediaType] = useState(null); 
+  const [text, setText] = useState(''); 
+  const [messages, setMessages] = useState([]); 
   const [answer, setAnswer] = useState("");
   const { data: messageHistory } = useMessageHistoryByIdQuery(serviceId);
-  // const { data: messageHistory } = useMessageHistoryQuery({});
-  // console.log(messageHistory?.data, "Message History++++++++++++++++")
+
   const { data: user } = useGetUserQuery({});
-  
+
   console.log(messages)
-  
+
   useEffect(() => {
     if (messageHistory) {
       const fetchedMessages = messageHistory?.data?.map((item) => ({
@@ -176,30 +174,30 @@ const MessageScreen = () => {
   // React.useEffect(() => {
 
   // }, [receiverInfo, data?.data]);
-  const selectMediaType = () => {
-    Alert.alert('Choose Media', 'Select the type of media you want to upload', [
-      {
-        text: 'Image',
-        onPress: () => pickMedia('photo'),
-      },
-      // {
-      //   text: 'Video',
-      //   onPress: () => pickMedia('video'),
-      // },
-      {
-        text: 'Document',
-        onPress: () => pickDocument(),
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ]);
-  };
+  // const selectMediaType = () => {
+  //   Alert.alert('Choose Media', 'Select the type of media you want to upload', [
+  //     {
+  //       text: 'Image',
+  //       onPress: () => pickMedia('photo'),
+  //     },
+  //     // {
+  //     //   text: 'Video',
+  //     //   onPress: () => pickMedia('video'),
+  //     // },
+  //     {
+  //       text: 'Document',
+  //       onPress: () => pickDocument(),
+  //     },
+  //     {
+  //       text: 'Cancel',
+  //       style: 'cancel',
+  //     },
+  //   ]);
+  // };
   {
     isLoading && (
       <View style={tw`absolute top-0 left-0 right-0 bottom-0 justify-center items-center bg-black bg-opacity-30`}>
-        <ActivityIndicator size="large" color="#fff" />
+        <ActivityIndicator size="large" color="#ffffff" />
       </View>
     )
   }
@@ -240,7 +238,7 @@ const MessageScreen = () => {
                     </View>
                   </View>
                   <View style={tw`bg-[#FFFFFF] p-3 rounded-3xl rounded-r-none rounded-b-2xl mt-4 w-[80%] flex-row items-end ml-[20%] `}>
-                   <View style={tw`w-85%`}>
+                    <View style={tw`w-85%`}>
                       <Text style={tw`text-sm text-[#141316]`}>{item.question}</Text>
                     </View>
                     <View style={tw`w-15%`}>
@@ -261,29 +259,32 @@ const MessageScreen = () => {
       {/* Input and Send Button */}
       <View style={tw``}>
         <View style={tw`flex-row items-center p-3  w-[95%]`}>
-          <TouchableOpacity
-            // onPress={() => selectMediaType()}
-            onPress={() => console.log("Attachment pressed")}
-            style={tw`mr-2 absolute right-14 z-30`}>
 
-            <Text style={tw`text-white`}>
-              {isLoading ? 'Sending...' :
-
-                (<SvgXml xml={AttachmentIcon} width={20} height={20} />
-                )}
-            </Text>
-
-          </TouchableOpacity>
           <View
             style={tw`flex-row w-[90%] gap-1 px-[2%] items-center relative`}>
-            <TextInput
-              style={tw`w-full h-14 border text-white bg-[#262329]  rounded-2xl px-2`}
-              placeholder="Message..."
-              placeholderTextColor={'white'}
-              cursorColor={'white'}
-              value={text}
-              onChangeText={value => setText(value)}
-            />
+            <View style={tw`w-full`}>
+              <TextInput
+                style={tw`w-full h-14 border text-white bg-[#262329] relative rounded-2xl px-2`}
+                placeholder="Message..."
+                placeholderTextColor={'white'}
+                cursorColor={'white'}
+                value={text}
+                onChangeText={value => setText(value)}
+              />
+              <TouchableOpacity
+                // onPress={() => selectMediaType()}
+                onPress={() => console.log("Attachment pressed")}
+                style={tw`absolute right-0 top-[25%] px-[4%]`}>
+
+                <Text style={tw`text-white`}>
+                  {isLoading ? 'Sending...' :
+
+                    (<SvgXml xml={AttachmentIcon} width={20} height={20} />
+                    )}
+                </Text>
+
+              </TouchableOpacity>
+            </View>
             {/* message send option */}
             <TouchableOpacity
               onPress={sendMessage}
