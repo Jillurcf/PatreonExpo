@@ -224,11 +224,11 @@ const EditService = (props: Props) => {
             </View>
 
             {/* Title */}
-            <Text style={tw`text-white font-bold text-xs`}>Title</Text>
-            <View style={tw`flex-row w-full items-center p-3`}>
+            <Text style={tw`text-white font-bold text-xs`}>Edit Title</Text>
+            <View style={tw`flex-row items-center my-2`}>
 
                 <TextInput
-                    style={tw`w-full h-10 border text-white bg-[#262329] -[#565358] rounded-2xl px-2`}
+                    style={tw`w-full h-12 border text-white bg-[#262329] rounded-xl px-2`}
                     placeholder="Write title here"
                     placeholderTextColor={'white'}
                     defaultValue={services?.title}
@@ -237,36 +237,9 @@ const EditService = (props: Props) => {
                 />
             </View>
 
-            {/* Subtitle */}
-            {/* <Text style={tw`text-white font-bold text-xs`}>Subtitle</Text>
-            <View style={tw`flex-row w-full items-center p-3`}>
-                <TextInput
-                    style={tw`w-full h-10 border text-white bg-[#262329] border-[#565358] rounded-2xl px-2`}
-                    placeholder="Write subtitle"
-                    placeholderTextColor={'white'}
-                    defaultValue={services?.subtitle}
-                    onChangeText={text => setValue(prev => ({ ...prev, subtitle: text }))}
-                />
-            </View> */}
-
-            {/* Currency */}
-            {/* <Text style={tw`text-white font-bold text-xs`}>Price</Text>
-            <View style={tw`flex-row w-full items-center p-3`}>
-                <TouchableOpacity style={tw`absolute right-6 z-30`}>
-                    <SvgXml xml={IconDollar} width={20} height={20} />
-                </TouchableOpacity>
-                <TextInput
-                    style={tw`w-full h-10 border text-white bg-[#262329] border-[#565358] rounded-2xl px-2`}
-                    placeholder="Input currency"
-                    placeholderTextColor={'white'}
-                    defaultValue={services?.price?.toString()}
-                    onChangeText={text => setValue(prev => ({ ...prev, currency: text }))}
-                />
-            </View> */}
-
             {/* Description */}
-            <Text style={tw`text-white font-bold text-xs `}>Discription</Text>
-            <View style={tw`mt-3`}>
+          <Text style={tw`text-white font-AvenirLTProBlack my-2`}>Edit Description</Text>
+            <View style={tw`mt-`}>
                 <View style={tw`h-auto p-2 bg-[#FFFFFF] border border-[#565358] w-full rounded-lg`}>
                     <TextArea
 
@@ -287,7 +260,7 @@ const EditService = (props: Props) => {
             {/* Dropdown */}
 
             <View style={tw`mt-8`}>
-                <Text style={tw`text-white font-bold text-xs mb-2 `}>Category</Text>
+                <Text style={tw`text-white font-bold text-xs mb-2 `}>Edit Category</Text>
                 <Dropdown
                     style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
                     placeholderStyle={styles.placeholderStyle}

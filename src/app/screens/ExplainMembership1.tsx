@@ -3,6 +3,7 @@ import Button from '@/src/components/Button';
 import NormalModal from '@/src/components/NormalModal';
 import TButton from '@/src/components/TButton';
 import { usePostBecmeAContibutorMutation } from '@/src/redux/apiSlice/serviceSlice';
+import { useGetUserQuery } from '@/src/redux/apiSlice/userSlice';
 import { getExplainMemberValue, loadMediaPromptData } from '@/src/utils';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -35,7 +36,9 @@ const ExplainMembershipScreen = () => {
     const [serviceCreationConfirmationModalVisible, setServiceCreationConfirmationModalVisible] =
         useState(false);
     const [postBecmeAContibutor, { isLoading, isError }] = usePostBecmeAContibutorMutation();
-    console.log(fields, "fields data +++++++++++++++++++++++++")
+    console.log(fields, "fields data +++++++++++++++++++++++++");
+    const { data, isLoading: serviceLoading, isError: serviceError } = useGetUserQuery({});
+    console.log(data?.data?.wallet, "user data++++++++++++++++++++++");
 
     useEffect(() => {
         const loadInitialData = async () => {
@@ -84,10 +87,16 @@ const ExplainMembershipScreen = () => {
             console.log(formData, "formData==================")
             const res = await postBecmeAContibutor(formData).unwrap();
             if (res?.success === true) {
-                router.push('/screens/PaymentMetodScreen');
-                console.log(res, "res++++++++++++++++")
-                setServiceCreationConfirmationModalVisible(true)
-                console.log("Service created succcessfully")
+                const wallet = data?.data?.wallet;
+                if (wallet == null) {
+                    router.push('/screens/PaymentMetodScreen');
+                    console.log(res, "res++++++++++++++++")
+                    setServiceCreationConfirmationModalVisible(true)
+                    console.log("Service created succcessfully")
+                } else {
+                    router.push('/(drawer)/(tab)');
+                }
+
             }
             // router.push('/(drawer)/SettingProfile');
             // console.log(res, "res++++++++++++++++")
