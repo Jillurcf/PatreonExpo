@@ -152,7 +152,7 @@ const EnterInput = () => {
 
           {/* Prompt Input */}
           <View style={tw`mt-8`}>
-            <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Add instruction</Text>
+            <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Add Instruction</Text>
             <View style={tw`h-44 p-2 bg-[#262329] w-full rounded-lg`}>
               <TextInput
                 value={promptInput}
