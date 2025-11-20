@@ -32,6 +32,7 @@ const EnterInput = () => {
   const [inputConfirmationModalVisible, setInputConfirmationModalVisible] =
     useState(false);
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState<{ title: string }>({ title: '' });
   // const [selectedPdf, setSelectedPdf] = useState(null);
   // const [selectedPdf, setSelectedPdf] = useState({
   //   // assets: [
@@ -97,26 +98,66 @@ const EnterInput = () => {
   const allData = { selectedPdf, promptInput }
   console.log(allData, "allData ==================");
 
+  // const handleSave = async () => {
+  //   if (!selectedPdf || !promptInput) {
+  //     console.log('Error', 'Please upload a PDF and enter a title before saving.');
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   // console.log(selectedPdf, promptInput, 'data before sending ==========');
+  //   try {
+  //     // ✅ Wait for the data to be saved
+  //     await saveMediaPromptData(selectedPdf, null, promptInput, value);
+
+  //     // ✅ Then wait to load it
+  //     const { selectedImages: savedImages, promptInput: savedPrompt } = await loadMediaPromptData();
+
+  //     console.log(savedImages, savedPrompt, value, 'Retrieved data from storage ++++++++');
+
+  //     // Continue the flow
+  //     setInputConfirmationModalVisible(true);
+  //     setPromptInput('');
+  //     setSelectedPdf(null);
+  //     setValue({ title: '' });
+  //     router.push('/screens/ExplainMembership');
+  //   } catch (error) {
+  //     console.error('Error during save/load:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSave = async () => {
-    if (!selectedPdf || !promptInput) {
-      console.log('Error', 'Please upload a PDF and enter a title before saving.');
+    if (!selectedPdf || !promptInput || !value?.title) {
+      console.log(
+        'Error',
+        'Please upload a PDF, enter a title, and provide prompt input before saving.'
+      );
       return;
     }
+
     setLoading(true);
-    // console.log(selectedPdf, promptInput, 'data before sending ==========');
+
     try {
-      // ✅ Wait for the data to be saved
-      await saveMediaPromptData(selectedPdf, null, promptInput);
+      // Save data
+      await saveMediaPromptData(selectedPdf, null, promptInput, value);
 
-      // ✅ Then wait to load it
-      const { selectedImages: savedImages, promptInput: savedPrompt } = await loadMediaPromptData();
+      // Load saved data
+      const storedData = await loadMediaPromptData();
 
-      console.log(savedImages, savedPrompt, 'Retrieved data from storage ++++++++');
+      console.log(
+        storedData?.selectedImages,
+        storedData?.promptInput,
+      storedData.title,
+        'Retrieved data from storage ++++++++'
+      );
 
       // Continue the flow
       setInputConfirmationModalVisible(true);
       setPromptInput('');
       setSelectedPdf(null);
+      setValue({ title: '' });
+
       router.push('/screens/ExplainMembership');
     } catch (error) {
       console.error('Error during save/load:', error);
@@ -125,12 +166,13 @@ const EnterInput = () => {
     }
   };
 
+
   return (
-   <KeyboardAwareScrollView
-        style={styles.container}
-             contentContainerStyle={styles.contentContainer}
-             keyboardShouldPersistTaps="handled"
-             extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      keyboardShouldPersistTaps="handled"
+      extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}>
       <ScrollView
         contentContainerStyle={tw`flex-grow bg-black items-center justify-between px-4`}
         keyboardShouldPersistTaps="handled"
@@ -149,9 +191,24 @@ const EnterInput = () => {
             </Text>
             <View style={tw`w-8`} />
           </View>
+          {/* Title block==================== */}
+          <View style={tw`mt-6`}>
+            <Text style={tw`text-white font-bold text-xs mt-4`}>Title</Text>
+            <TextInput
+              style={tw`mt-1 w-full h-12 text-white bg-[#262329] rounded-xl px-3`}
+              placeholder="Write title here"
+              placeholderTextColor="white"
+              value={value.title}
+              onChangeText={text => setValue({ ...value, title: text })}
+            />
+          </View>
+          {!value?.title?.trim() && (
+            <Text style={tw`text-red-600 text-xs mt-2`}>
+              Please enter a title.*</Text>
+          )}
 
           {/* Prompt Input */}
-          <View style={tw`mt-8`}>
+          <View style={tw`mt-4`}>
             <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Add Instruction</Text>
             <View style={tw`h-44 p-2 bg-[#262329] w-full rounded-lg`}>
               <TextInput
@@ -270,8 +327,8 @@ const EnterInput = () => {
 export default EnterInput;
 const styles = StyleSheet.create({
   container: { flex: 1, paddingHorizontal: "4%" },
-  contentContainer: { flexGrow: 1,},
+  contentContainer: { flexGrow: 1, },
   inputWrapper: { marginVertical: 20, paddingHorizontal: 16 },
   input: { height: 50, borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 },
- 
+
 });

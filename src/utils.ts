@@ -235,7 +235,7 @@ export const getStorageToken = async (): Promise<string | null> => {
 };
 
 export const removeStorageToken = async () => {
- return await AsyncStorage.removeItem('token');
+  return await AsyncStorage.removeItem('token');
 };
 // ======================Role Storage with AsyncStorage=======================
 export const setStorageRole = async (role: string) => {
@@ -287,13 +287,13 @@ export const getExplainMemberValue = async (): Promise<{
     return storedValue
       ? JSON.parse(storedValue)
       : {
-          title: '',
-          subtitle: '',
-          currency: '',
-          price: '',
-          description: '',
-          category: '',
-        };
+        title: '',
+        subtitle: '',
+        currency: '',
+        price: '',
+        description: '',
+        category: '',
+      };
   } catch (error) {
     console.error('Failed to load form value:', error);
     return {
@@ -314,12 +314,16 @@ export const clearFormValue = async () => {
 export const saveMediaPromptData = async (
   selectedPdf: File,
   capturedVideo: string | null,
-  promptInput: string | null
+  promptInput: string | null,
+  value: string | null
 ) => {
   try {
     await AsyncStorage.setItem('selectedImages', JSON.stringify(selectedPdf));
     await AsyncStorage.setItem('capturedVideo', capturedVideo || '');
     await AsyncStorage.setItem('promptInput', promptInput || '');
+    await AsyncStorage.setItem('title', JSON.stringify(value?.title || ''));
+
+
   } catch (e) {
     console.error('Storage Save Error:', e);
   }
@@ -330,11 +334,13 @@ export const loadMediaPromptData = async () => {
     const images = await AsyncStorage.getItem('selectedImages');
     const video = await AsyncStorage.getItem('capturedVideo');
     const prompt = await AsyncStorage.getItem('promptInput');
+    const titleData = await AsyncStorage.getItem('title');
 
     return {
       selectedImages: images ? JSON.parse(images) : [],
       capturedVideo: video || null,
       promptInput: prompt || '',
+     title: titleData ? JSON.parse(titleData) : '',
     };
   } catch (e) {
     console.error('Storage Load Error:', e);
@@ -348,6 +354,7 @@ export const clearMediaPromptData = async () => {
       'selectedImages',
       'capturedVideo',
       'promptInput',
+      'title'
     ]);
   } catch (e) {
     console.error('Storage Clear Error:', e);

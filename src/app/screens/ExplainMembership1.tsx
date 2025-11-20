@@ -33,6 +33,7 @@ const ExplainMembershipScreen = () => {
     });
     const [promptInput, setPromptInput] = useState<string>("");
     const [selectedImages, setSelectedImages] = useState();
+    const [title, setTitle] = useState('');
     const [serviceCreationConfirmationModalVisible, setServiceCreationConfirmationModalVisible] =
         useState(false);
     const [postBecmeAContibutor, { isLoading, isError }] = usePostBecmeAContibutorMutation();
@@ -50,6 +51,7 @@ const ExplainMembershipScreen = () => {
                 const mediaData = await loadMediaPromptData(); // ✅ await it
                 console.log(mediaData, "mediaData+++++++++++++");
                 setPromptInput(mediaData.promptInput);          // ✅ now it's safe
+                setTitle(mediaData.title);
                 setSelectedImages(mediaData.selectedImages);
             } catch (err) {
                 console.error("Error loading from storage:", err);
@@ -71,10 +73,10 @@ const ExplainMembershipScreen = () => {
     };
 
     const handleSave = async () => {
-        console.log(fields, "Fields ++++++++++++++++++++++")
+        // console.log(fields, "Fields ++++++++++++++++++++++")
         try {
             const formData = new FormData()
-            formData.append('title', value?.title)
+            formData.append('title', title)
             formData.append('subtitle', value?.subtitle)
             formData.append('price', value?.currency)
             formData.append('description', value?.description)
@@ -86,12 +88,12 @@ const ExplainMembershipScreen = () => {
 
             console.log(formData, "formData==================")
             const res = await postBecmeAContibutor(formData).unwrap();
-               console.log(res, "res++++++++++++++++")
+            console.log(res, "res++++++++++++++++")
             if (res?.success === true) {
                 const wallet = data?.data?.wallet;
                 if (wallet == null) {
                     router.push('/screens/PaymentMetodScreen');
-                 
+
                     setServiceCreationConfirmationModalVisible(true)
                     console.log("Service created succcessfully")
                 } else {

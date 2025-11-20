@@ -191,9 +191,23 @@ const EditService = (props: Props) => {
                     <View style={tw`w-8`} />
                 </View>
             </View>
+            {/* Title */}
+            <View style={tw`mt-6`}>
+                <Text style={tw`text-white font-bold text-xs`}>Edit Title</Text>
+                <View style={tw`flex-row items-center my-2`}>
 
+                    <TextInput
+                        style={tw`w-full h-12 border text-white bg-[#262329] rounded-xl px-2`}
+                        placeholder="Write title here"
+                        placeholderTextColor={'white'}
+                        defaultValue={services?.title}
+                        // value={services.title}
+                        onChangeText={text => setValue(prev => ({ ...prev, title: text }))}
+                    />
+                </View>
+            </View>
             {/* Prompt Input */}
-            <View style={tw`mt-8`}>
+            <View style={tw`mt-2`}>
                 <Text style={tw`text-white py-2 font-AvenirLTProBlack`}>Edit Instruction</Text>
                 <View style={tw`h-44 p-2 bg-[#262329] border border-[#565358] w-full rounded-lg`}>
                     <TextInput
@@ -223,22 +237,10 @@ const EditService = (props: Props) => {
                 </View>
             </View>
 
-            {/* Title */}
-            <Text style={tw`text-white font-bold text-xs`}>Edit Title</Text>
-            <View style={tw`flex-row items-center my-2`}>
 
-                <TextInput
-                    style={tw`w-full h-12 border text-white bg-[#262329] rounded-xl px-2`}
-                    placeholder="Write title here"
-                    placeholderTextColor={'white'}
-                    defaultValue={services?.title}
-                    // value={services.title}
-                    onChangeText={text => setValue(prev => ({ ...prev, title: text }))}
-                />
-            </View>
 
             {/* Description */}
-          <Text style={tw`text-white font-AvenirLTProBlack my-2`}>Edit Description</Text>
+            <Text style={tw`text-white font-AvenirLTProBlack my-2`}>Edit Description</Text>
             <View style={tw`mt-`}>
                 <View style={tw`h-auto p-2 bg-[#FFFFFF] border border-[#565358] w-full rounded-lg`}>
                     <TextArea
