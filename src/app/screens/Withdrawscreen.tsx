@@ -63,7 +63,7 @@ const WithdrawScreen = () => {
       const payoutResponse = await globalPayout(
         data
       )
-      console.log(payoutResponse?.error?.data, "Payout Response");
+      console.log(payoutResponse?.error?.data?.error?.error?.message, "Payout Response");
       if (payoutResponse?.data?.success === true || payoutResponse?.success === true) {
         setPayoutConfirmationModalVisible(true);
         setValue(null);
@@ -71,7 +71,7 @@ const WithdrawScreen = () => {
         setCountry('');
         setError(null);
       } else if (payoutResponse?.error?.data?.message) {
-        setError(payoutResponse?.error?.data?.message);
+        setError(payoutResponse?.error?.data?.error?.error?.message);
       }
       // Reset fields after successful payout
 
@@ -122,8 +122,13 @@ const WithdrawScreen = () => {
 
       {/* Continue button */}
       <View style={tw`flex mb-6 my-12 items-center justify-center w-full`}>
-        {error && (
-          <Text style={tw`text-red-600 tex-xs my-4`}>{error}*</Text>
+        {error && error === "Outbound payment cannot be created because Confirmation of Payee is not accepted." && (
+          <View style={tw`mb-4`}>
+            <Text style={tw`text-red-600 tex-xs`}>{error}* </Text>
+            <TouchableOpacity onPress={() => router.push({pathname: '/(drawer)/HelpAndSupport', params: { sub: 'Confirmation of Payee Issue', body: 'I am facing an issue with Confirmation of Payee while trying to make a payout. Please assist me in resolving this issue.'}})}>
+              <Text style={tw`text-blue-400 tex-xs underline`}>Please Contact Support</Text>
+            </TouchableOpacity>
+          </View>
         )}
         {payoutErrror && (
           <Text style={tw`text-red-500 text-start text-xs my-2`}>

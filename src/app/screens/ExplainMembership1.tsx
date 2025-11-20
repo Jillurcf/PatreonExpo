@@ -86,11 +86,12 @@ const ExplainMembershipScreen = () => {
 
             console.log(formData, "formData==================")
             const res = await postBecmeAContibutor(formData).unwrap();
+               console.log(res, "res++++++++++++++++")
             if (res?.success === true) {
                 const wallet = data?.data?.wallet;
                 if (wallet == null) {
                     router.push('/screens/PaymentMetodScreen');
-                    console.log(res, "res++++++++++++++++")
+                 
                     setServiceCreationConfirmationModalVisible(true)
                     console.log("Service created succcessfully")
                 } else {

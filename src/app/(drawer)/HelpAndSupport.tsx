@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from '../../lib/tailwind';
 
 import { SvgXml } from 'react-native-svg';
@@ -10,15 +10,18 @@ import { IconBack } from '@/src/assets/icons/icons';
 import NormalModal from '@/src/components/NormalModal';
 import TButton from '@/src/components/TButton';
 import { useHelpAndSupportMutation } from '@/src/redux/apiSlice/userSlice';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 const HelpSupport = () => {
-  const [subject, setSubject] = useState('');
-  const [desc, setDesc] = useState('');
+     const {sub, body} = useLocalSearchParams();
+ const [subject, setSubject] = useState(sub ?? '');
+const [desc, setDesc] = useState(body ?? '');
   const [helpAndSupport, { isLoading, isError }] = useHelpAndSupportMutation();
   const [errorMessage, setEroorMessage] = useState('');
   const [messageConfirmationModalVisible, setMessageConfirmationModallVisible] =
     useState(false);
+ 
+    console.log(sub, body, 'params +++++++++++++++');
   console.log(errorMessage, 'error message');
 
   const [alertVisible, setAlertVisible] = useState(false);
@@ -41,10 +44,10 @@ const HelpSupport = () => {
       const res = await helpAndSupport(formData);
       console.log(res?.data?.success, 'help center response +++++++++++++');
       if (res?.data?.success === true) {
-        setAlertVisible(true);
+        // setAlertVisible(true);
+        setMessageConfirmationModallVisible(true)
         setSubject('')
         setDesc('')
-        setMessageConfirmationModallVisible(true)
       } else {
         setEroorMessage(res?.data?.error)
       }
@@ -54,14 +57,14 @@ const HelpSupport = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <View style={tw`flex-1 justify-center items-center`}>
-        <ActivityIndicator size="large" color="#ffffff" />
-        <Text style={tw`text-primary mt-2`}>Loading ...</Text>
-      </View>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <View style={tw`flex-1 justify-center items-center`}>
+  //       <ActivityIndicator size="large" color="#ffffff" />
+  //       <Text style={tw`text-primary mt-2`}>Loading ...</Text>
+  //     </View>
+  //   );
+  // }
   const allData = subject.trim() !== "" && desc.trim() !== "";
 
   return (

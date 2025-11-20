@@ -1,9 +1,11 @@
 import { IconBack, IconEdit } from '@/src/assets/icons/icons'
+import NormalModal from '@/src/components/NormalModal'
+import TButton from '@/src/components/TButton'
 import tw from '@/src/lib/tailwind'
 import { useDeleteServicesMutation, useGettMyServicesQuery } from '@/src/redux/apiSlice/serviceSlice'
 import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useState } from 'react'
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SvgXml } from 'react-native-svg'
 
@@ -14,6 +16,9 @@ const MyServices = (props: Props) => {
     const { data, refetch, isLoading, isError } = useGettMyServicesQuery({})
     // console.log(data?.data, "My serviced data =================14")
     const [deleteServices] = useDeleteServicesMutation();
+    const [deleteServiceConfirmationModalVisible, setDeleteServiceConfirmationModalVisible] =
+        useState(false);
+    const [seletedItem, setSeletedItem] = useState(null);
 
     const handleEditService = (item) => {
         // console.log(item?._id, "click+++++++++++++++++++++++++")
@@ -27,20 +32,38 @@ const MyServices = (props: Props) => {
     }
 
     const handleDelete = async (item) => {
+        setDeleteServiceConfirmationModalVisible(true);
+        setSeletedItem(item);
+        // try {
+        //     console.log(item._id, "id++++++++++++++++++ click");
+        //     const res = await deleteServices(item._id).unwrap();
+        //     console.log(res?.data, "delete response")
+        //     if (res?.success === true) {
+        //         await refetch()
+        //         router.push('/(drawer)/(tab)'); // Navigate back to MyServices screen
+        //         console.log('Deleted successfully', res)
+        //     }
+
+        // } catch (error) {
+        //     console.error('Delete failed', error);
+        // }
+    };
+    const handleDeleteConfirmation = async () => {
         try {
-            console.log(item._id, "id++++++++++++++++++ click");
-            const res = await deleteServices(item._id).unwrap();
+            console.log(seletedItem._id, "id++++++++++++++++++ click");
+            const res = await deleteServices(seletedItem._id).unwrap();
             console.log(res?.data, "delete response")
             if (res?.success === true) {
                 await refetch()
                 router.push('/(drawer)/(tab)'); // Navigate back to MyServices screen
                 console.log('Deleted successfully', res)
             }
-
+            setDeleteServiceConfirmationModalVisible(false);
         } catch (error) {
             console.error('Delete failed', error);
         }
-    };
+
+    }
 
     {
         isLoading && (
@@ -124,6 +147,39 @@ const MyServices = (props: Props) => {
                     }}
                 />
             </View>
+            <NormalModal
+                layerContainerStyle={tw`flex-1 justify-center items-center `}
+                containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
+                visible={deleteServiceConfirmationModalVisible}
+                setVisible={setDeleteServiceConfirmationModalVisible}
+            >
+                <View>
+                    <Text style={tw`text-white text-2xl text-center font-AvenirLTProBlack mb-2`}>
+                        Sure you want to {'\n'}delete service?
+                    </Text>
+
+                    <View style={tw`mt-2`}>
+                        <View style={tw`items-center mb-4`}>
+                            <TButton
+                                title="Yes"
+                                titleStyle={tw`text-[#262329] text-[16px] font-AvenirLTProBlack`}
+                                containerStyle={tw`w-[100%] bg-white `}
+                                onPress={handleDeleteConfirmation}
+                            />
+                        </View>
+                        <View style={tw`items-center w-full`}>
+                            <TButton
+                                title="Cancel"
+                                titleStyle={tw`text-white text-[16px] font-AvenirLTProBlack`}
+                                containerStyle={[tw`w-[100%]`, { backgroundColor: 'rgba(255,255,255,0.2)' }]}
+                                onPress={() => {
+                                    setDeleteServiceConfirmationModalVisible(false);
+                                }}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </NormalModal>
             <StatusBar translucent={false} />
         </ScrollView>
     )
