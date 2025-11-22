@@ -37,7 +37,7 @@ const SettingProfile = () => {
   const [expanded, setExpanded] = useState(false);
   const [patchUpdateUserProfile] = usePatchUpdateUserProfileMutation();
   const { data: myService } = useGettMyServicesQuery({});
-  console.log(data?.data, "data======================")
+  // console.log(data?.data, "data======================")
   const fullImageUrl = data?.data?.image ? `${imageUrl}/${data.data.image}` : null;
 
   useEffect(() => {

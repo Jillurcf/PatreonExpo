@@ -33,18 +33,7 @@ const EnterInput = () => {
     useState(false);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState<{ title: string }>({ title: '' });
-  // const [selectedPdf, setSelectedPdf] = useState(null);
-  // const [selectedPdf, setSelectedPdf] = useState({
-  //   // assets: [
-  //   //   {
-  //   //     uri: '',
-  //   //     name: '',
-  //   //     size: 0,
-  //   //     mimeType: '',
-  //   //   },
-  //   // ],
-  //   // canceled: false,
-  // });
+
 
   const [selectedPdf, setSelectedPdf] = useState<null | {
     uri: string;

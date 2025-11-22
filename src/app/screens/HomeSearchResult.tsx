@@ -117,7 +117,7 @@ const HomeSearchResult = () => {
                             <Text style={tw`text-white`}>No users found</Text>
                         ) : (
                             data?.data?.result?.map((user) => {
-                                console.log(user?.services, "user from discover+++++++++++++++")
+                                console.log(user, "user from discover+++++++++++++++")
                                 return (
                                     <TouchableOpacity
                                         key={user.id}
