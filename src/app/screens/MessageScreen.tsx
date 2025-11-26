@@ -37,29 +37,90 @@ const MessageScreen = () => {
   const [openModal, setOpenModal] = useState(false);
   const [conversation_id, setConversation_id] = useState();
   const [postSendMessage, { isLoading, isError }] = usePostSendMessageMutation()
-  const [mediaUri, setMediaUri] = useState(null); 
-  const [mediaType, setMediaType] = useState(null); 
-  const [text, setText] = useState(''); 
-  const [messages, setMessages] = useState([]); 
+  const [mediaUri, setMediaUri] = useState(null);
+  const [mediaType, setMediaType] = useState(null);
+  const [text, setText] = useState('');
+  const [messages, setMessages] = useState([
+    {
+      id: "default-1",
+      text: "Hello! How can I help you today?",
+      user: "AI",
+      createdAt: new Date(),
+      is_sender: false,
+    }
+  ]);
   const [answer, setAnswer] = useState("");
   const { data: messageHistory } = useMessageHistoryByIdQuery(serviceId);
 
   const { data: user } = useGetUserQuery({});
 
-  console.log(messages)
+  console.log(messages, "messages+++++++++++++++")
 
+  // useEffect(() => {
+  //   if (messageHistory) {
+  //     const fetchedMessages = messageHistory?.data?.map((item) => ({
+  //       id: item._id,
+  //       user: item.user.name,
+  //       question: item.question,
+  //       answer: item.answer,
+  //       createdAt: item.createdAt,
+  //     }));
+  //     setMessages(fetchedMessages);
+  //   }
+  // }, [messageHistory]);
+
+  //  Test code 1
+
+  //   useEffect(() => {
+  //   const defaultMsg = {
+  //     id: "default-1",
+  //     text: "Hello! I’m ready to help. Ask your question anytime.",
+  //     user: "AI",
+  //     createdAt: new Date(),
+  //     is_sender: false,
+  //   };
+
+  //   if (messageHistory?.data) {
+  //     const fetchedMessages = messageHistory.data.map((item) => ({
+  //       id: item._id,
+  //       user: item.user?.name || "User",
+  //       question: item.question,
+  //       answer: item.answer,
+  //       createdAt: item.createdAt,
+  //     }));
+
+  //     // Add default message at the top
+  //     setMessages([defaultMsg, ...fetchedMessages]);
+  //   }
+  // }, [messageHistory]);
+
+
+  // test code 2
   useEffect(() => {
-    if (messageHistory) {
-      const fetchedMessages = messageHistory?.data?.map((item) => ({
+    if (messageHistory?.data?.length > 0) {
+      const fetchedMessages = messageHistory.data.map((item) => ({
         id: item._id,
-        user: item.user.name,
+        user: item.user?.name || "User",
         question: item.question,
         answer: item.answer,
         createdAt: item.createdAt,
       }));
       setMessages(fetchedMessages);
+    } else {
+      // DEFAULT MESSAGE
+      setMessages([
+        {
+          id: "default-1",
+          answer: "Hello, welcome to my page.\nIs there anything we can do to help you? 😁😁 ",
+          user: "AI",
+          createdAt: new Date(),
+          is_sender: false,
+        }
+      ]);
     }
   }, [messageHistory]);
+
+
 
   const sendMessage = async () => {
     if (text.trim() || mediaUri) {
@@ -229,23 +290,26 @@ const MessageScreen = () => {
               (
                 <View style={tw`mb-4`}>
                   {/* <Text style={tw`font-semibold text-white text-lg`}>{item.user}</Text> */}
+                  {messageHistory?.data?.length > 0 ? (
+                    <View style={tw`bg-[#FFFFFF] p-3 rounded-3xl rounded-r-none rounded-b-2xl mt-4 w-[80%] flex-row items-end ml-[20%] `}>
+                      <View style={tw`w-85%`}>
+                        <Text style={tw`text-sm text-[#141316]`}>{item?.question}</Text>
+                      </View>
+                      <View style={tw`w-15%`}>
+                        <Text style={tw`text-xs text-[#616161]`}>{new Date(item?.createdAt).toLocaleString().slice(12, 17)}</Text>
+                      </View>
+
+                    </View>
+                  ) : null}
                   <View style={tw`bg-[#262329] p-3 rounded-3xl rounded-l-none rounded-b-2xl mt-2 w-[80%] flex-row items-end`}>
                     <View style={tw`w-[85%]`}>
                       <Text style={tw`text-sm text-white mt-2`}>{item?.answer}</Text>
                     </View>
                     <View style={tw`w-15%`}>
-                      <Text style={tw`text-xs text-[#C9C8C9]`}>{new Date(item.createdAt).toLocaleString().slice(12, 17)}</Text>
+                      <Text style={tw`text-xs text-[#C9C8C9]`}>{new Date(item?.createdAt).toLocaleString().slice(12, 17)}</Text>
                     </View>
                   </View>
-                  <View style={tw`bg-[#FFFFFF] p-3 rounded-3xl rounded-r-none rounded-b-2xl mt-4 w-[80%] flex-row items-end ml-[20%] `}>
-                    <View style={tw`w-85%`}>
-                      <Text style={tw`text-sm text-[#141316]`}>{item.question}</Text>
-                    </View>
-                    <View style={tw`w-15%`}>
-                      <Text style={tw`text-xs text-[#616161]`}>{new Date(item.createdAt).toLocaleString().slice(12, 17)}</Text>
-                    </View>
 
-                  </View>
 
 
                 </View>
