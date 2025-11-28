@@ -63,15 +63,18 @@ const WithdrawScreen = () => {
       const payoutResponse = await globalPayout(
         data
       )
-      console.log(payoutResponse?.error?.data?.error?.error?.message, "Payout Response");
+      console.log(payoutResponse?.error?.data?.message, "Payout Response");
       if (payoutResponse?.data?.success === true || payoutResponse?.success === true) {
         setPayoutConfirmationModalVisible(true);
         setValue(null);
         setAmount('');
         setCountry('');
         setError(null);
-      } else if (payoutResponse?.error?.data?.message) {
+      } else if (payoutResponse?.error?.data) {
         setError(payoutResponse?.error?.data?.error?.error?.message);
+      }
+      if (payoutResponse?.error?.data?.message) {
+        setPayoutErrror(payoutResponse?.error?.data?.message);
       }
       // Reset fields after successful payout
 

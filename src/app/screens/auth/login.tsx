@@ -25,15 +25,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 // import {useSignupMutation} from '../../redux/api/apiSlice/apiSlice';
 
-const Login = ({navigation} : {navigation: any}) => {
+const Login = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [checkValue, setCheckValue] = useState(false);
   const [loginError, setLoginError] = useState();
+  const [errorFromRes, setErrorFromRes] = useState();
   console.log(loginError, "loginError")
   const [loginUser, { isLoading, isError }] = useLoginUserMutation();
   console.log('27', email, password);
+
   // const data = {email, password, name:username, address:location}
 
   const allFilled =
@@ -70,7 +72,10 @@ const Login = ({navigation} : {navigation: any}) => {
         router.replace('/(drawer)/(tab)');
       }
 
-      console.log('Login successful:', res);
+      console.log('Login successful:', res?.error);
+      if (res?.error) {
+        setErrorFromRes(res?.error);
+      }
 
     } catch (error) {
       console.error('Login failed:', error);
@@ -132,7 +137,7 @@ const Login = ({navigation} : {navigation: any}) => {
         </View>
         <View style={tw`flex-row gap-1`}>
           <Text style={tw`text-white text-xs font-AvenirLTProBlack`}>Do not have an account please </Text>
-          <TouchableOpacity onPress={()=> router.push({pathname: "/screens/auth/Signup",  params: { screenName: "signup" }})}>
+          <TouchableOpacity onPress={() => router.push({ pathname: "/screens/auth/Signup", params: { screenName: "signup" } })}>
             <Text style={tw`text-gray-400 text-xs underline font-AvenirLTProBlack`}>Signup</Text>
           </TouchableOpacity>
 
@@ -140,16 +145,16 @@ const Login = ({navigation} : {navigation: any}) => {
 
         <View style={tw`mt-4 flex-row gap-2`}>
           <Text style={tw`text-white font-AvenirLTProBlack`}>
-            By logging in you accept our  
+            By logging in you accept our
           </Text>
-          <TouchableOpacity 
-          onPress={()=> router.push('/screens/TermsAndCondition')}
+          <TouchableOpacity
+            onPress={() => router.push('/screens/TermsAndCondition')}
           >
             <Text style={tw`text-gray-400 font-AvenirLTProBlack underline`}>TOS</Text>
           </TouchableOpacity>
           <Text style={tw`text-white font-AvenirLTProBlack`}>&</Text>
           <TouchableOpacity
-           onPress={()=> router.push('/screens/PrivacyPolicay')}
+            onPress={() => router.push('/screens/PrivacyPolicay')}
           >
             <Text style={tw`text-gray-400 font-AvenirLTProBlack underline`}>PP</Text>
           </TouchableOpacity>
@@ -176,6 +181,11 @@ const Login = ({navigation} : {navigation: any}) => {
           </Text>
         ) : null}
 
+        {errorFromRes ? (
+          <Text style={tw`text-red-500 text-center mb-4`}>
+            {errorFromRes}*
+          </Text>
+        ) : null}
         <Button
           disabled={!allFilled}
           title={isLoading ? 'Wait...' : 'Continue'}

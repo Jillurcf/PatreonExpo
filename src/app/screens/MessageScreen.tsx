@@ -41,13 +41,7 @@ const MessageScreen = () => {
   const [mediaType, setMediaType] = useState(null);
   const [text, setText] = useState('');
   const [messages, setMessages] = useState([
-    {
-      id: "default-1",
-      text: "Hello! How can I help you today?",
-      user: "AI",
-      createdAt: new Date(),
-      is_sender: false,
-    }
+   
   ]);
   const [answer, setAnswer] = useState("");
   const { data: messageHistory } = useMessageHistoryByIdQuery(serviceId);

@@ -43,6 +43,7 @@ const SignUp = () => {
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const [responsFalse, setResponsFalse] = useState();
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [reponseError, setReponseError] = useState();
   console.log(responsFalse, "responsFalse++++++++")
   const [SignUp, { isLoading, isError }] = useRegisterUserMutation();
   const { data, isFetching, refetch: userRefetch } = useCheckExistingUserNameQuery(username, { skip: !username });
@@ -136,7 +137,9 @@ const SignUp = () => {
       if (response?.success === true) {
         router.push({ pathname: "/screens/auth/verifyScreen", params: { email: email } });
       } else if (response?.success === false) {
-        setResponsFalse(response?.message)
+        setResponsFalse(response?.error)
+      } else if (response?.error) {
+        setReponseError(response?.message)
       }
 
     } catch (err) {
@@ -149,11 +152,11 @@ const SignUp = () => {
 
   return (
     <KeyboardAwareScrollView
-        style={styles.container}
-            //  contentContainerStyle={styles.contentContainer}
-             keyboardShouldPersistTaps="handled"
-             extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}
-             >
+      style={styles.container}
+      //  contentContainerStyle={styles.contentContainer}
+      keyboardShouldPersistTaps="handled"
+      extraKeyboardSpace={Platform.OS === 'ios' ? 100 : 0}
+    >
       <View>
         <View style={tw`flex-row w-full justify-between mt-4`}>
           <TouchableOpacity
@@ -256,8 +259,14 @@ const SignUp = () => {
           </View>
         </View>
       </View>
-      <View style={tw`flex-col justify-end my-4 `}>
-
+         {reponseError && (
+          <Text style={tw`text-red-600 text-xs text-center`}>{reponseError}*</Text>
+        )}
+        {responsFalse && (
+          <Text style={tw`text-red-600 text-xs text-center`}>{responsFalse}*</Text>
+        )}
+      <View style={tw`flex-col justify-end `}>
+     
         <Button
           disabled={!allFilled}
           title={isLoading ? "Wait..." : 'Register'}
@@ -274,10 +283,10 @@ const SignUp = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, paddingHorizontal: "4%" },
-  contentContainer: { flexGrow: 1,},
+  contentContainer: { flexGrow: 1, },
   // inputWrapper: { marginVertical: 20, paddingHorizontal: 16 },
   // input: { height: 50, borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 },
- 
+
 });
 export default SignUp;
 
