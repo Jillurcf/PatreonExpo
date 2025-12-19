@@ -41,7 +41,7 @@ const MessageScreen = () => {
   const [mediaType, setMediaType] = useState(null);
   const [text, setText] = useState('');
   const [messages, setMessages] = useState([
-   
+
   ]);
   const [answer, setAnswer] = useState("");
   const { data: messageHistory } = useMessageHistoryByIdQuery(serviceId);
@@ -153,9 +153,10 @@ const MessageScreen = () => {
 
       try {
         const res = await postSendMessage({ id: serviceId, data: formData });
-        // console.log(res, "postSendMessage res+++++++++")
+        // Compute the AI message text outside the object literal
+        const aiMessageText = (res && res.data && res.data.data) ? res.data.data : "No response from AI.";
         const aiMessage = {
-          text: res?.data?.data || "No response from AI.",
+          text: aiMessageText,
           user: title,
           createdAt: new Date(),
           is_sender: false,

@@ -1,16 +1,17 @@
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { useEffect } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import tw from '../lib/tailwind';
 import store from '../redux/store';
 
-
 export default function RootLayout() {
-const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
 
   const [loaded] = useFonts({
     AvenirLTProBlack: require('../assets/font/AvenirLTProBlack.otf'),
@@ -27,25 +28,68 @@ const insets = useSafeAreaInsets();
     AvenirLTProRoman: require('../assets/font/AvenirLTProRoman.otf'),
   });
 
+
+  useEffect(() => {
+    Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+
+    if (Platform.OS === 'ios') {
+      Purchases.configure({
+        apiKey: "appl_DYoRGNTwYuDudQBeVFBhbWyAlxH"
+        
+        // apiKey: "appl_QccjAguSfswIlDvPVNWFuXcDOcy"
+      });
+
+
+      // } else if (Platform.OS === 'android') {
+      //   Purchases.configure({
+      //     apiKey: "YOUR_REVENUECAT_GOOGLE_API_KEY"
+      //   });
+
+      // ✅ ONLY use this if you're actually building for Amazon Appstore
+      // Purchases.configure({
+      //   apiKey: "YOUR_REVENUECAT_AMAZON_API_KEY",
+      //   useAmazon: true
+      // });
+    }
+    getCustomerInfo();
+    getOfferings();
+  }, []);
+  async function getCustomerInfo() {
+    const customerInfo = await Purchases.getCustomerInfo();
+    console.log("Customer Info:", customerInfo);
+  }
+
+  async function getOfferings() {
+    const offerings = await Purchases.getOfferings();
+    if (
+      offerings.current !== null &&
+      offerings.current.availablePackages.length > 0
+    ) {
+      console.log("offerings:++++++++++++++++++", offerings);
+    }
+  }
+
   if (!loaded) {
 
     return null;
   }
+
+
   return (
-//     <StripeProvider publishableKey='pk_test_51RU8z5FKyrBH5NbyQJYa6IetLsNm5OXkwrWEkKl3knFqKhqqjf7pEveqcSv9ugfAitXz0ARA5slSEt9WPRPeBjaH00o6MCLwJB
-//  '  >
- <KeyboardProvider>
-  <View style={[ {flex:1, paddingTop: insets.top, backgroundColor: 'black'} ]}>
- {/* <SafeAreaView style={tw`flex-1 bg-black p-[4%]`}> */}
-      <GestureHandlerRootView style={tw`flex-1`}>
-        <Provider store={store}>
-          <Slot />
-        </Provider>
-      </GestureHandlerRootView>
-    {/* </SafeAreaView> */}
-  </View>
- {/* <StatusBar backgroundColor="black" /> */}
- </KeyboardProvider>
+    //     <StripeProvider publishableKey='pk_test_51RU8z5FKyrBH5NbyQJYa6IetLsNm5OXkwrWEkKl3knFqKhqqjf7pEveqcSv9ugfAitXz0ARA5slSEt9WPRPeBjaH00o6MCLwJB
+    //  '  >
+    <KeyboardProvider>
+      <View style={[{ flex: 1, paddingTop: insets.top, backgroundColor: 'black' }]}>
+        {/* <SafeAreaView style={tw`flex-1 bg-black p-[4%]`}> */}
+        <GestureHandlerRootView style={tw`flex-1`}>
+          <Provider store={store}>
+            <Slot />
+          </Provider>
+        </GestureHandlerRootView>
+        {/* </SafeAreaView> */}
+      </View>
+      {/* <StatusBar backgroundColor="black" /> */}
+    </KeyboardProvider>
 
     // </StripeProvider >
 

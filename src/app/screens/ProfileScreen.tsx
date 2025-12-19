@@ -1,4 +1,3 @@
-
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
@@ -27,15 +26,15 @@ import { useGetSingleUserQuery, useGetUserQuery } from '@/src/redux/apiSlice/use
 import { imageUrl } from '@/src/redux/baseApi';
 import { getServiceData } from '@/src/utils';
 import { router, useLocalSearchParams } from 'expo-router';
+import Purchases from 'react-native-purchases';
 import { WebView } from 'react-native-webview';
 const { height } = Dimensions.get('screen');
-
 const SUCCESS_HOST = 'patreonexpo://checkout/success';
 const CANCEL_HOST = 'patreonexpo://checkout/cancel';
 
 const ProfileScreen = () => {
   const { userId, serviceId, title, price } = useLocalSearchParams() || {};
-console.log(serviceId, "serviceId+++++++++");
+  console.log(serviceId, "serviceId+++++++++");
   const [postPaymentMethods] = usePostPaymentMethodsMutation();
   const [postCreateTransaction] = usePostCreateTransactionMutation();
   const { data, error, isLoading } = useGetSingleUserQuery(userId, {
@@ -57,6 +56,7 @@ console.log(serviceId, "serviceId+++++++++");
   const [subcriptionErrorFromRes, setSubcriptionErrorFromRes] = useState<string | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
   const [subscribed, setSubscribed] = useState(false);
+  const [offerings, setOfferings] = useState<any>(null);
   // console.log(subscribed, "subscribed++++++");
   const [unsubscribeModalVisible, setUnsubscribeModalVisible] = useState(false);
   const webviewRef = useRef<WebView>(null);
@@ -90,7 +90,10 @@ console.log(serviceId, "serviceId+++++++++");
     fetchServiceData();
   }, []);
 
-  
+  useEffect(() => {
+    getOfferings();
+  }, []);
+
   // Trigger Stripe Checkout inside WebView
   const handleSubscribe = async () => {
     console.log("click")
@@ -113,6 +116,20 @@ console.log(serviceId, "serviceId+++++++++");
       setSubcriptionError(error?.data?.message || 'Error initiating checkout');
     }
   };
+
+  // ==================revenue cat implementation======================
+  async function getOfferings() {
+    const offerings = await Purchases.getOfferings();
+    if (
+      offerings.current !== null &&
+      offerings.current.availablePackages.length > 0
+    ) {
+      console.log("offerings:++++++++++++++++++", offerings);
+      setOfferings(offerings);
+    }
+  }
+
+
 
   // Handle WebView navigation to detect success/cancel
   const handleWebViewNavigation = useCallback(
@@ -320,6 +337,19 @@ console.log(serviceId, "serviceId+++++++++");
         </View>
       </View>
 
+       <View style={tw`items-center justify-center`}>
+        <View style={tw`bg-[#262329] w-[90%] rounded-2xl mt-4`}>
+          <Text style={tw`text-white text-lg font-AvenirLTProBlack mt-6 px-[4%]`}>Monthly service access</Text>
+          <View style={tw`flex-row gap-2 my-2 px-[4%]`}>
+            <Text style={tw`text-white text-lg font-AvenirLTProBlack `}>Price:</Text>
+            <Text style={tw`text-white text-lg font-AvenirLTProBlack `}>$19.99 / month</Text>
+          </View>
+
+        </View>
+
+      </View>
+
+
       {/* Subscribe Button */}
       <View style={tw`w-full items-center my-6`}>
         {subscriptionError === "Contributor has not completed Stripe onboarding and does not have a wallet too" && (
@@ -347,6 +377,37 @@ console.log(serviceId, "serviceId+++++++++");
         )}
 
       </View>
+
+      {offerings?.current?.availablePackages?.length > 0 && (
+        <View style={tw`items-center justify-center mt-6`}>
+          <Text style={tw`text-white text-lg font-AvenirLTProBlack mb-2`}>
+            Available Packages
+          </Text>
+          {offerings?.current?.availablePackages.map((pkg: any) => (
+            <View key={pkg.identifier} style={tw`mb-2 p-2 bg-[#262329] rounded-xl w-[90%]`}>
+              <Text style={tw`text-white`}>ID: {pkg.identifier}</Text>
+              <Text style={tw`text-white`}>Price: {pkg.product.priceString}</Text>
+              <TButton
+                title={`Purchase ${pkg.product.title}`}
+                titleStyle={tw`text-black`}
+                containerStyle={tw`w-full bg-white mt-2`}
+                onPress={() => {
+                  Purchases.purchasePackage(pkg)
+                    .then(purchaseInfo => {
+                      // handle successful purchase
+                      console.log('Purchase successful:', purchaseInfo);
+                    })
+                    .catch(error => {
+                      // handle error
+                      console.error('Purchase failed:', error);
+                    });
+                }}
+              />
+            </View>
+          ))}
+        </View>
+      )}
+
       <NormalModal
         layerContainerStyle={tw`flex-1 justify-center items-center `}
         containerStyle={tw`rounded-xl bg-[#141316] w-[80%] `}
